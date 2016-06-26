@@ -1,15 +1,28 @@
 from django.shortcuts import render
-from django.http import HttpResponse
-from django.shortcuts import render_to_response
-from django.http import HttpResponseRedirect
+from django.shortcuts import HttpResponseRedirect
+from django.core.context_processors import csrf
+from django.contrib.auth import authenticate, login
 
 # Create your views here.
 def login(request):
-    #return HttpResponse('Hello World!')
+    c = {}
+    c.update(csrf(request))
     return render(request, "web/login.html", {})
 
-def index(request):
-    return render_to_response('web/index.html', {})
+def authentication(request):
+    username = request.POST['username']
+    password = request.POST['password']
+    user = authenticate(username=username, password=password)
 
-def overview(request):
-    return render_to_response('web/overview.html', {})
+    if user is not None:
+        return HttpResponseRedirect('web/index.html')
+    else:
+        return HttpResponseRedirect('web/login.html')
+
+    # if username is "josie" and password is "123":
+    #      return HttpResponseRedirect('web/index.html')
+    # else:
+    #      return HttpResponseRedirect('web/login.html')
+
+def index(request):
+    return render(request,"web/index.html")
