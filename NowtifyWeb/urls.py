@@ -3,13 +3,8 @@ from . import views
 
 urlpatterns = patterns('',
                        url(r'^$', views.login, name='login'),
-                       url(r'^index/', views.index, name='index'),
-                       url(r'^charts/', views.index, name='charts'),
-                       url(r'^forms/', views.index, name='forms'),
-                       url(r'^icons/', views.index, name='icons'),
-                       url(r'^panels/', views.index, name='panels'),
-                       url(r'^tables/', views.index, name='tables'),
-                       url(r'^widgets/', views.index, name='widgets')
+                       url(r'^authentication/', views.authentication, name='authentication'),
+                       url(r'^index/', views.index, name='index')
 
                        # Nowtify Pages
                        # url(r'^overview/', views.index, name='overview'),
