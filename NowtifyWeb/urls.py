@@ -6,7 +6,8 @@ urlpatterns = patterns('',
                        url(r'^authentication/', views.authentication, name='authentication'),
                        url(r'^index/', views.index, name='index'),
                        url(r'^overview/', views.overview, name='overview'),
-                       url(r'^sensor/', views.sensor, name='sensor')
+                       url(r'^sensor/', views.sensor, name='sensor'),
+                       url(r'^logout/', views.logout, name='logout')
                        # url(r'^wearable/', views.wearable, name='wearable'),
                        # url(r'^dashboard/', views.dashboard, name='dashboard')
 
