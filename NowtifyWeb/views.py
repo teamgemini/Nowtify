@@ -32,3 +32,9 @@ def overview(request):
 
 def sensor(request):
     return render(request, "web/sensor.html")
+
+def wearable(request):
+    return render(request, "web/wearable.html")
+
+def dashboard(request):
+    return render(request, "web/dashboard.html")
