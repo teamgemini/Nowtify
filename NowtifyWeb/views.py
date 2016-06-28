@@ -29,3 +29,6 @@ def index(request):
 
 def overview(request):
     return render(request, "web/overview.html")
+
+def sensor(request):
+    return render(request, "web/sensor.html")
