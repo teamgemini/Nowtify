@@ -26,3 +26,6 @@ def authentication(request):
 
 def index(request):
     return render(request,"web/index.html")
+
+def overview(request):
+    return render(request, "web/overview.html")
