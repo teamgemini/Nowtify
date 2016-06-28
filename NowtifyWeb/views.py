@@ -54,3 +54,11 @@ def wearable(request):
 def dashboard(request):
     return render(request, "web/dashboard.html")
 
+
+def wearable(request):
+    return render(request, "web/wearable.html")
+
+
+def dashboard(request):
+    return render(request, "web/dashboard.html")
+
