@@ -56,13 +56,12 @@
 			</div>
 		</form>
 		<ul class="nav menu">
-			<li class="active"><a href="index.html"><svg class="glyph stroked dashboard-dial"><use xlink:href="#stroked-dashboard-dial"></use></svg> Overview</a></li>
-			<li><a href="widgets.html"><svg class="glyph stroked calendar"><use xlink:href="#stroked-calendar"></use></svg> Sensors Management</a></li>
-			<li><a href="charts.html"><svg class="glyph stroked line-graph"><use xlink:href="#stroked-line-graph"></use></svg> Wearable Management</a></li>
-			<li><a href="tables.html"><svg class="glyph stroked table"><use xlink:href="#stroked-table"></use></svg> History</a> </li>
-			<li><a href="forms.html"><svg class="glyph stroked pencil"><use xlink:href="#stroked-pencil"></use></svg> -</a></li>
-			<li><a href="panels.html"><svg class="glyph stroked app-window"><use xlink:href="#stroked-app-window"></use></svg> -</a></li>
-			<li><a href="icons.html"><svg class="glyph stroked star"><use xlink:href="#stroked-star"></use></svg> -</a></li>
+			<li class="active"><a href="overview.html"><svg class="glyph stroked dashboard-dial"><use xlink:href="#stroked-dashboard-dial"></use></svg> Overview</a></li>
+			<li><a href="/sensor/"><svg class="glyph stroked calendar"><use xlink:href="#stroked-calendar"></use></svg> Sensors Management</a></li>
+			<li><a href="/wearable/"><svg class="glyph stroked line-graph"><use xlink:href="#stroked-line-graph"></use></svg> Wearable Management</a></li>
+			<li><a href="/dashboard/"><svg class="glyph stroked table"><use xlink:href="#stroked-table"></use></svg> Dashboard</a> </li>
+
+
 			<li class="parent ">
 				<a href="#">
 					<span data-toggle="collapse" href="#sub-item-1"><svg class="glyph stroked chevron-down"><use xlink:href="#stroked-chevron-down"></use></svg></span> Dropdown
@@ -101,7 +100,7 @@
 
 		<div class="row">
 			<div class="col-lg-12">
-				<h1 class="page-header">Dashboard</h1>
+				<h1 class="page-header">{% block display_title %} {% endblock %}</h1>
 			</div>
 		</div><!--/.row-->
 
