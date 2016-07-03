@@ -8,9 +8,11 @@ urlpatterns = patterns('',
                        url(r'^overview/', views.overview, name='overview'),
                        url(r'^sensor/', views.sensor, name='sensor'),
                        url(r'^wearable/', views.wearable, name='wearable'),
-                       url(r'^dashboard/', views.dashboard, name='dashboard')
+                       url(r'^dashboard/', views.dashboard, name='dashboard'),
+                       url(r'^change_password/', views.settings, name='settings')
 
-                       # Nowtify Pages
+
+# Nowtify Pages
                        # url(r'^overview/', views.index, name='overview'),
                        # url(r'^/user', views.user, name='user'),
                        # url(r'^sensor/', views.sensor, name='sensor'),
