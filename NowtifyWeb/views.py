@@ -41,3 +41,6 @@ def dashboard(request):
 
 def settings(request):
     return render(request, "web/settings.html")
+
+def alert(request):
+    return render(request, "web/alert.html")
