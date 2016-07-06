@@ -26,11 +26,9 @@
 			<div class="login-panel panel panel-default">
 				<div class="panel-heading text-center">Change Password</div>
 				<div class="panel-body">
-					<form action="/login/" method="post">{% csrf_token %}
+					<form action="/change-password/" method="post">{% csrf_token %}
 						<fieldset>
-							<div class="form-group">
-								<input class="form-control" placeholder="Old password" name="old_username" type="text" autofocus="">
-							</div>
+
 							<div class="form-group">
 								<input class="form-control" placeholder="New password" name="new_password" type="password" value="">
 							</div>
@@ -42,7 +40,6 @@
                             <input type="submit" class="btn btn-primary" value="Change Password" />
                             <a href= "{% url 'overview' %}" class="btn btn-primary">Back</a>
                             </div>
-
 
                         </fieldset>
 					</form>
