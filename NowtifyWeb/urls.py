@@ -2,7 +2,8 @@ from django.conf.urls import patterns, include, url
 from . import views
 
 urlpatterns = patterns('',
-                       url(r'^$', views.login, name='login'),
+                       url(r'^$', views.custom_login, name='custom_login'),
+                       url(r'^login/', views.login, name='login'),
                        url(r'^authentication/', views.authentication, name='authentication'),
                        url(r'^change-password/', views.change_password, name='change_password'),
                        url(r'^index/', views.index, name='index'),

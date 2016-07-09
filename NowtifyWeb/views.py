@@ -13,9 +13,17 @@ from django.contrib.auth.models import User
 
 
 # Create your views here.
+def custom_login(request):
+    if request.user.is_authenticated():
+        return HttpResponseRedirect("overview")
+    else:
+        return login(request)
+
 def login(request):
-    c = {}
-    c.update(csrf(request))
+
+    if request.user.is_authenticated():
+        return HttpResponseRedirect("overview")
+
     return render(request, "web/login.html", {})
 
 
@@ -31,10 +39,18 @@ def authentication(request):
     password = request.POST['password']
     user = authenticate(username=username, password=password)
 
+    def errorHandle(error):
+        c = {}
+        c.update(csrf(request))
+        return render(request, 'web/login.html', {'error': error})
+
+
     if user is not None:
 
         if user.is_active:
             auth_login(request, user)
+            c = {}
+            c.update(csrf(request))
             return redirect('overview')
         else:
             c = {}
@@ -43,7 +59,9 @@ def authentication(request):
     elif user is None:
         c = {}
         c.update(csrf(request))
-        return render(request, "web/login.html", {})
+        error = 'Invalid username/password'
+        return errorHandle(error)
+
 
 
 @login_required(login_url='')
