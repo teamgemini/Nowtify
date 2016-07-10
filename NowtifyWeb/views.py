@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.shortcuts import HttpResponseRedirect
+from django.http import HttpResponse
 from django.shortcuts import redirect
 from django.core.context_processors import csrf
 from django.contrib.auth import authenticate
@@ -10,7 +11,9 @@ from django.contrib.auth import logout
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.contrib.auth.models import User
-
+from django.core import serializers
+from NowtifyWeb.models import Wearable_Usage
+import json
 
 # Create your views here.
 def custom_login(request):
@@ -107,7 +110,24 @@ def sensor(request):
 
 @login_required(login_url='')
 def wearable(request):
-    return render(request, "web/wearable.html")
+    #wearable_usage_as_json = serializers.serialize('json', Wearable_Usage.objects.all())
+    wearable_usage_as_json = [{
+        "id": 1,
+        "status": "ON",
+        "location":"Centre 1",
+        "battery": "10%",
+        "action_required": "Please Recharge!"
+    },{
+        "id": 2,
+        "status": "ON",
+        "location":"Centre 1",
+        "battery": "10%",
+        "action_required": "Please Recharge!"
+    }
+    ]
+    return HttpResponse(json.dumps(wearable_usage_as_json), content_type='application/json')
+    #return render_to_response("web/wearable.html", {"wearables_usage_as_json": json.dumps(wearable_usage_as_json)})
+    #return render(request, "web/wearable.html")
 
 
 @login_required(login_url='')
