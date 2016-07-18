@@ -17,7 +17,6 @@ urlpatterns = patterns('',
                        url(r'^change_password/', views.settings, name='settings'),
                        url(r'^alert/', views.alert, name='alert')
 
-
 # Nowtify Pages
                        # url(r'^overview/', views.index, name='overview'),
                        # url(r'^/user', views.user, name='user'),
