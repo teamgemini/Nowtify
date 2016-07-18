@@ -59,8 +59,10 @@ WSGI_APPLICATION = 'Nowtify.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.dummy',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'nowtify',
+        'USER': 'MohamedAfiq',
+        'PASS': ''
     }
 }
 

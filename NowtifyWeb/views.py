@@ -10,7 +10,7 @@ from django.contrib.auth import logout
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.contrib.auth.models import User
-
+from NowtifyWeb.models import Wearable, Wearable_Battery, Wearable_Usage
 
 # Create your views here.
 def custom_login(request):
@@ -107,7 +107,42 @@ def sensor(request):
 
 @login_required(login_url='')
 def wearable(request):
-    return render(request, "web/wearable.html")
+
+    wearableUnique = []
+    wearableUsage = []
+    wearableBattery = []
+    wearableLocation = []
+    wearableData = []
+
+    # get sensor uniquely
+    for instance in Wearable.objects.all():
+        wearableUnique.append(instance)
+
+    for wearableObject in wearableUnique:
+        wearableUsage.append(
+            Wearable_Usage.objects.all().filter(wearable_name__exact=wearableObject).order_by('updated').first().used)
+
+    for wearableObject in wearableUnique:
+        wearableBattery.append(
+            Wearable_Battery.objects.all().filter(wearable_name__exact=wearableObject).order_by('updated').first().battery)
+
+    for wearableObject in wearableUnique:
+        wearableLocation.append(1)
+
+    count = 0
+    for wearableObject in wearableUnique:
+
+        if wearableUsage[count]:
+            usage = "In Operation"
+        else:
+            usage = "Not in Operation"
+
+        wearableData.append(
+            [wearableObject.name, usage, "Center " + str(wearableLocation[count]), str(wearableBattery[count]) + "%",
+             "ACTION REQUIRED"])
+        count += 1
+
+    return render(request, "web/wearable.html", {'dataSet': wearableData})
 
 
 @login_required(login_url='')
@@ -130,3 +165,41 @@ def handler404(request):
                               context_instance=RequestContext(request))
     response.status_code = 404
     return response
+
+
+def test(request):
+
+    #dataSet = [["Tiger Nixon","System Architect","Edinburgh"],["Garrett Winters","Director","Edinburgh"]]
+
+    wearableUnique = []
+    wearableUsage = []
+    wearableBattery = []
+    wearableLocation = []
+    wearableData = []
+
+    #get sensor uniquely
+    for instance in Wearable.objects.all():
+        wearableUnique.append(instance)
+
+    for wearable in wearableUnique:
+        wearableUsage.append(Wearable_Usage.objects.all().filter(wearable_name__exact=wearable).order_by('updated').first().used)
+
+    for wearable in wearableUnique:
+        wearableBattery.append(Wearable_Battery.objects.all().filter(wearable_name__exact=wearable).order_by('updated').first().battery)
+
+    for wearable in wearableUnique:
+        wearableLocation.append(1)
+
+    count = 0
+    for wearable in wearableUnique:
+
+        if wearableUsage[count]:
+            usage = "In Operation"
+        else:
+            usage = "Not in Operation"
+
+        wearableData.append([wearable.name, usage, "Center " + str(wearableLocation[count]), str(wearableBattery[count])+"%", "ACTION REQUIRED"])
+        count += 1
+
+    return render(request, "web/test.html", {'dataSet': wearableData})
+    #return render(request, "web/test.html")

@@ -12,29 +12,41 @@
 
 {% block content %}
 
-
         <div class="row">
 			<div class="col-lg-12">
 				<div class="panel panel-default">
-					<div class="panel-heading">Advanced Table</div>
+
+					<!--<div class="panel-heading">Advanced Table</div>-->
 					<div class="panel-body">
-						<table data-toggle="table" data-url="{% static 'tables/data2.json' %}"  data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-search="true" data-select-item-name="toolbar1" data-pagination="true" data-sort-name="name" data-sort-order="desc">
+
+						<table id="data-table" class="table" data-toggle="table" data-sort-name="Sensor ID" data-sort-order="asd">
 						    <thead>
 						    <tr>
-						        <th data-field="id" data-sortable="true">ID</th>
-						        <th data-field="status"  data-sortable="true">Status</th>
-						        <th data-field="location" data-sortable="true">Location</th>
-                                <th data-field="battery" data-sortable="true">Battery</th>
-                                <th data-field="action_required" data-sortable="true">Actions required</th>
+                               <th>Sensor ID</th>
+                               <th>Usage</th>
+                               <th>Location</th>
+                               <th>Battery</th>
+                               <th>Actions</th>
 						    </tr>
 						    </thead>
 						</table>
 					</div>
-				</div>
+				<!--</div>-->
 			</div>
 		</div>
+
       <script>
-						    $(function () {
+
+     var data = {{ dataSet|safe }}
+
+          $('#data-table').DataTable( {
+            data: data,
+            "searching": false,
+              paging: false
+            } );
+
+
+      $(function () {
 						        $('#hover, #striped, #condensed').click(function () {
 						            var classes = 'table';
 
@@ -62,6 +74,9 @@
 						        }
 						        return {};
 						    }
-						</script>
+
+
+      </script>
 
 {% endblock %}
+
