@@ -60,11 +60,22 @@ WSGI_APPLICATION = 'Nowtify.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'nowtify',
-        'USER': 'MohamedAfiq',
-        'PASS': ''
+        'NAME': 'postgresqlNowtufy',
+        'USER': 'teamgemini',
+        'PASSWORD': 'n0wtify123',
+        'HOST': 'postgresql-nowtify.c45gsg3njvop.ap-southeast-1.rds.amazonaws.com',
+        'PORT': '5432',
     }
 }
+
+#{
+ #   'default': {
+  #      'ENGINE': 'django.db.backends.postgresql_psycopg2',
+   #     'NAME': 'nowtify',
+    #    'USER': 'MohamedAfiq',
+     #   'PASS': ''
+    #}
+#}
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.7/topics/i18n/
