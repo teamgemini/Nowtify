@@ -10,10 +10,13 @@ https://docs.djangoproject.com/en/1.7/howto/deployment/wsgi/
 import os
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "Nowtify.settings")
 
+from whitenoise.django import DjangoWhiteNoise
 from django.core.wsgi import get_wsgi_application
 application = get_wsgi_application()
+application = DjangoWhiteNoise(application)
 
-from django.core.wsgi import get_wsgi_application
-from dj_static import Cling
-
-application = Cling(get_wsgi_application())
+try:
+    from dj_static import Cling
+    application = Cling(get_wsgi_application())
+except:
+    pass
