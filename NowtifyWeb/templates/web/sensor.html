@@ -2,13 +2,9 @@
 {% load staticfiles %}
 {% load url from future %}
 
-{% block title %}Sensor Management{% endblock %}
-
-{% block display_title %}Sensor Management {% endblock %}
-
 {% block current_page %}{% endblock %}
-{% block page1 %}active{% endblock %}
-{% block page2 %}{% endblock %}
+{% block page1 %}{% endblock %}
+{% block page2 %}active{% endblock %}
 {% block page3 %}{% endblock %}
 
 {% block content %}
@@ -16,17 +12,18 @@
         <div class="row">
 			<div class="col-lg-12">
 				<div class="panel panel-default">
-					<div class="panel-heading">Advanced Table</div>
+
+					<div class="panel-heading">Detector Management</div>
 					<div class="panel-body">
-						<table data-toggle="table" data-url="{% static 'tables/data1.json' %}"  data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-search="true" data-select-item-name="toolbar1" data-pagination="true" data-sort-name="name" data-sort-order="desc">
+
+						<table id="data-table" class="table" data-toggle="table" data-show-refresh="true" data-sort-name="Sensor ID" data-sort-order="asd">
 						    <thead>
 						    <tr>
-{#						        <th data-field="state" data-checkbox="true" >Checkbox</th>#}
-						        <th data-field="id" data-sortable="true">ID</th>
-						        <th data-field="status"  data-sortable="true">Status</th>
-						        <th data-field="location" data-sortable="true">Location</th>
-                                <th data-field="battery" data-sortable="true">Battery</th>
-                                <th data-field="action_required" data-sortable="true">Actions required</th>
+                               <th>Detector ID</th>
+                               <th>Usage</th>
+                               <th>Location</th>
+                               <th>Battery</th>
+                               <th>Actions</th>
 						    </tr>
 						    </thead>
 						</table>
@@ -34,8 +31,19 @@
 				</div>
 			</div>
 		</div>
+
       <script>
-						    $(function () {
+
+     var data = {{ dataSet|safe }}
+
+          $('#data-table').DataTable( {
+            data: data,
+              "searching": false,
+              paging: false
+            } );
+
+
+      $(function () {
 						        $('#hover, #striped, #condensed').click(function () {
 						            var classes = 'table';
 
@@ -63,7 +71,9 @@
 						        }
 						        return {};
 						    }
-						</script>
+
+
+      </script>
 
 {% endblock %}
 

@@ -3,7 +3,6 @@
 {% load url from future %}
 
 {% block title %}Wearable Management{% endblock %}
-{% block display_title %} Wearable Management {% endblock %}
 
 {% block current_page %}{% endblock %}
 {% block page1 %}{% endblock %}
@@ -16,22 +15,23 @@
 			<div class="col-lg-12">
 				<div class="panel panel-default">
 
-					<!--<div class="panel-heading">Advanced Table</div>-->
+					<div class="panel-heading">Wearable Management</div>
 					<div class="panel-body">
 
-						<table id="data-table" class="table" data-toggle="table" data-sort-name="Sensor ID" data-sort-order="asd">
+						<table id="data-table" class="table" data-toggle="table" data-show-refresh="true" data-sort-name="Sensor ID" data-sort-order="asd">
 						    <thead>
 						    <tr>
-                               <th>Sensor ID</th>
-                               <th>Usage</th>
-                               <th>Location</th>
-                               <th>Battery</th>
-                               <th>Actions</th>
+                                <th>Sensor ID</th>
+                                <th>Usage</th>
+                                <th>Location</th>
+                                <th>Battery</th>
+                                <th>Actions</th>
+                                <th>Last Updated</th>
 						    </tr>
 						    </thead>
 						</table>
 					</div>
-				<!--</div>-->
+				</div>
 			</div>
 		</div>
 
@@ -41,7 +41,7 @@
 
           $('#data-table').DataTable( {
             data: data,
-            "searching": false,
+              "searching": false,
               paging: false
             } );
 
