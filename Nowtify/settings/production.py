@@ -96,7 +96,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.7/howto/static-files/
 
-STATIC_URL = '/NowtifyWeb/static/'
+STATIC_URL = '/NowtifyWeb/staticfiles/'
 STATIC_ROOT = '/NowtifyWeb/static'
 
 LOGIN_URL = '/'
@@ -104,7 +104,7 @@ LOGIN_URL = '/'
 STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
 
 STATICFILES_DIRS = (
-    "NowtifyWeb/static",
+    "NowtifyWeb/staticfiles",
 )
 
 TEMPLATE_DIRS = (os.path.join(BASE_DIR,  'templates'),)
