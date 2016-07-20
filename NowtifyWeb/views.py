@@ -11,6 +11,8 @@ from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.contrib.auth.models import User
 from NowtifyWeb.models import Wearable, Wearable_Battery, Wearable_Usage
+from NowtifyWeb.models import Sensor, Sensor_Battery, Sensor_Usage
+
 
 # Create your views here.
 def custom_login(request):
@@ -102,7 +104,53 @@ def overview(request):
 
 @login_required(login_url='')
 def sensor(request):
-    return render(request, "web/sensor.html")
+
+    sensorUnique = []
+    sensorUsage = []
+    sensorBattery = []
+    sensorLocation = []
+    sensorUpdated = []
+    sensorData = []
+
+    # get sensor uniquely
+    for instance in Sensor.objects.all():
+        sensorUnique.append(instance)
+
+    for sensorObject in sensorUnique:
+        sensorUsage.append(
+            Sensor_Usage.objects.all().filter(sensor_name__exact=sensorObject).order_by('updated').first().used)
+
+        sensorBattery.append(
+            Sensor_Battery.objects.all().filter(sensor_name__exact=sensorObject).order_by('updated').first().battery)
+
+        sensorUpdated.append(Sensor_Usage.objects.all().filter(wearable_name__exact=sensorObject).order_by(
+            'updated').first().updated)
+
+
+    for sensorObject in sensorUnique:
+        sensorLocation.append(1)
+
+    count = 0
+    for sensorObject in sensorUnique:
+
+        if sensorUsage[count]:
+            usage = "In Operation"
+        else:
+            usage = "Not in operation"
+
+        if sensorBattery[count] > 80:
+            action = "No action required"
+        elif sensorBattery[count] > 50:
+            action = "Battery over 50"
+        elif sensorBattery[count] > 30:
+            action = "Battery over 30"
+        else:
+            action = "Batter under 30"
+
+            sensorData.append([sensorObject.name, usage, "Center " + str(sensorLocation[count]), str(sensorBattery[count]) + "%",action, (str(sensorUpdated[count]))[:19]])
+        count += 1
+
+    return render(request, "web/sensor.html", {'dataSet': sensorData})
 
 
 @login_required(login_url='')
@@ -112,6 +160,7 @@ def wearable(request):
     wearableUsage = []
     wearableBattery = []
     wearableLocation = []
+    wearableUpdated = []
     wearableData = []
 
     # get sensor uniquely
@@ -122,9 +171,12 @@ def wearable(request):
         wearableUsage.append(
             Wearable_Usage.objects.all().filter(wearable_name__exact=wearableObject).order_by('updated').first().used)
 
-    for wearableObject in wearableUnique:
         wearableBattery.append(
-            Wearable_Battery.objects.all().filter(wearable_name__exact=wearableObject).order_by('updated').first().battery)
+            Wearable_Battery.objects.all().filter(wearable_name__exact=wearableObject).order_by(
+                'updated').first().battery)
+
+        wearableUpdated.append(Wearable_Usage.objects.all().filter(wearable_name__exact=wearableObject).order_by(
+                'updated').first().updated)
 
     for wearableObject in wearableUnique:
         wearableLocation.append(1)
@@ -137,9 +189,18 @@ def wearable(request):
         else:
             usage = "Not in Operation"
 
+        if wearableBattery[count] > 80:
+            action = "No action required"
+        elif wearableBattery[count] > 50:
+            action = "Battery over 50"
+        elif wearableBattery[count] > 30:
+            action = "Battery over 30"
+        else:
+            action = "Batter under 30"
+
         wearableData.append(
             [wearableObject.name, usage, "Center " + str(wearableLocation[count]), str(wearableBattery[count]) + "%",
-             "ACTION REQUIRED"])
+             action, (str(wearableUpdated[count]))[:19]])
         count += 1
 
     return render(request, "web/wearable.html", {'dataSet': wearableData})

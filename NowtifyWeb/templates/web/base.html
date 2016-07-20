@@ -16,6 +16,7 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
 <script type="text/javascript" src="https://cdn.datatables.net/r/bs-3.3.5/jqc-1.11.3,dt-1.10.8/datatables.min.js"></script>
+
 <script src="{% static 'js/lumino.glyphs.js' %}"></script>
 <!--[if lt IE 9]>
 <script src="js/html5shiv.js"></script>
@@ -60,7 +61,7 @@
 		</form>
 		<ul class="nav menu">
 			<li class="{% block current_page %}{% endblock %}"><a href="/overview/"><svg class="glyph stroked dashboard-dial"><use xlink:href="#stroked-dashboard-dial"></use></svg> Overview</a></li>
-			<li class="{% block page1 %} {% endblock %}"><a href="/sensor/"><svg class="glyph stroked calendar"><use xlink:href="#stroked-calendar"></use></svg> Sensors Management</a></li>
+			<li class="{% block page1 %} {% endblock %}"><a href="/sensor/"><svg class="glyph stroked line-graph"><use xlink:href="#stroked-line-graph"></use></svg> Detector Management</a></li>
 			<li class="{% block page2 %} {% endblock %}"><a href="/wearable/"><svg class="glyph stroked line-graph"><use xlink:href="#stroked-line-graph"></use></svg> Wearable Management</a></li>
 			<li class="{% block page3 %} {% endblock %}"><a href="/dashboard/"><svg class="glyph stroked table"><use xlink:href="#stroked-table"></use></svg> Dashboard</a> </li>
         <!--
