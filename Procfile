@@ -1,1 +1,1 @@
-web: gunicorn NowtifyWeb.wsgi:app --log-file -
+web: gunicorn Nowtify.wsgi:application --log-file -
