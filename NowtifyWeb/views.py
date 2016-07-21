@@ -17,7 +17,8 @@ from NowtifyWeb.models import Sensor, Sensor_Battery, Sensor_Usage
 # Create your views here.
 def custom_login(request):
     if request.user.is_authenticated():
-        return HttpResponseRedirect("overview")
+        return login(request)
+        #return HttpResponseRedirect("overview")
     else:
         return login(request)
 
