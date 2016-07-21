@@ -101,7 +101,7 @@ STATIC_ROOT = '/NowtifyWeb/static'
 
 LOGIN_URL = '/'
 
-STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
+#STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
 
 STATICFILES_DIRS = (
     "NowtifyWeb/staticfiles",
