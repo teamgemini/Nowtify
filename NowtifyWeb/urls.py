@@ -15,7 +15,9 @@ urlpatterns = patterns('',
                        url(r'^wearable/', views.wearable, name='wearable'),
                        url(r'^dashboard/', views.dashboard, name='dashboard'),
                        url(r'^change_password/', views.settings, name='settings'),
-                       url(r'^alert/', views.alert, name='alert')
+                       url(r'^alert/', views.alert, name='alert'),
+                       url(r'^404/', views.alert, name='404'),
+                       url(r'^500/', views.alert, name='500')
 
 # Nowtify Pages
                        # url(r'^overview/', views.index, name='overview'),
