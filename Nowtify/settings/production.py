@@ -109,4 +109,4 @@ TEMPLATE_DIRS = (os.path.join(BASE_DIR,  'templates'),)
 
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
-ALLOWED_HOSTS = ['herokuapp.com']
+ALLOWED_HOSTS = ['https://nowtify-dev.herokuapp.com']
