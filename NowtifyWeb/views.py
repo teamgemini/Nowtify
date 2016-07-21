@@ -221,8 +221,5 @@ def alert(request):
     return render(request, "web/alert.html")
 
 
-def handler404(request):
-    response = render_to_response('404.html', {},
-                              context_instance=RequestContext(request))
-    response.status_code = 404
-    return response
+def custom_404(request):
+    return render(request, '404.html', {}, status=404)
