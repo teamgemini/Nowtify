@@ -22,11 +22,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 SECRET_KEY = '1^-_ei4nfssmnk9qp)1pkl#4wb$9ucplydp_(6lhvqsay2(gau'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 TEMPLATE_DEBUG = True
-
-ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -110,3 +108,5 @@ STATICFILES_DIRS = (
 TEMPLATE_DIRS = (os.path.join(BASE_DIR,  'templates'),)
 
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
+ALLOWED_HOSTS = ['*']
