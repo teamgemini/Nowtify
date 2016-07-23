@@ -199,7 +199,7 @@ def wearable(request):
         elif wearableBattery[count] > 30:
             action = "Battery over 30"
         else:
-            action = "Batter under 30"
+            action = "Battery under 30"
 
         wearableData.append(
             [wearableObject.name, usage, "Center " + str(wearableLocation[count]), str(wearableBattery[count]) + "%",

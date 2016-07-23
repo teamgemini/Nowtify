@@ -1,1 +1,1 @@
-web: gunicorn nowtifydjango2.wsgi
+web: gunicorn Nowtify.wsgi
