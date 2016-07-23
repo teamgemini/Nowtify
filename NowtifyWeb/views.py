@@ -17,14 +17,14 @@ from NowtifyWeb.models import Sensor, Sensor_Battery, Sensor_Usage
 # Create your views here.
 def custom_login(request):
     if request.user.is_authenticated():
-        return HttpResponseRedirect("overview")
+        return HttpResponseRedirect("dashboard")
     else:
         return login(request)
 
 def login(request):
 
     if request.user.is_authenticated():
-        return HttpResponseRedirect("overview")
+        return HttpResponseRedirect("dashboard")
 
     return render(request, "web/login.html", {})
 
@@ -53,7 +53,7 @@ def authentication(request):
             auth_login(request, user)
             c = {}
             c.update(csrf(request))
-            return redirect('overview')
+            return redirect('dashboard')
         else:
             c = {}
             c.update(csrf(request))
@@ -85,11 +85,11 @@ def change_password(request):
         u.set_password(new_password)
         u.save()
 
-        return render(request, 'web/overview.html', {})
+        return render(request, 'web/dashboard.html', {})
 
     else:
-        #need Josie and Shawn to add error message instead of redirecting to overview page
-        return render(request, 'web/overview.html', {})
+        #need Josie and Shawn to add error message instead of redirecting to dashboard page
+        return render(request, 'web/dashboard.html', {})
 
 
 @login_required(login_url='')
@@ -98,8 +98,8 @@ def index(request):
 
 
 @login_required(login_url='')
-def overview(request):
-    return render(request, "web/overview.html")
+def dashboard(request):
+    return render(request, "web/dashboard.html")
 
 
 @login_required(login_url='')
@@ -150,7 +150,7 @@ def sensor(request):
             sensorData.append([sensorObject.name, usage, "Center " + str(sensorLocation[count]), str(sensorBattery[count]) + "%",action, (str(sensorUpdated[count]))[:19]])
         count += 1
 
-    return render(request, "web/sensor.html", {'dataSet': sensorData})
+    return render(request, "web/detectors.html", {'dataSet': sensorData})
 
 
 @login_required(login_url='')
@@ -203,12 +203,12 @@ def wearable(request):
              action, (str(wearableUpdated[count]))[:19]])
         count += 1
 
-    return render(request, "web/wearable.html", {'dataSet': wearableData})
+    return render(request, "web/alert_bands.html", {'dataSet': wearableData})
 
 
 @login_required(login_url='')
-def dashboard(request):
-    return render(request, "web/dashboard.html")
+def incident_reporting(request):
+    return render(request, "web/incident_reporting.html")
 
 
 @login_required(login_url='')
