@@ -60,7 +60,7 @@ def authentication(request):
         else:
             c = {}
             c.update(csrf(request))
-            return render(request, "web/login.html", {})
+            return render(request, "login.html", {})
     elif user is None:
         c = {}
         c.update(csrf(request))
