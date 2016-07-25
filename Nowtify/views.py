@@ -157,7 +157,7 @@ def sensor(request):
 
 
 @login_required(login_url='')
-def wearable(request):
+def alert_band(request):
 
     wearableUnique = []
     wearableUsage = []
