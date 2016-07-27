@@ -94,6 +94,7 @@ def change_password(request):
         return render(request, 'dashboard.html', {})
     elif current_user_pw != password:
         return render(request, 'settings.html', {'error': 'Current password is wrong'})
+    
 
     else:
         #need Josie and Shawn to add error message instead of redirecting to dashboard page
