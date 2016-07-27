@@ -29,6 +29,10 @@
 					<form action="/change-password/" method="post">{% csrf_token %}
 						<fieldset>
 
+                            <div class="form-group">
+								<input class="form-control" placeholder="Current password" name="current_password" type="password" value="">
+							</div>
+
 							<div class="form-group">
 								<input class="form-control" placeholder="New password" name="new_password" type="password" value="">
 							</div>
@@ -46,7 +50,19 @@
 				</div>
 			</div>
 		</div><!-- /.col-->
-	</div><!-- /.row -->	
+	</div><!-- /.row -->
+
+     {% if error %}
+        <div class="row">
+		    <div class="col-xs-10 col-xs-offset-1 col-sm-8 col-sm-offset-2 col-md-4 col-md-offset-4">
+            <div class="login-panel panel panel-default">
+                <div class="alert bg-primary" role="alert" style="display: block; margin-left: auto; margin-right: auto" align="center">
+                {{ error }}
+                </div>
+            </div>
+            </div>
+        </div>
+    {% endif %}
 	
 		
 

@@ -60,7 +60,7 @@ def authentication(request):
         else:
             c = {}
             c.update(csrf(request))
-            return render(request, "web/login.html", {})
+            return render(request, "login.html", {})
     elif user is None:
         c = {}
         c.update(csrf(request))
@@ -80,19 +80,26 @@ def change_password(request):
 
     current_user = request.user
     current_user_id = current_user.get_username()
+    current_user_pw = 'admin'
+    password = request.POST['current_password']
     #current_user.get_username()
 
-    if confirm_password == new_password:
+
+    if confirm_password == new_password and current_user_pw == password:
 
         u = User.objects.get(username=current_user_id)
         u.set_password(new_password)
         u.save()
 
         return render(request, 'dashboard.html', {})
+    elif current_user_pw != password:
+        return render(request, 'settings.html', {'error': 'Current password is wrong'})
+    
 
     else:
         #need Josie and Shawn to add error message instead of redirecting to dashboard page
-        return render(request, 'dashboard.html', {})
+
+        return render(request, 'settings.html', {'error': 'Passwords do not match. Please re-enter password' })
 
 
 @login_required(login_url='')
@@ -157,7 +164,7 @@ def sensor(request):
 
 
 @login_required(login_url='')
-def wearable(request):
+def alert_band(request):
 
     wearableUnique = []
     wearableUsage = []
@@ -199,7 +206,7 @@ def wearable(request):
         elif wearableBattery[count] > 30:
             action = "Battery over 30"
         else:
-            action = "Batter under 30"
+            action = "Battery under 30"
 
         wearableData.append(
             [wearableObject.name, usage, "Center " + str(wearableLocation[count]), str(wearableBattery[count]) + "%",
