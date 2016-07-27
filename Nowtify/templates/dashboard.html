@@ -84,5 +84,47 @@ Sensor Management
 			</div>
 		</div><!--/.row-->
 
+      <div class="row">
+			<div class="col-lg-12">
+				<div class="panel panel-default">
+
+					<div class="panel-heading">Newsfeed</div>
+					<div class="panel-body">
+
+						<table id="data-table" class="table" data-toggle="table" data-show-refresh="true" data-sort-name="date" data-sort-order=desc">
+						    <thead>
+						    <tr>
+                                <th>type</th>
+                                <th>message</th>
+                                <th>date</th>
+
+						    </tr>
+						    </thead>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+
+    <script>
+
+
+     var dataSet = [[ "Sensor-usage", "Sensor 1 is switched on", "27-07-2016 3:33 PM"], ["Sensor-usage", "There is an alert triggered by sensor 1", "27-07-2016 4:44 PM"]]
+
+          $('#data-table').DataTable( {
+            data: dataSet,
+              "searching": false,
+              paging: false,
+              
+              fnDrawCallback: function() {
+                  $("#data-table thead").remove();
+              }
+
+          } );
+
+
+
+    </script>
+
 
 {% endblock %}
