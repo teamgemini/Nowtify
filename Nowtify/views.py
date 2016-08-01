@@ -10,19 +10,17 @@ from django.contrib.auth import logout
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.contrib.auth.models import User
+from django.db import transaction
 from Nowtify.models import Wearable, Wearable_Battery, Wearable_Usage
 from Nowtify.models import Sensor, Sensor_Battery, Sensor_Usage
 
-#from Nowtify.models import Wearable, Wearable_Battery, Wearable_Usage
-#from Nowtify.models import Sensor, Sensor_Battery, Sensor_Usage
 
-
-# Create your views here.
 def custom_login(request):
     if request.user.is_authenticated():
         return HttpResponseRedirect("dashboard")
     else:
         return login(request)
+
 
 def login(request):
 
@@ -84,7 +82,6 @@ def change_password(request):
     password = request.POST['current_password']
     #current_user.get_username()
 
-
     if confirm_password == new_password and current_user_pw == password:
 
         u = User.objects.get(username=current_user_id)
@@ -110,6 +107,9 @@ def index(request):
 @login_required(login_url='')
 def dashboard(request):
 
+    with transaction.atomic():
+        pass
+
     #wearable1 = Wearable(name="ABC", remarks="Made in Thailand. Please take care of this well.")
     #wearable_battery1 = Wearable_Battery(wearable_name=wearable1, battery=60)
     #wearable_usage1 = Wearable_Usage(wearable_name=wearable1, used=True)
@@ -117,12 +117,14 @@ def dashboard(request):
     #wearable_battery1.save()
     #wearable_usage1.save()
 
+
     return render(request, "dashboard.html")
 
 
 @login_required(login_url='')
 def sensor(request):
 
+    # do refer to models.py to see how the data is structured
     sensorUnique = []
     sensorUsage = []
     sensorBattery = []
@@ -130,10 +132,12 @@ def sensor(request):
     sensorUpdated = []
     sensorData = []
 
-    # get sensor uniquely
+    # get unique sensors
     for instance in Sensor.objects.all():
         sensorUnique.append(instance)
 
+    # there are many rows of data, this code will filter by each unique sensor, arrange from newest to oldest data
+    # and get the first one, aka the latest data
     for sensorObject in sensorUnique:
         sensorUsage.append(
             Sensor_Usage.objects.all().filter(sensor_name__exact=sensorObject).order_by('updated').first().used)
@@ -144,7 +148,7 @@ def sensor(request):
         sensorUpdated.append(Sensor_Usage.objects.all().filter(wearable_name__exact=sensorObject).order_by(
             'updated').first().updated)
 
-
+    # we have yet to put in location feature. This is for future use. For now, I just put Location 1
     for sensorObject in sensorUnique:
         sensorLocation.append(1)
 
