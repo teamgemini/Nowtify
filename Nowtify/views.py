@@ -165,7 +165,7 @@ def sensor(request):
         else:
             action = "Batter under 30"
 
-            sensorData.append([sensorObject.name, usage, "Center " + str(sensorLocation[count]), str(sensorBattery[count]) + "%",action, (str(sensorUpdated[count]))[:19]])
+            sensorData.append([str(sensorObject.name), usage, "Center " + str(sensorLocation[count]), str(sensorBattery[count]) + "%",action, (str(sensorUpdated[count]))[:19]])
         count += 1
 
     return render(request, "detectors.html", {'dataSet': sensorData})
@@ -217,7 +217,7 @@ def alert_band(request):
             action = "Battery under 30"
 
         wearableData.append(
-            [wearableObject.name, usage, "Center " + str(wearableLocation[count]), str(wearableBattery[count]) + "%",
+            [str(wearableObject.name), usage, "Center " + str(wearableLocation[count]), str(wearableBattery[count]) + "%",
              action, (str(wearableUpdated[count]))[:19]])
         count += 1
 
