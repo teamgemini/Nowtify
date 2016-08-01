@@ -94,7 +94,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'postgresqlNowtufy',
         'USER': 'teamgemini',
-        'PASSWORD': 'n0wtify123',
+        'PASSWORD': 'n0wtify1234',
         'HOST': 'postgresql-nowtify.c45gsg3njvop.ap-southeast-1.rds.amazonaws.com',
         'PORT': '5432',
     }
