@@ -110,12 +110,12 @@ def index(request):
 @login_required(login_url='')
 def dashboard(request):
 
-    wearable1 = Wearable(name="ABC", remarks="Made in Thailand. Please take care of this well.")
-    wearable_battery1 = Wearable_Battery(wearable_name=wearable1, battery=60)
-    wearable_usage1 = Wearable_Usage(wearable_name=wearable1, used=True)
-    wearable1.save()
-    wearable_battery1.save()
-    wearable_usage1.save()
+    #wearable1 = Wearable(name="ABC", remarks="Made in Thailand. Please take care of this well.")
+    #wearable_battery1 = Wearable_Battery(wearable_name=wearable1, battery=60)
+    #wearable_usage1 = Wearable_Usage(wearable_name=wearable1, used=True)
+    #wearable1.save()
+    #wearable_battery1.save()
+    #wearable_usage1.save()
 
     return render(request, "dashboard.html")
 
