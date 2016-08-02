@@ -79,14 +79,9 @@ def change_password(request):
     new_password = request.POST['new_password']
     confirm_password = request.POST['confirm_password']
 
-<<<<<<< HEAD
-    if confirm_password == new_password and current_user_pw == password:
-=======
     user = authenticate(username=current_user_id, password=current_user_pw)
 
     if user is not None and new_password == confirm_password:
->>>>>>> origin/master
-
         #change pw successfully, redirect back to dashboard
         u = User.objects.get(username=current_user_id)
         u.set_password(new_password)
