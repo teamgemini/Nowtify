@@ -13,6 +13,7 @@ from django.contrib.auth.models import User
 from django.db import transaction
 from Nowtify.models import Wearable, WearableBattery, WearableUsage
 from Nowtify.models import Sensor, SensorBattery, SensorUsage
+from Nowtify.models import Alert
 
 def custom_login(request):
     if request.user.is_authenticated():
@@ -237,9 +238,9 @@ def settings(request):
 
 @login_required(login_url='')
 def alert(request):
-    i = 1;
+    i = Alert.objects.all().count()
 
-    if i == 1:
+    if i > 0:
         #if standing, return with message
         return render(request, "alert.html", {'message': 'Someone is standing'})
     else:
