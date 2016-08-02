@@ -11,8 +11,8 @@ from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.contrib.auth.models import User
 from django.db import transaction
-from Nowtify.models import Wearable, Wearable_Battery, Wearable_Usage
-from Nowtify.models import Sensor, Sensor_Battery, Sensor_Usage
+from Nowtify.models import Wearable, WearableBattery, WearableUsage
+from Nowtify.models import Sensor, SensorBattery, SensorUsage
 
 
 def custom_login(request):
@@ -140,12 +140,12 @@ def sensor(request):
     # and get the first one, aka the latest data
     for sensorObject in sensorUnique:
         sensorUsage.append(
-            Sensor_Usage.objects.all().filter(sensor_name__exact=sensorObject).order_by('updated').first().used)
+            SensorUsage.objects.all().filter(sensor_name__exact=sensorObject).order_by('updated').first().used)
 
         sensorBattery.append(
-            Sensor_Battery.objects.all().filter(sensor_name__exact=sensorObject).order_by('updated').first().battery)
+            SensorBattery.objects.all().filter(sensor_name__exact=sensorObject).order_by('updated').first().battery)
 
-        sensorUpdated.append(Sensor_Usage.objects.all().filter(wearable_name__exact=sensorObject).order_by(
+        sensorUpdated.append(SensorUsage.objects.all().filter(wearable_name__exact=sensorObject).order_by(
             'updated').first().updated)
 
     # we have yet to put in location feature. This is for future use. For now, I just put Location 1
@@ -191,13 +191,13 @@ def alert_band(request):
 
     for wearableObject in wearableUnique:
         wearableUsage.append(
-            Wearable_Usage.objects.all().filter(wearable_name__exact=wearableObject).order_by('updated').first().used)
+            WearableUsage.objects.all().filter(wearable_name__exact=wearableObject).order_by('updated').first().used)
 
         wearableBattery.append(
-            Wearable_Battery.objects.all().filter(wearable_name__exact=wearableObject).order_by(
+            WearableBattery.objects.all().filter(wearable_name__exact=wearableObject).order_by(
                 'updated').first().battery)
 
-        wearableUpdated.append(Wearable_Usage.objects.all().filter(wearable_name__exact=wearableObject).order_by(
+        wearableUpdated.append(WearableUsage.objects.all().filter(wearable_name__exact=wearableObject).order_by(
                 'updated').first().updated)
 
     for wearableObject in wearableUnique:

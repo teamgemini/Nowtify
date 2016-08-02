@@ -16,10 +16,8 @@ class Wearable(models.Model):
     class Meta:
         db_table = "NowtifyWeb_wearable"
 
-    pass
 
-
-class Wearable_Usage(models.Model):
+class WearableUsage(models.Model):
     wearable_name = models.ForeignKey(Wearable, on_delete=models.CASCADE)
     used = models.BooleanField(default=False)
     updated = models.DateTimeField(auto_now_add=True, auto_now=False)
@@ -28,7 +26,7 @@ class Wearable_Usage(models.Model):
         db_table = "NowtifyWeb_wearable_usage"
 
 
-class Wearable_Battery(models.Model):
+class WearableBattery(models.Model):
     wearable_name = models.ForeignKey(Wearable, on_delete=models.CASCADE)
     battery = models.IntegerField(default=0)
     updated = models.DateTimeField(auto_now_add=True, auto_now=False)
@@ -45,7 +43,7 @@ class Sensor(models.Model):
         db_table = "NowtifyWeb_sensor"
 
 
-class Sensor_Usage(models.Model):
+class SensorUsage(models.Model):
     sensor_name = models.ForeignKey(Sensor, on_delete=models.CASCADE)
     used = models.BooleanField(default=False)
     updated = models.DateTimeField(auto_now_add=True, auto_now=False)
@@ -54,7 +52,7 @@ class Sensor_Usage(models.Model):
         db_table = "NowtifyWeb_sensor_usage"
 
 
-class Sensor_Battery(models.Model):
+class SensorBattery(models.Model):
     sensor_name = models.ForeignKey(Sensor, on_delete=models.CASCADE)
     battery = models.IntegerField(default=0)
     updated = models.DateTimeField(auto_now_add=True, auto_now=False)
