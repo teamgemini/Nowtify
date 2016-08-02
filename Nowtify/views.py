@@ -75,30 +75,27 @@ def change_password(request):
     c = {}
     c.update(csrf(request))
 
+    current_user = request.user
+    current_user_id = current_user.get_username()
+    current_user_pw = request.POST['current_password']
     new_password = request.POST['new_password']
     confirm_password = request.POST['confirm_password']
 
-    current_user = request.user
-    current_user_id = current_user.get_username()
-    current_user_pw = 'admin'
-    password = request.POST['current_password']
-    #current_user.get_username()
+    user = authenticate(username=current_user_id, password=current_user_pw)
 
+    if user is not None and new_password == confirm_password:
 
-    if confirm_password == new_password and current_user_pw == password:
-
+        #change pw successfully, redirect back to dashboard
         u = User.objects.get(username=current_user_id)
         u.set_password(new_password)
         u.save()
-
         return render(request, 'dashboard.html', {})
-    elif current_user_pw != password:
+
+    elif user is None:
         return render(request, 'settings.html', {'error': 'Current password is wrong'})
-    
 
     else:
         #need Josie and Shawn to add error message instead of redirecting to dashboard page
-
         return render(request, 'settings.html', {'error': 'Passwords do not match. Please re-enter password' })
 
 
