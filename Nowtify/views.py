@@ -14,7 +14,6 @@ from django.db import transaction
 from Nowtify.models import Wearable, WearableBattery, WearableUsage
 from Nowtify.models import Sensor, SensorBattery, SensorUsage
 
-
 def custom_login(request):
     if request.user.is_authenticated():
         return HttpResponseRedirect("dashboard")
@@ -238,8 +237,13 @@ def settings(request):
 
 @login_required(login_url='')
 def alert(request):
-    return render(request, "alert.html")
+    i = 1;
 
+    if i == 1:
+        #if standing, return with message
+        return render(request, "alert.html", {'message': 'Someone is standing'})
+    else:
+        return render(request, "alert.html")
 
 def handler404(request):
     response = render_to_response('404.html', {},
