@@ -15,6 +15,7 @@ from Nowtify.models import Wearable, WearableBattery, WearableUsage
 from Nowtify.models import Sensor, SensorBattery, SensorUsage
 from Nowtify.models import Alert
 
+
 def custom_login(request):
     if request.user.is_authenticated():
         return HttpResponseRedirect("dashboard")
@@ -23,7 +24,6 @@ def custom_login(request):
 
 
 def login(request):
-
     if request.user.is_authenticated():
         return HttpResponseRedirect("dashboard")
 
@@ -47,7 +47,6 @@ def authentication(request):
         c.update(csrf(request))
         return render(request, 'login.html', {'error': error})
 
-
     if user is not None:
 
         if user.is_active:
@@ -66,10 +65,8 @@ def authentication(request):
         return errorHandle(error)
 
 
-
 @login_required(login_url='')
 def change_password(request):
-
     c = {}
     c.update(csrf(request))
 
@@ -82,18 +79,17 @@ def change_password(request):
     user = authenticate(username=current_user_id, password=current_user_pw)
 
     if user is not None and new_password == confirm_password:
-        #change pw successfully, redirect back to dashboard
+        # change pw successfully, redirect back to dashboard
         u = User.objects.get(username=current_user_id)
         u.set_password(new_password)
         u.save()
         return render(request, 'dashboard.html', {})
 
     elif user is None:
-        return render(request, 'settings.html', {'error': 'Current password is wrong'})
+        return render(request, 'settings.html', {'error': 'Incorrect current password. Please re-enter password.'})
 
     else:
-        #need Josie and Shawn to add error message instead of redirecting to dashboard page
-        return render(request, 'settings.html', {'error': 'Passwords do not match. Please re-enter password' })
+        return render(request, 'settings.html', {'error': 'Passwords do not match. Please re-enter password.'})
 
 
 @login_required(login_url='')
@@ -103,16 +99,12 @@ def index(request):
 
 @login_required(login_url='')
 def dashboard(request):
-
-    with transaction.atomic():
-        pass
-
-    #wearable1 = Wearable(name="ABC", remarks="Made in Thailand. Please take care of this well.")
-    #wearable_battery1 = Wearable_Battery(wearable_name=wearable1, battery=60)
-    #wearable_usage1 = Wearable_Usage(wearable_name=wearable1, used=True)
-    #wearable1.save()
-    #wearable_battery1.save()
-    #wearable_usage1.save()
+    # wearable1 = Wearable(name="ABC", remarks="Made in Thailand. Please take care of this well.")
+    # wearable_battery1 = Wearable_Battery(wearable_name=wearable1, battery=60)
+    # wearable_usage1 = Wearable_Usage(wearable_name=wearable1, used=True)
+    # wearable1.save()
+    # wearable_battery1.save()
+    # wearable_usage1.save()
 
 
     return render(request, "dashboard.html")
@@ -120,7 +112,6 @@ def dashboard(request):
 
 @login_required(login_url='')
 def sensor(request):
-
     # do refer to models.py to see how the data is structured
     sensorUnique = []
     sensorUsage = []
@@ -167,7 +158,9 @@ def sensor(request):
         else:
             action = "Batter under 30"
 
-            sensorData.append([str(sensorObject.name), usage, "Center " + str(sensorLocation[count]), str(sensorBattery[count]) + "%",action, (str(sensorUpdated[count]))[:19]])
+            sensorData.append(
+                [str(sensorObject.name), usage, "Center " + str(sensorLocation[count]), str(sensorBattery[count]) + "%",
+                 action, (str(sensorUpdated[count]))[:19]])
         count += 1
 
     return render(request, "detectors.html", {'dataSet': sensorData})
@@ -175,7 +168,6 @@ def sensor(request):
 
 @login_required(login_url='')
 def alert_band(request):
-
     wearableUnique = []
     wearableUsage = []
     wearableBattery = []
@@ -196,7 +188,7 @@ def alert_band(request):
                 'updated').first().battery)
 
         wearableUpdated.append(WearableUsage.objects.all().filter(wearable_name__exact=wearableObject).order_by(
-                'updated').first().updated)
+            'updated').first().updated)
 
     for wearableObject in wearableUnique:
         wearableLocation.append(1)
@@ -219,7 +211,8 @@ def alert_band(request):
             action = "Battery under 30"
 
         wearableData.append(
-            [str(wearableObject.name), usage, "Center " + str(wearableLocation[count]), str(wearableBattery[count]) + "%",
+            [str(wearableObject.name), usage, "Center " + str(wearableLocation[count]),
+             str(wearableBattery[count]) + "%",
              action, (str(wearableUpdated[count]))[:19]])
         count += 1
 
@@ -241,13 +234,14 @@ def alert(request):
     i = Alert.objects.all().count()
 
     if i > 0:
-        #if standing, return with message
+        # if standing, return with message
         return render(request, "alert.html", {'message': 'Someone is standing'})
     else:
         return render(request, "alert.html")
 
+
 def handler404(request):
     response = render_to_response('404.html', {},
-                              context_instance=RequestContext(request))
+                                  context_instance=RequestContext(request))
     response.status_code = 404
     return response
