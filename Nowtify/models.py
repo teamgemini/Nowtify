@@ -59,3 +59,13 @@ class SensorBattery(models.Model):
 
     class Meta:
         db_table = "NowtifyWeb_sensor_battery"
+
+
+class Alert(models.Model):
+    datetime = models.DateTimeField(auto_now_add=True, auto_now=False)
+    sensor = models.OneToOneField(Sensor)
+    seen = models.BooleanField(default=False)
+    wearable = models.ForeignKey(Wearable, null=True, blank=True, default=None)
+
+    class Meta:
+        db_table = "NowtifyWeb_alert"
