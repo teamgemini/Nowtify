@@ -235,9 +235,10 @@ def alert(request):
 
     if i > 0:
         # if standing, return with message
-        return render(request, "alert.html", {'message': 'Someone is standing'})
+        return render(request, "alert.html", {'message': 'ALERT from Sensor A1.'})
     else:
-        return render(request, "alert.html")
+        return render(request, "alert.html", {'message': 'ALERT from Sensor A1.'})
+        #return render(request, "alert.html")
 
 
 def handler404(request):
