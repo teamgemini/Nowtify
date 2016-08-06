@@ -237,8 +237,7 @@ def alert(request):
         # if standing, return with message
         return render(request, "alert.html", {'message': 'ALERT from Sensor A1.'})
     else:
-        return render(request, "alert.html", {'message': 'ALERT from Sensor A1.'})
-        #return render(request, "alert.html")
+        return render(request, "alert.html", {'message': 'No alerts.'})
 
 
 def handler404(request):
