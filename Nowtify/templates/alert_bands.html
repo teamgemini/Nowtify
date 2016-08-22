@@ -14,7 +14,7 @@
 {% block content %}
 
 
-        <div class="row">
+    <div class="row" xmlns="http://www.w3.org/1999/html">
 			<div class="col-lg-12">
 				<div class="panel panel-default">
 
@@ -39,53 +39,61 @@
                               </div>
 
                               <div class="modal-body">
-
+                               <form action="/dashboard/" method="post">{% csrf_token %}
+                                  <fieldset>
                                   <div class="form-group">
-									<label>Select Alert Band ID</label>
-									<select class="form-control">
-										<option>Option 1</option>
-										<option>Option 2</option>
-										<option>Option 3</option>
-										<option>Option 4</option>
-									</select>
+                                        <label>Select Alert Band ID</label>
+                                        <select class="form-control" name="alertbandID" type="text">
+                                            <option>Option 1</option>
+                                            <option>Option 2</option>
+                                            <option>Option 3</option>
+                                            <option>Option 4</option>
+                                        </select>
                                   </div>
 
                                   <div class="form-group">
-									<label>Enter Caregiver's Name</label>
-									<input class="form-control" placeholder="Anna Tan">
+                                    <label>Enter Caregiver's Name</label>
+								    <input class="form-control" placeholder="Name" name="caregiverName" type="text">
                                   </div>
 
-                              </div>
+                                  <input type="submit" class="btn btn-primary" value="Assign"/>
+                                  <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
 
-                              <div class="modal-footer">
-                                  <button type="submit" a href="#confirm" class="btn btn-primary" data-toggle="modal" data-dismiss="modal">Assign</button>
-                                  <button type="submit" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                                  </fieldset>
+                               </form>
                               </div>
-
                             </div>
-
                           </div>
                         </div>
 
-                        <!-- #modal 2 -->
-                        <div class="modal fade" id="confirm">
-                          <div class="modal-dialog" style="width: 30%">
-                            <div class="modal-content">
+{#                        If assigned is successful, Pop up appear#}
+{#                        <div id="assigned" class="modal fade" role="dialog">#}
+{#                          <div class="modal-dialog">#}
+{#                          <p> Show when wearable is assigned</p>#}
+{#                              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>#}
+{#                          </div>#}
+{#                        </div>#}
 
 
 
-                              <div class="modal-body">
-                                <br><br>
-                                <p><center>Select <b>Save Changes</b> to assign wearable</center></p><br>
-                              </div>
-                              <div class="modal-footer">
-                                <button type="submit" class="btn btn-primary" data-toggle="modal" data-dismiss="modal">Save Changes</button>
-                                   <button type="submit" a href="#assignWearable" class="btn btn-default" data-toggle="modal" data-dismiss="modal">Back</button>
-
-                              </div>
-                            </div><!-- /.modal-content -->
-                          </div><!-- /.modal-dialog -->
-                        </div><!-- /.modal -->
+{#                        <!-- #modal 2 -->#}
+{##}
+{#                        <div class="modal fade" id="confirm">#}
+{#                          <div class="modal-dialog" style="width: 30%">#}
+{#                            <div class="modal-content">#}
+{##}
+{##}
+{#                              <div class="modal-body">#}
+{#                                <br><br>#}
+{#                                <p><center>Select <b>Save Changes</b> to assign wearable</center></p><br>#}
+{#                              </div>#}
+{#                              <div class="modal-footer">#}
+{#                                <button type="submit" class="btn btn-primary" data-toggle="modal" data-dismiss="modal">Save Changes</button>#}
+{#                                   <button type="button" a href="#assignWearable" class="btn btn-default" data-toggle="modal" data-dismiss="modal">Back</button>#}
+{#                              </div>#}
+{#                            </div><!-- /.modal-content -->#}
+{#                          </div><!-- /.modal-dialog -->#}
+{#                        </div><!-- /.modal -->#}
 
 
 
