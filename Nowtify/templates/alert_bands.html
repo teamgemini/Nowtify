@@ -24,55 +24,71 @@
 
 {#                        <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#myModal" style="float: right">Assign Wearable</button>#}
 
-                        <button type="button" class="btn btn-default" data-toggle="modal" data-target="#myModal" style="float: right">Assign Wearable</button>
+                        <button type="button" class="btn btn-default" data-toggle="modal" data-target="#assignWearable" style="float: right">Assign Wearable</button>
 
-
-                        <div id="myModal" class="modal fade" role="dialog">
+                         <!-- #modal 1 -->
+                        <div id="assignWearable" class="modal fade" role="dialog">
                           <div class="modal-dialog">
 
                             <!-- Modal content-->
                             <div class="modal-content">
+
                               <div class="modal-header">
                                 <button type="button" class="close" data-dismiss="modal">&times;</button>
                                 <h4 class="modal-title">Assign Wearable</h4>
                               </div>
+
                               <div class="modal-body">
 
-                                <p>Insert dropdown to choose wearable ID</p>
-                                  <div class="dropdown">
-                                      <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">Dropdown Example
-                                      <span class="caret"></span></button>
-                                      <ul class="dropdown-menu">
-                                        <li><a href="#">HTML</a></li>
-                                        <li><a href="#">CSS</a></li>
-                                        <li><a href="#">JavaScript</a></li>
-                                      </ul>
-                                  </div>
-
                                   <div class="form-group">
-									<label>Selects</label>
+									<label>Select Alert Band ID</label>
 									<select class="form-control">
 										<option>Option 1</option>
 										<option>Option 2</option>
 										<option>Option 3</option>
 										<option>Option 4</option>
 									</select>
-								</div>
+                                  </div>
 
-                                <p>Insert textfield for user to type name</p>
                                   <div class="form-group">
-									<label>Text Input</label>
-									<input class="form-control" placeholder="Placeholder">
-								</div>
+									<label>Enter Caregiver's Name</label>
+									<input class="form-control" placeholder="Anna Tan">
+                                  </div>
 
                               </div>
+
                               <div class="modal-footer">
-                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                  <button type="submit" a href="#confirm" class="btn btn-primary" data-toggle="modal" data-dismiss="modal">Assign</button>
+                                  <button type="submit" class="btn btn-default" data-dismiss="modal">Cancel</button>
                               </div>
+
                             </div>
 
                           </div>
                         </div>
+
+                        <!-- #modal 2 -->
+                        <div class="modal fade" id="confirm">
+                          <div class="modal-dialog" style="width: 30%">
+                            <div class="modal-content">
+
+
+
+                              <div class="modal-body">
+                                <br><br>
+                                <p><center>Select <b>Save Changes</b> to assign wearable</center></p><br>
+                              </div>
+                              <div class="modal-footer">
+                                <button type="submit" class="btn btn-primary" data-toggle="modal" data-dismiss="modal">Save Changes</button>
+                                   <button type="submit" a href="#assignWearable" class="btn btn-default" data-toggle="modal" data-dismiss="modal">Back</button>
+
+                              </div>
+                            </div><!-- /.modal-content -->
+                          </div><!-- /.modal-dialog -->
+                        </div><!-- /.modal -->
+
+
+
                         <br>
                         <br>
 						<table id="data-table" class="table" data-toggle="table" data-show-refresh="false" data-sort-name="Sensor ID" data-sort-order="asd">

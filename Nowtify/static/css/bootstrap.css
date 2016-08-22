@@ -5378,6 +5378,7 @@ button.close {
 }
 .modal-dialog {
   position: relative;
+  display: table;
   width: auto;
   margin: 10px;
 }
