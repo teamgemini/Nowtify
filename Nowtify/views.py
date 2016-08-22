@@ -13,7 +13,7 @@ from django.contrib.auth.models import User
 from django.db import transaction
 from Nowtify.models import Wearable, WearableBattery, WearableUsage
 from Nowtify.models import Sensor, SensorBattery, SensorUsage
-from Nowtify.models import Alert
+from Nowtify.models import Alert, Assignment
 
 
 def custom_login(request):
@@ -175,6 +175,7 @@ def alert_band(request):
     wearableUpdated = []
     wearableData = []
 
+
     # get sensor uniquely
     for instance in Wearable.objects.all():
         wearableUnique.append(instance)
@@ -216,8 +217,30 @@ def alert_band(request):
              action, (str(wearableUpdated[count]))[:19]])
         count += 1
 
-    return render(request, "alert_bands.html", {'dataSet': wearableData})
+# --------------------
 
+    wearableAssignment = []
+
+    for instance in wearableUnique:
+        instanceName = instance.name
+        if Assignment.objects.all().filter(wearable_name__exact=instance).exists():
+            instanceAssignee = Assignment.objects.all().filter(wearable_name__exact=instance).first().name
+        else:
+            instanceAssignee = "Not Assigned"
+        wearableAssignment.append([instanceName,instanceAssignee])
+
+    return render(request, "alert_bands.html", {'dataSet': wearableData, 'wearableNames': wearableAssignment})
+
+@login_required(login_url='')
+def update_assignment(request):
+    wearableName = request.POST['wearableName']
+    assignee = request.POST['assignee']
+
+    assignment = Assignment.objects.all().filter(wearable_name__exact=wearableName).first()
+    assignment.name = assignee
+    assignment.save(update_fields=['name'])
+
+    pass
 
 @login_required(login_url='')
 def incident_reporting(request):
