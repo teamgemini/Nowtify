@@ -236,11 +236,12 @@ def update_assignment(request):
     wearableName = request.POST['wearableName']
     assignee = request.POST['assignee']
 
-    assignment = Assignment.objects.all().filter(wearable_name__exact=wearableName).first()
+    wearableObject = Wearable.objects.all().filter(name__exact=wearableName).first()
+    assignment = Assignment.objects.all().filter(wearable_name__exact=wearableObject).first()
     assignment.name = assignee
     assignment.save(update_fields=['name'])
 
-    pass
+    return render(request, "alert_bands.html", {'successMessage': assignee + ' has been assigned to ' + wearableName })
 
 @login_required(login_url='')
 def incident_reporting(request):

@@ -41,11 +41,11 @@
                               </div>
 
                               <div class="modal-body">
-                               <form action="/dashboard/" method="post">{% csrf_token %}
+                               <form action="/update_assignment/" method="post">{% csrf_token %}
                                   <fieldset>
                                   <div class="form-group">
                                         <label>Select Alert Band ID</label>
-                                        <select class="form-control" name="alertbandID" type="text">
+                                        <select class="form-control" name="wearableName" type="text">
                                             <option>Option 1</option>
                                             <option>Option 2</option>
                                             <option>Option 3</option>
@@ -55,7 +55,7 @@
 
                                   <div class="form-group">
                                     <label>Enter Caregiver's Name</label>
-								    <input class="form-control" placeholder="Name" name="caregiverName" type="text">
+								    <input class="form-control" placeholder="Name" name="assignee" type="text">
                                   </div>
 
                                   <input type="submit" class="btn btn-primary" value="Assign"/>
@@ -68,14 +68,13 @@
                           </div>
                         </div>
 
-{#                        If assigned is successful, Pop up appear#}
-{#                        <div id="assigned" class="modal fade" role="dialog">#}
-{#                          <div class="modal-dialog">#}
-{#                          <p> Show when wearable is assigned</p>#}
-{#                              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>#}
-{#                          </div>#}
-{#                        </div>#}
+                        {% if successMessage %}
 
+                        <div class="alert alert-success" role="alertdialog">
+                            <strong> {{ successMessage }} </strong>
+                        </div>
+
+                        {% endif %}
 
 
 {#                        <!-- #modal 2 -->#}
@@ -105,6 +104,7 @@
 						    <thead>
 						    <tr>
                                 <th>Sensor ID</th>
+                                <th>Caregiver</th>
                                 <th>Usage</th>
                                 <th>Location</th>
                                 <th>Battery</th>
