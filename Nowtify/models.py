@@ -69,3 +69,12 @@ class Alert(models.Model):
 
     class Meta:
         db_table = "NowtifyWeb_alert"
+
+
+class Assignment(models.Model):
+    wearable_name = models.ForeignKey(Wearable, on_delete=models.CASCADE)
+    name = models.CharField(max_length=50)
+    update = models.DateTimeField(auto_now_add=True, auto_now=False)
+
+    class Meta:
+        db_table = "NowtifyWeb_assignment"
