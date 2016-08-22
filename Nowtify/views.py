@@ -220,14 +220,27 @@ def alert_band(request):
 # --------------------
 
     wearableAssignment = []
-    
+
     for instance in wearableUnique:
         instanceName = instance.name
-        instanceAssignee = Assignment.objects.all().filter(wearable_name__exact=instance).name
+        if Assignment.objects.all().filter(wearable_name__exact=instance).exists():
+            instanceAssignee = Assignment.objects.all().filter(wearable_name__exact=instance).first().name
+        else:
+            instanceAssignee = "Not Assigned"
         wearableAssignment.append([instanceName,instanceAssignee])
 
     return render(request, "alert_bands.html", {'dataSet': wearableData, 'wearableNames': wearableAssignment})
 
+@login_required(login_url='')
+def update_assignment(request):
+    wearableName = request.POST['wearableName']
+    assignee = request.POST['assignee']
+
+    assignment = Assignment.objects.all().filter(wearable_name__exact=wearableName).first()
+    assignment.name = assignee
+    assignment.save(update_fields=['name'])
+
+    pass
 
 @login_required(login_url='')
 def incident_reporting(request):
