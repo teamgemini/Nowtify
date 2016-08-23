@@ -61,6 +61,32 @@ class SensorBattery(models.Model):
         db_table = "NowtifyWeb_sensor_battery"
 
 
+class Detector(models.Model):
+    name = models.CharField(max_length=30, primary_key=True)
+    remarks = models.CharField(max_length=300)
+
+    class Meta:
+        db_table = "NowtifyWeb_detector"
+
+
+class DetectorUsage(models.Model):
+    detector_name = models.ForeignKey(Detector, on_delete=models.CASCADE)
+    used = models.BooleanField(default=False)
+    updated = models.DateTimeField(auto_now_add=True, auto_now=False)
+
+    class Meta:
+        db_table = "NowtifyWeb_detector_usage"
+
+
+class DetectorBattery(models.Model):
+    detector_name = models.ForeignKey(Detector, on_delete=models.CASCADE)
+    battery = models.IntegerField(default=0)
+    updated = models.DateTimeField(auto_now_add=True, auto_now=False)
+
+    class Meta:
+        db_table = "NowtifyWeb_detector_battery"
+
+
 class Alert(models.Model):
     datetime = models.DateTimeField(auto_now_add=True, auto_now=False)
     sensor = models.OneToOneField(Sensor)

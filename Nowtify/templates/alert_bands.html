@@ -46,10 +46,13 @@
                                   <div class="form-group">
                                         <label>Select Alert Band ID</label>
                                         <select class="form-control" name="wearableName" type="text">
-                                            <option>Option 1</option>
-                                            <option>Option 2</option>
-                                            <option>Option 3</option>
-                                            <option>Option 4</option>
+
+                                            <script>
+                                                wearableNamesArrayLength = {{wearableNames|safe}}.length
+                                                for (i = 0; i < wearableNamesArrayLength; i++) {
+                                                    document.write("<option>" + {{wearableNames|safe}}[i][0] + "</option>");
+                                                }
+                                            </script>
                                         </select>
                                   </div>
 
