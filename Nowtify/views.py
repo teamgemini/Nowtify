@@ -222,7 +222,7 @@ def alert_band(request):
             action = "Battery under 30"
 
         wearableData.append(
-            [str(wearableObject.name), wearableAssignment[count], usage, "Center " + str(wearableLocation[count]),
+            [str(wearableObject.name), str(wearableAssignment[count]), usage, "Center " + str(wearableLocation[count]),
              str(wearableBattery[count]) + "%",
              action, (str(wearableUpdated[count]))[:19]])
         count += 1
@@ -232,9 +232,9 @@ def alert_band(request):
     wearableAssignment = []
 
     for instance in wearableUnique:
-        instanceName = instance.name
+        instanceName = str(instance.name)
         if Assignment.objects.all().filter(wearable_name__exact=instance).exists():
-            instanceAssignee = Assignment.objects.all().filter(wearable_name__exact=instance).first().name
+            instanceAssignee = str(Assignment.objects.all().filter(wearable_name__exact=instance).first().name)
         else:
             instanceAssignee = "Not Assigned"
         wearableAssignment.append([instanceName,instanceAssignee])
@@ -275,7 +275,7 @@ def update_assignment(request):
 
         if Assignment.objects.all().filter(wearable_name__exact=wearableObject).exists():
             wearableAssignment.append(
-                Assignment.objects.all().filter(wearable_name__exact=wearableObject).first().name
+                str(Assignment.objects.all().filter(wearable_name__exact=wearableObject).first().name)
             )
         else:
             wearableAssignment.append("Not Assigned")
@@ -312,7 +312,7 @@ def update_assignment(request):
             action = "Battery under 30"
 
         wearableData.append(
-            [str(wearableObject.name), wearableAssignment[count], usage, "Center " + str(wearableLocation[count]),
+            [str(wearableObject.name), str(wearableAssignment[count]), usage, "Center " + str(wearableLocation[count]),
              str(wearableBattery[count]) + "%",
              action, (str(wearableUpdated[count]))[:19]])
         count += 1
@@ -322,9 +322,9 @@ def update_assignment(request):
     wearableAssignment = []
 
     for instance in wearableUnique:
-        instanceName = instance.name
+        instanceName = str(instance.name)
         if Assignment.objects.all().filter(wearable_name__exact=instance).exists():
-            instanceAssignee = Assignment.objects.all().filter(wearable_name__exact=instance).first().name
+            instanceAssignee = str(Assignment.objects.all().filter(wearable_name__exact=instance).first().name)
         else:
             instanceAssignee = "Not Assigned"
         wearableAssignment.append([instanceName, instanceAssignee])
