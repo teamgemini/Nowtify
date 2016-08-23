@@ -13,6 +13,7 @@ from django.contrib.auth.models import User
 from django.db import transaction
 from Nowtify.models import Wearable, WearableBattery, WearableUsage
 from Nowtify.models import Sensor, SensorBattery, SensorUsage
+from Nowtify.models import Detector, DetectorBattery, DetectorUsage
 from Nowtify.models import Alert, Assignment
 
 
@@ -113,62 +114,63 @@ def dashboard(request):
 @login_required(login_url='')
 def sensor(request):
     # do refer to models.py to see how the data is structured
-    sensorUnique = []
-    sensorUsage = []
-    sensorBattery = []
-    sensorLocation = []
-    sensorUpdated = []
-    sensorData = []
+    detectorUnique = []
+    detectorUsage = []
+    detectorBattery = []
+    detectorLocation = []
+    detectorUpdated = []
+    detectorData = []
 
     # get unique sensors
-    for instance in Sensor.objects.all():
-        sensorUnique.append(instance)
+    for instance in Detector.objects.all():
+        detectorUnique.append(instance)
 
     # there are many rows of data, this code will filter by each unique sensor, arrange from newest to oldest data
     # and get the first one, aka the latest data
-    for sensorObject in sensorUnique:
-        sensorUsage.append(
-            SensorUsage.objects.all().filter(sensor_name__exact=sensorObject).order_by('updated').first().used)
+    for detectorObject in detectorUnique:
+        detectorUsage.append(
+            DetectorUsage.objects.all().filter(sensor_name__exact=detectorObject).order_by('updated').first().used)
 
-        sensorBattery.append(
-            SensorBattery.objects.all().filter(sensor_name__exact=sensorObject).order_by('updated').first().battery)
+        detectorBattery.append(
+            DetectorBattery.objects.all().filter(sensor_name__exact=detectorObject).order_by('updated').first().battery)
 
-        sensorUpdated.append(SensorUsage.objects.all().filter(wearable_name__exact=sensorObject).order_by(
+        detectorUpdated.append(DetectorUsage.objects.all().filter(wearable_name__exact=detectorObject).order_by(
             'updated').first().updated)
 
     # we have yet to put in location feature. This is for future use. For now, I just put Location 1
-    for sensorObject in sensorUnique:
-        sensorLocation.append(1)
+    for detectorObject in detectorUnique:
+        detectorLocation.append(1)
 
     # count is required to get the index of the sensors in the list
     count = 0
-    for sensorObject in sensorUnique:
+    for detectorObject in detectorUnique:
 
-        if sensorUsage[count]:
+        if detectorUsage[count]:
             usage = "In Operation"
         else:
             usage = "Not in operation"
 
-        if sensorBattery[count] > 80:
+        if detectorBattery[count] > 80:
             action = "No action required"
-        elif sensorBattery[count] > 50:
+        elif detectorBattery[count] > 50:
             action = "Battery over 50"
-        elif sensorBattery[count] > 30:
+        elif detectorBattery[count] > 30:
             action = "Battery over 30"
         else:
-            action = "Batter under 30"
+            action = "Battery under 30"
 
-            sensorData.append(
-                [str(sensorObject.name), usage, "Center " + str(sensorLocation[count]), str(sensorBattery[count]) + "%",
-                 action, (str(sensorUpdated[count]))[:19]])
+            detectorData.append(
+                [str(detectorObject.name), usage, "Center " + str(detectorLocation[count]), str(detectorBattery[count]) + "%",
+                 action, (str(detectorUpdated[count]))[:19]])
         count += 1
 
-    return render(request, "detectors.html", {'dataSet': sensorData})
+    return render(request, "detectors.html", {'dataSet': detectorData})
 
 
 @login_required(login_url='')
 def alert_band(request):
     wearableUnique = []
+    wearableAssignment = []
     wearableUsage = []
     wearableBattery = []
     wearableLocation = []
@@ -181,6 +183,14 @@ def alert_band(request):
         wearableUnique.append(instance)
 
     for wearableObject in wearableUnique:
+
+        if Assignment.objects.all().filter(wearable_name__exact=wearableObject).exists():
+            wearableAssignment.append(
+                Assignment.objects.all().filter(wearable_name__exact=wearableObject).first().name
+            )
+        else:
+            wearableAssignment.append("Not Assigned")
+
         wearableUsage.append(
             WearableUsage.objects.all().filter(wearable_name__exact=wearableObject).order_by('updated').first().used)
 
@@ -212,7 +222,7 @@ def alert_band(request):
             action = "Battery under 30"
 
         wearableData.append(
-            [str(wearableObject.name), usage, "Center " + str(wearableLocation[count]),
+            [str(wearableObject.name), wearableAssignment[count], usage, "Center " + str(wearableLocation[count]),
              str(wearableBattery[count]) + "%",
              action, (str(wearableUpdated[count]))[:19]])
         count += 1
@@ -231,17 +241,97 @@ def alert_band(request):
 
     return render(request, "alert_bands.html", {'dataSet': wearableData, 'wearableNames': wearableAssignment})
 
+
 @login_required(login_url='')
 def update_assignment(request):
     wearableName = request.POST['wearableName']
     assignee = request.POST['assignee']
 
     wearableObject = Wearable.objects.all().filter(name__exact=wearableName).first()
-    assignment = Assignment.objects.all().filter(wearable_name__exact=wearableObject).first()
-    assignment.name = assignee
-    assignment.save(update_fields=['name'])
 
-    return render(request, "alert_bands.html", {'successMessage': assignee + ' has been assigned to ' + wearableName })
+    if Assignment.objects.all().filter(wearable_name__exact=wearableObject).exists():
+        assignment = Assignment.objects.all().filter(wearable_name__exact=wearableObject).first()
+        assignment.name = assignee
+        assignment.save(update_fields=['name'])
+    else:
+        assignment = Assignment(wearable_name=wearableObject, name=assignee)
+        assignment.save()
+
+#------------------------------
+
+    wearableUnique = []
+    wearableAssignment = []
+    wearableUsage = []
+    wearableBattery = []
+    wearableLocation = []
+    wearableUpdated = []
+    wearableData = []
+
+    # get sensor uniquely
+    for instance in Wearable.objects.all():
+        wearableUnique.append(instance)
+
+    for wearableObject in wearableUnique:
+
+        if Assignment.objects.all().filter(wearable_name__exact=wearableObject).exists():
+            wearableAssignment.append(
+                Assignment.objects.all().filter(wearable_name__exact=wearableObject).first().name
+            )
+        else:
+            wearableAssignment.append("Not Assigned")
+
+        wearableUsage.append(
+            WearableUsage.objects.all().filter(wearable_name__exact=wearableObject).order_by(
+                'updated').first().used)
+
+        wearableBattery.append(
+            WearableBattery.objects.all().filter(wearable_name__exact=wearableObject).order_by(
+                'updated').first().battery)
+
+        wearableUpdated.append(WearableUsage.objects.all().filter(wearable_name__exact=wearableObject).order_by(
+            'updated').first().updated)
+
+    for wearableObject in wearableUnique:
+        wearableLocation.append(1)
+
+    count = 0
+    for wearableObject in wearableUnique:
+
+        if wearableUsage[count]:
+            usage = "In Operation"
+        else:
+            usage = "Not in Operation"
+
+        if wearableBattery[count] > 80:
+            action = "No action required"
+        elif wearableBattery[count] > 50:
+            action = "Battery over 50"
+        elif wearableBattery[count] > 30:
+            action = "Battery over 30"
+        else:
+            action = "Battery under 30"
+
+        wearableData.append(
+            [str(wearableObject.name), wearableAssignment[count], usage, "Center " + str(wearableLocation[count]),
+             str(wearableBattery[count]) + "%",
+             action, (str(wearableUpdated[count]))[:19]])
+        count += 1
+
+        # --------------------
+
+    wearableAssignment = []
+
+    for instance in wearableUnique:
+        instanceName = instance.name
+        if Assignment.objects.all().filter(wearable_name__exact=instance).exists():
+            instanceAssignee = Assignment.objects.all().filter(wearable_name__exact=instance).first().name
+        else:
+            instanceAssignee = "Not Assigned"
+        wearableAssignment.append([instanceName, instanceAssignee])
+
+    return render(request, "alert_bands.html", {'dataSet': wearableData, 'wearableNames': wearableAssignment, 'successMessage': assignee + ' has been assigned to ' + wearableName})
+
+    #return render(request, "alert_bands.html", {'successMessage': assignee + ' has been assigned to ' + wearableName })
 
 @login_required(login_url='')
 def incident_reporting(request):
