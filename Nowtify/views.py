@@ -275,7 +275,7 @@ def update_assignment(request):
 
         if Assignment.objects.all().filter(wearable_name__exact=wearableObject).exists():
             wearableAssignment.append(
-                Assignment.objects.all().filter(wearable_name__exact=wearableObject).first().name
+                str(Assignment.objects.all().filter(wearable_name__exact=wearableObject).first().name)
             )
         else:
             wearableAssignment.append("Not Assigned")
@@ -322,7 +322,7 @@ def update_assignment(request):
     wearableAssignment = []
 
     for instance in wearableUnique:
-        instanceName = instance.name
+        instanceName = str(instance.name)
         if Assignment.objects.all().filter(wearable_name__exact=instance).exists():
             instanceAssignee = str(Assignment.objects.all().filter(wearable_name__exact=instance).first().name)
         else:
