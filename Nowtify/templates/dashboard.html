@@ -98,6 +98,53 @@ Sensor Management
 			</div>
 		</div>
 
+
+      <div class="panel panel-default chat">
+					<div class="panel-heading" id="accordion"><svg class="glyph stroked two-messages"><use xlink:href="#stroked-two-messages"></use></svg>Newsfeed</div>
+
+					<div class="panel-body">
+                        <script>
+                            data = [['sensor','sensor ID activated','insert date'],['wearable','detector ID activated','insert date'],['alert','alert given off','insert date']]
+                            newsfeedArrayLength = data.length
+                            for (i = 0; i < newsfeedArrayLength; i++) {
+                                document.write("<ul>"
+                                        + "<li class=\"left clearfix\">"
+                                        + "<span class=\"chat-img pull-left\">"
+                                        + "<img src=\"{% static "img/observe.svg" %}\" style=\"display: block; margin-top: 0px; margin-left:15px; margin-right:0px; margin-bottom:0px; width: 35px; height: 30px;\"  />"
+                                        + "</span>"
+                                        + "<div class=\"chat-body clearfix\">"
+                                        + "<div class=\"header\">"
+                                        + "<strong class=\"primary-font\">"
+                                        + data[i][0]
+                                        + "</strong>"
+                                        + "<small class=\"text-muted\">"
+                                        + data[i][2]
+                                        + "</small>"
+                                        + "</div>"
+                                        + "<p>"
+                                        + data[i][1]
+                                        + "</p></div></li></ul>");
+                            }
+                        </script>
+
+						<ul>
+							<li class="left clearfix">
+								<span class="chat-img pull-left">
+									<img src="http://placehold.it/80/30a5ff/fff" alt="User Avatar" class="img-circle" />
+								</span>
+								<div class="chat-body clearfix">
+									<div class="header">
+										<strong class="primary-font">John Doe</strong> <small class="text-muted">32 mins ago</small>
+									</div>
+									<p>
+										Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla ante turpis, rutrum ut ullamcorper sed, dapibus ac nunc. Vivamus luctus convallis mauris, eu gravida tortor aliquam ultricies.
+									</p>
+								</div>
+							</li>
+						</ul>
+					</div>
+      </div>
+
     <script>
 
 
