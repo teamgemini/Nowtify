@@ -68,14 +68,6 @@
                           </div>
                         </div>
 
-                        {% if successMessage %}
-
-                        <div class="alert alert-success" role="alertdialog">
-                            <strong> {{ successMessage }} </strong>
-                        </div>
-
-                        {% endif %}
-
 
 {#                        <!-- #modal 2 -->#}
 {##}
@@ -113,6 +105,15 @@
 						    </tr>
 						    </thead>
 						</table>
+
+                        {% if successMessage %}
+                        <div class="col-xs-10 col-xs-offset-1 col-sm-8 col-sm-offset-2 col-md-4 col-md-offset-4">
+
+                            <div class="alert alert-success" role="alertdialog">
+                                <strong><center> {{ successMessage }} </center></strong>
+                            </div>
+                        </div>
+                        {% endif %}
 					</div>
 				</div>
 			</div>
@@ -128,6 +129,7 @@
               paging: false
             } );
 
+          $('.alert-success').delay(3000).fadeOut();
 
       $(function () {
 						        $('#hover, #striped, #condensed').click(function () {
