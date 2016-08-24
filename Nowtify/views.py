@@ -372,7 +372,7 @@ def dashboard(request):
 
 
 @login_required(login_url='')
-def sensor(request):
+def detector(request):
     # do refer to models.py to see how the data is structured
     detectorUnique = []
     detectorUsage = []
@@ -390,6 +390,7 @@ def sensor(request):
     for detectorObject in detectorUnique:
         detectorUsage.append(
             DetectorUsage.objects.all().filter(detector_name__exact=detectorObject).order_by('updated').first().used)
+
 
         detectorBattery.append(
             DetectorBattery.objects.all().filter(detector_name__exact=detectorObject).order_by('updated').first().battery)
