@@ -107,10 +107,14 @@ Sensor Management
                             data = {{ dataSet|safe }}
                             newsfeedArrayLength = data.length
                             for (i = 0; i < newsfeedArrayLength; i++) {
+
+                                {% load static %}
+                                {% static "" as baseUrl %}
+
                                 document.write("<ul>"
                                         + "<li class=\"left clearfix\">"
                                         + "<span class=\"chat-img pull-left\">"
-                                        + "<img src=\"{% static "img/detector.svg" %}\" style=\"display: block; margin-top: 0px; margin-left:15px; margin-right:0px; margin-bottom:0px; width: 35px; height: 30px;\"  />"
+                                        + "<img src=\""+"{{ baseUrl }}"+"img/"+ data[i][0] +".svg\" style=\"display: block; margin-top: 0px; margin-left:15px; margin-right:0px; margin-bottom:0px; width: 35px; height: 30px;\"  />"
                                         + "</span>"
                                         + "<div class=\"chat-body clearfix\">"
                                         + "<div class=\"header\">"
