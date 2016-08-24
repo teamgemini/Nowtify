@@ -389,12 +389,12 @@ def sensor(request):
     # and get the first one, aka the latest data
     for detectorObject in detectorUnique:
         detectorUsage.append(
-            DetectorUsage.objects.all().filter(sensor_name__exact=detectorObject).order_by('updated').first().used)
+            DetectorUsage.objects.all().filter(detector_name__exact=detectorObject).order_by('updated').first().used)
 
         detectorBattery.append(
-            DetectorBattery.objects.all().filter(sensor_name__exact=detectorObject).order_by('updated').first().battery)
+            DetectorBattery.objects.all().filter(detector_name__exact=detectorObject).order_by('updated').first().battery)
 
-        detectorUpdated.append(DetectorUsage.objects.all().filter(wearable_name__exact=detectorObject).order_by(
+        detectorUpdated.append(DetectorUsage.objects.all().filter(detector_name__exact=detectorObject).order_by(
             'updated').first().updated)
 
     # we have yet to put in location feature. This is for future use. For now, I just put Location 1
