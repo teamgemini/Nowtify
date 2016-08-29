@@ -71,46 +71,50 @@ Sensor Management
 			</div>
 		</div><!--/.row-->
 
+{##}
+{#      <div class="row">#}
+{#			<div class="col-lg-12">#}
+{#				<div class="panel panel-default">#}
+{##}
+{#					<div class="panel-heading">Newsfeed</div>#}
+{#					<div class="panel-body">#}
+{##}
+{#						<table id="data-table" class="fixed" data-toggle="table" data-show-refresh="true" data-sort-name="date" data-sort-order=desc">#}
+{#						        <col width="15%" />#}
+{#                                <col width="50%" />#}
+{#                                <col width="20%" />#}
+{##}
+{#                            <thead>#}
+{#						    <tr>#}
+{#                                <th>type</th>#}
+{#                                <th>message</th>#}
+{#                                <th>date</th>#}
+{##}
+{#						    </tr>#}
+{#						    </thead>#}
+{#						</table>#}
+{#					</div>#}
+{#				</div>#}
+{#			</div>#}
+{#		</div>#}
 
-      <div class="row">
-			<div class="col-lg-12">
-				<div class="panel panel-default">
 
-					<div class="panel-heading">Newsfeed</div>
-					<div class="panel-body">
-
-						<table id="data-table" class="fixed" data-toggle="table" data-show-refresh="true" data-sort-name="date" data-sort-order=desc">
-						        <col width="15%" />
-                                <col width="50%" />
-                                <col width="20%" />
-
-                            <thead>
-						    <tr>
-                                <th>type</th>
-                                <th>message</th>
-                                <th>date</th>
-
-						    </tr>
-						    </thead>
-						</table>
-					</div>
-				</div>
-			</div>
-		</div>
-
-
-      <div class="panel panel-default chat">
+      <div class="panel panel-default chat" >
 					<div class="panel-heading" id="accordion"><svg class="glyph stroked two-messages"><use xlink:href="#stroked-two-messages"></use></svg>Newsfeed</div>
 
 					<div class="panel-body">
                         <script>
-                            data = [['sensor','sensor ID activated','insert date'],['wearable','detector ID activated','insert date'],['alert','alert given off','insert date']]
+                            data = {{ dataSet|safe }}
                             newsfeedArrayLength = data.length
                             for (i = 0; i < newsfeedArrayLength; i++) {
+
+                                {% load static %}
+                                {% static "" as baseUrl %}
+
                                 document.write("<ul>"
                                         + "<li class=\"left clearfix\">"
                                         + "<span class=\"chat-img pull-left\">"
-                                        + "<img src=\"{% static "img/observe.svg" %}\" style=\"display: block; margin-top: 0px; margin-left:15px; margin-right:0px; margin-bottom:0px; width: 35px; height: 30px;\"  />"
+                                        + "<img src=\""+"{{ baseUrl }}"+"img/"+ data[i][0] +".svg\" style=\"display: block; margin-top: 0px; margin-left:15px; margin-right:0px; margin-bottom:0px; width: 35px; height: 30px;\"  />"
                                         + "</span>"
                                         + "<div class=\"chat-body clearfix\">"
                                         + "<div class=\"header\">"
@@ -127,39 +131,24 @@ Sensor Management
                             }
                         </script>
 
-						<ul>
-							<li class="left clearfix">
-								<span class="chat-img pull-left">
-									<img src="http://placehold.it/80/30a5ff/fff" alt="User Avatar" class="img-circle" />
-								</span>
-								<div class="chat-body clearfix">
-									<div class="header">
-										<strong class="primary-font">John Doe</strong> <small class="text-muted">32 mins ago</small>
-									</div>
-									<p>
-										Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla ante turpis, rutrum ut ullamcorper sed, dapibus ac nunc. Vivamus luctus convallis mauris, eu gravida tortor aliquam ultricies.
-									</p>
-								</div>
-							</li>
-						</ul>
 					</div>
       </div>
 
     <script>
 
 
-     var dataSet = [[ "Sensor-usage", "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.", "27-07-2016 3:33 PM"], ["Sensor-usage", "There is an alert triggered by sensor 1", "27-07-2016 4:44 PM"]]
+    {#     var dataSet = [[ "Sensor-usage", "Sensor 1 is switched on", "27-07-2016 3:33 PM"], ["Sensor-usage", "There is a alert triggered by sensor 1", "27-07-2016 4:44 PM"]]#}
+    var data = {{ dataSet|safe }}
+            $('#data-table').DataTable( {
+                data: data,
+                "searching": false,
+                paging: false,
 
-          $('#data-table').DataTable( {
-            data: dataSet,
-              "searching": false,
-              paging: false,
-              
-              fnDrawCallback: function() {
-                  $("#data-table thead").remove();
-              }
+                fnDrawCallback: function() {
+                    $("#data-table thead").remove();
+                }
 
-          } );
+            } );
 
 
 

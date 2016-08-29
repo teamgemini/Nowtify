@@ -1,0 +1,23 @@
+[
+    {
+        "id": 1,
+        "status": "ON",
+        "location":"Centre 1",
+        "battery": "10%",
+        "action_required": "Please Recharge!"
+    },
+    {
+        "id": 2,
+        "status": "ON",
+        "location":"Centre 1",
+        "battery": "10%",
+        "action_required": "Please Recharge!"
+    },
+    {
+        "id": 3,
+        "status": "ON",
+        "location":"Centre 1",
+        "battery": "10%",
+        "action_required": "Please Recharge!"
+    }
+]
