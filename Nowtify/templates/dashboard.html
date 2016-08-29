@@ -24,8 +24,13 @@ Sensor Management
 							<svg class="glyph stroked bag"><use xlink:href="#stroked-bag"></use></svg>
 						</div>
 						<div class="col-sm-9 col-lg-7 widget-right">
-							<div class="large">120</div>
-							<div class="text-muted">Alerts</div>
+                            <div class="large">
+                                <script>
+                                alertCounter = {{ alertCounter | safe }}
+                                document.write(alertCounter);
+                                </script>
+                            </div>
+							<div class="text-muted">Alerts Today</div>
 						</div>
 					</div>
 				</div>
@@ -37,8 +42,8 @@ Sensor Management
 							<svg class="glyph stroked empty-message"><use xlink:href="#stroked-empty-message"></use></svg>
 						</div>
 						<div class="col-sm-9 col-lg-7 widget-right">
-							<div class="large">52</div>
-							<div class="text-muted">Alerts Missed</div>
+							<div class="large">T.B.D</div>
+							<div class="text-muted">Alerts This Week</div>
 						</div>
 					</div>
 				</div>
@@ -50,7 +55,12 @@ Sensor Management
 							<svg class="glyph stroked male-user"><use xlink:href="#stroked-male-user"></use></svg>
 						</div>
 						<div class="col-sm-9 col-lg-7 widget-right">
-							<div class="large">24</div>
+							<div class="large">
+                                <script>
+                                    detectorCounter = {{ detectorCounter | safe }}
+                                    document.write(detectorCounter);
+                                </script>
+                            </div>
 							<div class="text-muted">Detectors ON</div>
 						</div>
 					</div>
@@ -63,7 +73,12 @@ Sensor Management
 							<svg class="glyph stroked male-user"><use xlink:href="#stroked-male-user"></use></svg>
 						</div>
 						<div class="col-sm-9 col-lg-7 widget-right">
-							<div class="large">25.2k</div>
+							<div class="large">
+                                <script>
+                                    wearableCounter = {{ wearableCounter | safe }}
+                                    document.write(wearableCounter);
+                                </script>
+                            </div>
 							<div class="text-muted">Alert Bands ON</div>
 						</div>
 					</div>

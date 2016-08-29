@@ -15,7 +15,7 @@ from Nowtify.models import Wearable, WearableBattery, WearableUsage
 from Nowtify.models import Detector, DetectorBattery, DetectorUsage
 from Nowtify.models import Alert, Assignment
 from operator import itemgetter
-from datetime import datetime
+from datetime import datetime,timedelta
 
 
 def custom_login(request):
@@ -103,28 +103,56 @@ def index(request):
 def dashboard(request):
 
 
+    Detector.objects.all().delete()
+    DetectorUsage.objects.all().delete()
+    DetectorBattery.objects.all().delete()
 
-    # wearable2 = Wearable(name="wearable2",remarks="superrr2")
-    # wearable2Use= WearableUsage(wearable_name="wearable2",used=True)
-    # wearable2.save()
-    # wearable2Use.save()
-    #
-    # wearable3 = Wearable(name="wearable3",remarks="superrr3")
-    # wearable3Use= WearableUsage(wearable_name="wearable3",used=True)
-    # wearable3.save()
-    # wearable3Use.save()
-    #
-    # wearable4 = Wearable(name="wearable4",remarks="superrr4")
-    # wearable4Use= WearableUsage(wearable_name="wearable4",used=True)
-    # wearable4.save()
-    # wearable4Use.save()
-    #
-    # wearable5 = Wearable(name="wearable5",remarks="superrr5")
-    # wearable5Use= WearableUsage(wearable_name="wearable5",used=True)
-    # wearable5.save()
-    # wearable5Use.save()
+    Wearable.objects.all().delete()
+    WearableUsage.objects.all().delete()
+    WearableBattery.objects.all().delete()
+
+    Alert.objects.all().delete()
+
+
+    #insert fake data
+    wearable1 = Wearable.objects.create(name="wearable1",remarks="superrr1")
+    wearable1Use= WearableUsage.objects.create(wearable_name=wearable1,used=True)
+    wearable1Battery = WearableBattery.objects.create(wearable_name=wearable1,battery=10) #ON  LOW BATT
+
+    wearable2 = Wearable.objects.create(name="wearable2",remarks="superrr2")
+    wearable2Use= WearableUsage.objects.create(wearable_name=wearable2,used=True)
+    wearable2Battery = WearableBattery.objects.create(wearable_name=wearable2,battery=50) #ON
+
+    wearable3 = Wearable.objects.create(name="wearable3",remarks="superrr3")
+    wearable3Use= WearableUsage.objects.create(wearable_name=wearable3,used=False)
+    wearable3Battery = WearableBattery.objects.create(wearable_name=wearable3,battery=50) #OFF
+
+    wearable4 = Wearable.objects.create(name="wearable4",remarks="superrr4")
+    wearable4Use= WearableUsage.objects.create(wearable_name=wearable4,used=False)
+    wearable4Battery = WearableBattery.objects.create(wearable_name=wearable4,battery=15) #OFF LOW BATT
+
+    detector1 = Detector.objects.create(name="detector1",remarks="ultraaaa1")
+    detector1Use= DetectorUsage.objects.create(detector_name=detector1,used=True)
+    detector1Battery = DetectorBattery.objects.create(detector_name=detector1,battery=10)  #ON ,low batt
+
+    detector2 = Detector.objects.create(name="detector2",remarks="ultraaaa2")
+    detector2Use= DetectorUsage.objects.create(detector_name=detector2,used=True)
+    detector2Battery = DetectorBattery.objects.create(detector_name=detector2,battery=50) #ON
+
+    detector3 = Detector.objects.create(name="detector3",remarks="ultraaaa3")
+    detector3Use= DetectorUsage.objects.create(detector_name=detector3,used=False)
+    detector3Battery = DetectorBattery.objects.create(detector_name=detector3,battery=50) #OFF
+
+    detector4 = Detector.objects.create(name="detector4",remarks="ultraaaa4")
+    detector4Use= DetectorUsage.objects.create(detector_name=detector4,used=False)
+    detector4Battery = DetectorBattery.objects.create(detector_name=detector4,battery=15) #OFF ,low batt
+
+    alert1 = Alert.objects.create(detector=detector1,wearable=wearable1,seen=False) #activated
+    alert2 = Alert.objects.create(detector=detector2,wearable=wearable2,seen=True) #acknowledged
+
 
     masterList= []
+    topNavArray= []
 
     detectorUsageUnique = []
     detectorUsage = []
@@ -141,15 +169,13 @@ def dashboard(request):
     wearableBattery = []
 
 
-    alertActivatedUnique= []
-    alertActivated= []
+    alertUnique= []
+    alertList= []
 
+    startOfYtd = (datetime.now()- timedelta(days=1)).replace(hour=0, minute=0, second=0, microsecond=0) #yesterday's 00:00:00
 
-    alertAckUnique= []
-    alertAck= []
-
-
-    #DetectorOnOff
+#DetectorOnOff
+    detectorCounter = 0
     for instanceDetector in Detector.objects.all():
         detectorUsageUnique.append(instanceDetector)
     # there are many rows of data, this code will filter by each unique sensor, arrange from newest to oldest data
@@ -157,7 +183,7 @@ def dashboard(request):
 
 
     for detectorObject in detectorUsageUnique:
-        detectorUsage.append(DetectorUsage.objects.all().filter(detector_name__exact=detectorObject).order_by('updated').first()) # order by time only for ON OFF
+        detectorUsage.append(DetectorUsage.objects.all().filter(detector_name__exact=detectorObject,updated__gte=startOfYtd).order_by('updated').first()) # order by time only for ON OFF
 
     for instance in detectorUsage:
         messageType=""
@@ -168,20 +194,30 @@ def dashboard(request):
         if instance.used == True:
             messageType="Detector"
             message=str(instance.detector_name.name) + " in Center 1 has been Switched ON"
-            time=datetime.strptime(str(instance.updated)[:19],'%Y-%m-%d %H:%M:%S').strftime("%d-%m-%Y %H:%M:%S")
+
+            if(str(instance.updated.date()) == str(datetime.today().date())):
+                time = "Today " + str(instance.updated)[11:19]
+            else:
+                time=datetime.strptime(str(instance.updated)[:19],'%Y-%m-%d %H:%M:%S').strftime("%d-%m-%Y %H:%M:%S")
+            detectorCounter += 1
+
             masterList.append([messageType,message,time])
 
         if instance.used == False:
             messageType="Detector"
             message=str(instance.detector_name.name) + " in Center 1 has been Switched OFF"
-            time=datetime.strptime(str(instance.updated)[:19],'%Y-%m-%d %H:%M:%S').strftime("%d-%m-%Y %H:%M:%S")
+
+            if(str(instance.updated.date()) == str(datetime.today().date())):
+                time = "Today " + str(instance.updated)[11:19]
+            else:
+                time=datetime.strptime(str(instance.updated)[:19],'%Y-%m-%d %H:%M:%S').strftime("%d-%m-%Y %H:%M:%S")
             masterList.append([messageType,message,time])
 
 
 
 
 
-    #DetectorBattery
+#DetectorBattery
     for instanceDetector in Detector.objects.all():
         detectorBatteryUnique.append(instanceDetector)
     # there are many rows of data, this code will filter by each unique sensor, arrange from newest to oldest data
@@ -189,7 +225,7 @@ def dashboard(request):
 
 
     for detectorObject in detectorBatteryUnique: #take all sensors
-        detectorBattery.append(DetectorBattery.objects.all().filter(detector_name__exact=detectorObject).order_by('updated').first())
+        detectorBattery.append(DetectorBattery.objects.all().filter(detector_name__exact=detectorObject,updated__gte=startOfYtd).order_by('updated').first())
     #take only sensorBattery objects, filter by sensor name to prevent repeats, filer by condition, order by datetime,take latest
     for instance in detectorBattery:
 
@@ -200,14 +236,20 @@ def dashboard(request):
         if(instance.battery)<= 30:
             messageType="Detector"
             message=str(instance.detector_name.name) + " in Center 1 is below 30% Battery, Recharge Required!"
-            time=datetime.strptime(str(instance.updated)[:19],'%Y-%m-%d %H:%M:%S').strftime("%d-%m-%Y %H:%M:%S")
+
+            if(str(instance.updated.date()) == str(datetime.today().date())):
+                time = "Today " + str(instance.updated)[11:19]
+            else:
+                time=datetime.strptime(str(instance.updated)[:19],'%Y-%m-%d %H:%M:%S').strftime("%d-%m-%Y %H:%M:%S")
 
             masterList.append([messageType,message,time])
 
 
 
 
-    #WearableOnOff
+#WearableOnOff
+    wearableCounter = 0
+
     for instanceWearable in Wearable.objects.all():
         wearableUsageUnique.append(instanceWearable)
     # there are many rows of data, this code will filter by each unique wearable, arrange from newest to oldest data
@@ -215,7 +257,7 @@ def dashboard(request):
 
 
     for wearableObject in wearableUsageUnique:
-        wearableUsage.append(WearableUsage.objects.all().filter(wearable_name__exact=wearableObject).order_by('updated').first()) # order by time only for ON OFF
+        wearableUsage.append(WearableUsage.objects.all().filter(wearable_name__exact=wearableObject,updated__gte=startOfYtd).order_by('updated').first()) # order by time only for ON OFF
 
     for instance in wearableUsage:
         messageType=""
@@ -225,20 +267,28 @@ def dashboard(request):
         if instance.used == True:
             messageType="Wearable"
             message=str(instance.wearable_name.name) + " in Center 1 has been Switched ON"
-            time=datetime.strptime(str(instance.updated)[:19],'%Y-%m-%d %H:%M:%S').strftime("%d-%m-%Y %H:%M:%S")
+            if(str(instance.updated.date()) == str(datetime.today().date())):
+                time = "Today " + str(instance.updated)[11:19]
+            else:
+                time=datetime.strptime(str(instance.updated)[:19],'%Y-%m-%d %H:%M:%S').strftime("%d-%m-%Y %H:%M:%S")
+            wearableCounter += 1
 
             masterList.append([messageType,message,time])
 
         if instance.used == False:
             messageType="Wearable"
             message=str(instance.wearable_name.name) + " in Center 1 has been Switched OFF"
-            time=datetime.strptime(str(instance.updated)[:19],'%Y-%m-%d %H:%M:%S').strftime("%d-%m-%Y %H:%M:%S")
+
+            if(str(instance.updated.date()) == str(datetime.today().date())):
+                time = "Today " + str(instance.updated)[11:19]
+            else:
+                time=datetime.strptime(str(instance.updated)[:19],'%Y-%m-%d %H:%M:%S').strftime("%d-%m-%Y %H:%M:%S")
 
             masterList.append([messageType,message,time])
 
 
 
-    #WearableBattery
+#WearableBattery
     for instanceWearable in Wearable.objects.all():
         wearableBatteryUnique.append(instanceWearable)
     # there are many rows of data, this code will filter by each unique sensor, arrange from newest to oldest data
@@ -246,7 +296,7 @@ def dashboard(request):
 
 
     for wearableObject in wearableBatteryUnique: #take all sensors
-        wearableBattery.append(WearableBattery.objects.all().filter(wearable_name__exact=wearableObject).order_by('updated').first())
+        wearableBattery.append(WearableBattery.objects.all().filter(wearable_name__exact=wearableObject,updated__gte=startOfYtd).order_by('updated').first())
     #take only sensorBattery objects, filter by sensor name to prevent repeats, filer by condition, order by datetime, take latest
     for instance in wearableBattery:
 
@@ -257,66 +307,67 @@ def dashboard(request):
         if(instance.battery)<= 30:
             messageType="Wearable"
             message=(str(instance.wearable_name.name)) + " in Center 1 is below 30% Battery, Recharge Required!"
-            time=datetime.strptime(str(instance.updated)[:19],'%Y-%m-%d %H:%M:%S').strftime("%d-%m-%Y %H:%M:%S")
+
+            if(str(instance.updated.date()) == str(datetime.today().date())):
+                time = "Today " + str(instance.updated)[11:19]
+            else:
+                time=datetime.strptime(str(instance.updated)[:19],'%Y-%m-%d %H:%M:%S').strftime("%d-%m-%Y %H:%M:%S")
 
             masterList.append([messageType,message,time])
 
 
-    # AlertActivated
-    for instanceAlertActivate in Alert.objects.all():
-        alertActivatedUnique.append(instanceAlertActivate)
+# AlertActivated and Deactivated  #Acknowledgement might be removed
+    alertCounter = 0
+
+    for instanceAlert in Alert.objects.all():
+        alertUnique.append(instanceAlert)
     # there are many rows of data, this code will filter by each unique alert, arrange from newest to oldest data
     # and get the first one, aka the latest data
 
 
-    for alertObject in alertActivatedUnique: #take all sensors
-        alertActivated.append(Alert.objects.all().filter(seen__exact=False,detector__exact=alertObject.detector).order_by('datetime').first())
+    for alertObject in alertUnique: #take all sensors
+
+            alertList.append(Alert.objects.all().filter(detector__exact=alertObject.detector,datetime__gte=startOfYtd).order_by('datetime').first())
     # take only sensorBattery objects, filter by sensor name to prevent repeats, filer by condition, order by datetime,take latest
-    for instance in alertActivated:
+    for instance in alertList:
 
         messageType=""
         message=""
         time=None
 
+        if(instance.seen==False):
+            messageType="Alert"
+            message="Alert Activated in Center 1! Detector "+ str(instance.detector.name)
 
-        messageType="Alert"
-        message="Alert Activated in Center 1! Detector "+ str(instance.detector.name)
-        time=datetime.strptime(str(instance.datetime)[:19],'%Y-%m-%d %H:%M:%S').strftime("%d-%m-%Y %H:%M:%S")
+            if(str(instance.datetime.date()) == str(datetime.today().date())):
+                time = "Today " + str(instance.datetime)[11:19]
 
-        masterList.append([messageType,message,time])
+                alertCounter += 1
 
+            else:
+                time=datetime.strptime(str(instance.datetime)[:19],'%Y-%m-%d %H:%M:%S').strftime("%d-%m-%Y %H:%M:%S")
 
-# AlertAcknowledged
-    for instanceAlertAck in Alert.objects.all():
-        alertAckUnique.append(instanceAlertAck)
-    # there are many rows of data, this code will filter by each unique alert, arrange from newest to oldest data
-    # and get the first one, aka the latest data
+            masterList.append([messageType,message,time])
 
+        if(instance.seen==True):
+            messageType="Alert"
+            message="Alert Acknowledged in Center 1! Alert Band "+ str(instance.wearable.name) #ack might not be implemented
 
-    for alertObject in alertAckUnique: #take all sensors
-        alertAck.append(Alert.objects.all().filter(seen__exact=True,wearable__exact=alertObject.wearable).order_by('datetime').first())
+            if(str(instance.datetime.date()) == str(datetime.today().date())):
+                time = "Today " + str(instance.datetime)[11:19]
+            else:
+                time=datetime.strptime(str(instance.datetime)[:19],'%Y-%m-%d %H:%M:%S').strftime("%d-%m-%Y %H:%M:%S")
 
-    # take only sensorBattery objects, filter by sensor name to prevent repeats, filer by condition, order by datetime,take latest
-    for instance in alertAckUnique:
-
-        messageType=""
-        message=""
-        time=None
-
-
-        messageType="Alert"
-        message="Alert Acknowledged in Center 1! Alert Band "+ str(instance.wearable.name)
-        time=datetime.strptime(str(instance.datetime)[:19],'%Y-%m-%d %H:%M:%S').strftime("%d-%m-%Y %H:%M:%S")
-
-
-        masterList.append([messageType,message,time])
+            masterList.append([messageType,message,time])
 
 
     #sort by time
     newsFeedList = sorted(masterList, key=itemgetter(2))
 
-
-    return render(request, "dashboard.html",{'dataSet': newsFeedList})
+    print(alertCounter)
+    print(detectorCounter)
+    print(wearableCounter)
+    return render(request, "dashboard.html",{'dataSet': newsFeedList, 'alertCounter': alertCounter, 'detectorCounter':detectorCounter,'wearableCounter': wearableCounter})
 
 
 
