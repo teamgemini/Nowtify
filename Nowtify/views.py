@@ -101,58 +101,57 @@ def index(request):
 
 @login_required(login_url='')
 def dashboard(request):
-
-
-    Detector.objects.all().delete()
-    DetectorUsage.objects.all().delete()
-    DetectorBattery.objects.all().delete()
-
-    Wearable.objects.all().delete()
-    WearableUsage.objects.all().delete()
-    WearableBattery.objects.all().delete()
-
-    Alert.objects.all().delete()
-
-
-    #insert fake data
-    wearable1 = Wearable.objects.create(name="wearable1",remarks="superrr1")
-    wearable1Use= WearableUsage.objects.create(wearable_name=wearable1,used=True)
-    wearable1Battery = WearableBattery.objects.create(wearable_name=wearable1,battery=10) #ON  LOW BATT
-
-    wearable2 = Wearable.objects.create(name="wearable2",remarks="superrr2")
-    wearable2Use= WearableUsage.objects.create(wearable_name=wearable2,used=True)
-    wearable2Battery = WearableBattery.objects.create(wearable_name=wearable2,battery=50) #ON
-
-    wearable3 = Wearable.objects.create(name="wearable3",remarks="superrr3")
-    wearable3Use= WearableUsage.objects.create(wearable_name=wearable3,used=False)
-    wearable3Battery = WearableBattery.objects.create(wearable_name=wearable3,battery=50) #OFF
-
-    wearable4 = Wearable.objects.create(name="wearable4",remarks="superrr4")
-    wearable4Use= WearableUsage.objects.create(wearable_name=wearable4,used=False)
-    wearable4Battery = WearableBattery.objects.create(wearable_name=wearable4,battery=15) #OFF LOW BATT
-
-    detector1 = Detector.objects.create(name="detector1",remarks="ultraaaa1")
-    detector1Use= DetectorUsage.objects.create(detector_name=detector1,used=True)
-    detector1Battery = DetectorBattery.objects.create(detector_name=detector1,battery=10)  #ON ,low batt
-
-    detector2 = Detector.objects.create(name="detector2",remarks="ultraaaa2")
-    detector2Use= DetectorUsage.objects.create(detector_name=detector2,used=True)
-    detector2Battery = DetectorBattery.objects.create(detector_name=detector2,battery=50) #ON
-
-    detector3 = Detector.objects.create(name="detector3",remarks="ultraaaa3")
-    detector3Use= DetectorUsage.objects.create(detector_name=detector3,used=False)
-    detector3Battery = DetectorBattery.objects.create(detector_name=detector3,battery=50) #OFF
-
-    detector4 = Detector.objects.create(name="detector4",remarks="ultraaaa4")
-    detector4Use= DetectorUsage.objects.create(detector_name=detector4,used=False)
-    detector4Battery = DetectorBattery.objects.create(detector_name=detector4,battery=15) #OFF ,low batt
-
-    alert1 = Alert.objects.create(detector=detector1,wearable=wearable1,seen=False) #activated
-    alert2 = Alert.objects.create(detector=detector2,wearable=wearable2,seen=True) #acknowledged
+    #
+    #
+    # Detector.objects.all().delete()
+    # DetectorUsage.objects.all().delete()
+    # DetectorBattery.objects.all().delete()
+    #
+    # Wearable.objects.all().delete()
+    # WearableUsage.objects.all().delete()
+    # WearableBattery.objects.all().delete()
+    #
+    # Alert.objects.all().delete()
+    #
+    #
+    # #insert fake data
+    # wearable1 = Wearable.objects.create(name="wearable1",remarks="superrr1")
+    # wearable1Use= WearableUsage.objects.create(wearable_name=wearable1,used=True)
+    # wearable1Battery = WearableBattery.objects.create(wearable_name=wearable1,battery=10) #ON  LOW BATT
+    #
+    # wearable2 = Wearable.objects.create(name="wearable2",remarks="superrr2")
+    # wearable2Use= WearableUsage.objects.create(wearable_name=wearable2,used=True)
+    # wearable2Battery = WearableBattery.objects.create(wearable_name=wearable2,battery=50) #ON
+    #
+    # wearable3 = Wearable.objects.create(name="wearable3",remarks="superrr3")
+    # wearable3Use= WearableUsage.objects.create(wearable_name=wearable3,used=False)
+    # wearable3Battery = WearableBattery.objects.create(wearable_name=wearable3,battery=50) #OFF
+    #
+    # wearable4 = Wearable.objects.create(name="wearable4",remarks="superrr4")
+    # wearable4Use= WearableUsage.objects.create(wearable_name=wearable4,used=False)
+    # wearable4Battery = WearableBattery.objects.create(wearable_name=wearable4,battery=15) #OFF LOW BATT
+    #
+    # detector1 = Detector.objects.create(name="detector1",remarks="ultraaaa1")
+    # detector1Use= DetectorUsage.objects.create(detector_name=detector1,used=True)
+    # detector1Battery = DetectorBattery.objects.create(detector_name=detector1,battery=10)  #ON ,low batt
+    #
+    # detector2 = Detector.objects.create(name="detector2",remarks="ultraaaa2")
+    # detector2Use= DetectorUsage.objects.create(detector_name=detector2,used=True)
+    # detector2Battery = DetectorBattery.objects.create(detector_name=detector2,battery=50) #ON
+    #
+    # detector3 = Detector.objects.create(name="detector3",remarks="ultraaaa3")
+    # detector3Use= DetectorUsage.objects.create(detector_name=detector3,used=False)
+    # detector3Battery = DetectorBattery.objects.create(detector_name=detector3,battery=50) #OFF
+    #
+    # detector4 = Detector.objects.create(name="detector4",remarks="ultraaaa4")
+    # detector4Use= DetectorUsage.objects.create(detector_name=detector4,used=False)
+    # detector4Battery = DetectorBattery.objects.create(detector_name=detector4,battery=15) #OFF ,low batt
+    #
+    # alert1 = Alert.objects.create(detector=detector1,wearable=wearable1,seen=False) #activated
+    # alert2 = Alert.objects.create(detector=detector2,wearable=wearable2,seen=True) #acknowledged
 
 
     masterList= []
-    topNavArray= []
 
     detectorUsageUnique = []
     detectorUsage = []
