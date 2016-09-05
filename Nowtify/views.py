@@ -142,7 +142,7 @@ def dashboard(request):
     # detector3 = Detector.objects.create(name="detector3",remarks="ultraaaa3")
     # detector3Use= DetectorUsage.objects.create(detector_name=detector3,used=False)
     # detector3Battery = DetectorBattery.objects.create(detector_name=detector3,battery=50) #OFF
-    #
+    # 
     # detector4 = Detector.objects.create(name="detector4",remarks="ultraaaa4")
     # detector4Use= DetectorUsage.objects.create(detector_name=detector4,used=False)
     # detector4Battery = DetectorBattery.objects.create(detector_name=detector4,battery=15) #OFF ,low batt
@@ -175,42 +175,47 @@ def dashboard(request):
 
 #DetectorOnOff
     detectorCounter = 0
+    print(Detector.objects.all())
+    print("see above")
     for instanceDetector in Detector.objects.all():
         detectorUsageUnique.append(instanceDetector)
+    print (detectorUsageUnique)
     # there are many rows of data, this code will filter by each unique sensor, arrange from newest to oldest data
     # and get the first one, aka the latest data
 
 
     for detectorObject in detectorUsageUnique:
-        detectorUsage.append(DetectorUsage.objects.all().filter(detector_name__exact=detectorObject,updated__gte=startOfYtd).order_by('updated').first()) # order by time only for ON OFF
+        if DetectorUsage.objects.all().filter(detector_name__exact=detectorObject,updated__gte=startOfYtd).exists():
+            detectorUsage.append(DetectorUsage.objects.all().filter(detector_name__exact=detectorObject,updated__gte=startOfYtd).order_by('updated').first()) # order by time only for ON OFF
 
-    for instance in detectorUsage:
-        messageType=""
-        message=""
-        time=None
+    # if all(None for item in detectorUsage) and len(detectorUsage)== 4:
 
+            for instance in detectorUsage:
+                messageType=""
+                message=""
+                time=None
 
-        if instance.used == True:
-            messageType="Detector"
-            message=str(instance.detector_name.name) + " in Center 1 has been Switched ON"
+                if instance.used == True:
+                    messageType="Detector"
+                    message=str(instance.detector_name.name) + " in Center 1 has been Switched ON"
 
-            if(str(instance.updated.date()) == str(datetime.today().date())):
-                time = "Today " + str(instance.updated)[11:19]
-            else:
-                time=datetime.strptime(str(instance.updated)[:19],'%Y-%m-%d %H:%M:%S').strftime("%d-%m-%Y %H:%M:%S")
-            detectorCounter += 1
+                    if(str(instance.updated.date()) == str(datetime.today().date())):
+                        time = "Today " + str(instance.updated)[11:19]
+                    else:
+                        time=datetime.strptime(str(instance.updated)[:19],'%Y-%m-%d %H:%M:%S').strftime("%d-%m-%Y %H:%M:%S")
+                    detectorCounter += 1
 
-            masterList.append([messageType,message,time])
+                    masterList.append([messageType,message,time])
 
-        if instance.used == False:
-            messageType="Detector"
-            message=str(instance.detector_name.name) + " in Center 1 has been Switched OFF"
+                if instance.used == False:
+                    messageType="Detector"
+                    message=str(instance.detector_name.name) + " in Center 1 has been Switched OFF"
 
-            if(str(instance.updated.date()) == str(datetime.today().date())):
-                time = "Today " + str(instance.updated)[11:19]
-            else:
-                time=datetime.strptime(str(instance.updated)[:19],'%Y-%m-%d %H:%M:%S').strftime("%d-%m-%Y %H:%M:%S")
-            masterList.append([messageType,message,time])
+                    if(str(instance.updated.date()) == str(datetime.today().date())):
+                        time = "Today " + str(instance.updated)[11:19]
+                    else:
+                        time=datetime.strptime(str(instance.updated)[:19],'%Y-%m-%d %H:%M:%S').strftime("%d-%m-%Y %H:%M:%S")
+                    masterList.append([messageType,message,time])
 
 
 
@@ -224,24 +229,28 @@ def dashboard(request):
 
 
     for detectorObject in detectorBatteryUnique: #take all sensors
-        detectorBattery.append(DetectorBattery.objects.all().filter(detector_name__exact=detectorObject,updated__gte=startOfYtd).order_by('updated').first())
+        if DetectorBattery.objects.all().filter(detector_name__exact=detectorObject,updated__gte=startOfYtd).exists():
+            detectorBattery.append(DetectorBattery.objects.all().filter(detector_name__exact=detectorObject,updated__gte=startOfYtd).order_by('updated').first())
     #take only sensorBattery objects, filter by sensor name to prevent repeats, filer by condition, order by datetime,take latest
-    for instance in detectorBattery:
 
-        messageType=""
-        message=""
-        time=None
+    # if all(None for item in detectorBattery) and len(detectorUsage)== 4:
 
-        if(instance.battery)<= 30:
-            messageType="Detector"
-            message=str(instance.detector_name.name) + " in Center 1 is below 30% Battery, Recharge Required!"
+            for instance in detectorBattery:
 
-            if(str(instance.updated.date()) == str(datetime.today().date())):
-                time = "Today " + str(instance.updated)[11:19]
-            else:
-                time=datetime.strptime(str(instance.updated)[:19],'%Y-%m-%d %H:%M:%S').strftime("%d-%m-%Y %H:%M:%S")
+                messageType=""
+                message=""
+                time=None
 
-            masterList.append([messageType,message,time])
+                if(instance.battery)<= 30:
+                    messageType="Detector"
+                    message=str(instance.detector_name.name) + " in Center 1 is below 30% Battery, Recharge Required!"
+
+                    if(str(instance.updated.date()) == str(datetime.today().date())):
+                        time = "Today " + str(instance.updated)[11:19]
+                    else:
+                        time=datetime.strptime(str(instance.updated)[:19],'%Y-%m-%d %H:%M:%S').strftime("%d-%m-%Y %H:%M:%S")
+
+                    masterList.append([messageType,message,time])
 
 
 
@@ -256,34 +265,37 @@ def dashboard(request):
 
 
     for wearableObject in wearableUsageUnique:
-        wearableUsage.append(WearableUsage.objects.all().filter(wearable_name__exact=wearableObject,updated__gte=startOfYtd).order_by('updated').first()) # order by time only for ON OFF
+        if WearableUsage.objects.all().filter(wearable_name__exact=wearableObject,updated__gte=startOfYtd).exists():
+            wearableUsage.append(WearableUsage.objects.all().filter(wearable_name__exact=wearableObject,updated__gte=startOfYtd).order_by('updated').first()) # order by time only for ON OFF
 
-    for instance in wearableUsage:
-        messageType=""
-        message=""
-        time=None
+        # if all(None for item in wearableUsage) and len(detectorUsage)== 4:
 
-        if instance.used == True:
-            messageType="Wearable"
-            message=str(instance.wearable_name.name) + " in Center 1 has been Switched ON"
-            if(str(instance.updated.date()) == str(datetime.today().date())):
-                time = "Today " + str(instance.updated)[11:19]
-            else:
-                time=datetime.strptime(str(instance.updated)[:19],'%Y-%m-%d %H:%M:%S').strftime("%d-%m-%Y %H:%M:%S")
-            wearableCounter += 1
+            for instance in wearableUsage:
+                messageType=""
+                message=""
+                time=None
 
-            masterList.append([messageType,message,time])
+                if instance.used == True:
+                    messageType="Wearable"
+                    message=str(instance.wearable_name.name) + " in Center 1 has been Switched ON"
+                    if(str(instance.updated.date()) == str(datetime.today().date())):
+                        time = "Today " + str(instance.updated)[11:19]
+                    else:
+                        time=datetime.strptime(str(instance.updated)[:19],'%Y-%m-%d %H:%M:%S').strftime("%d-%m-%Y %H:%M:%S")
+                    wearableCounter += 1
 
-        if instance.used == False:
-            messageType="Wearable"
-            message=str(instance.wearable_name.name) + " in Center 1 has been Switched OFF"
+                    masterList.append([messageType,message,time])
 
-            if(str(instance.updated.date()) == str(datetime.today().date())):
-                time = "Today " + str(instance.updated)[11:19]
-            else:
-                time=datetime.strptime(str(instance.updated)[:19],'%Y-%m-%d %H:%M:%S').strftime("%d-%m-%Y %H:%M:%S")
+                if instance.used == False:
+                    messageType="Wearable"
+                    message=str(instance.wearable_name.name) + " in Center 1 has been Switched OFF"
 
-            masterList.append([messageType,message,time])
+                    if(str(instance.updated.date()) == str(datetime.today().date())):
+                        time = "Today " + str(instance.updated)[11:19]
+                    else:
+                        time=datetime.strptime(str(instance.updated)[:19],'%Y-%m-%d %H:%M:%S').strftime("%d-%m-%Y %H:%M:%S")
+
+                    masterList.append([messageType,message,time])
 
 
 
@@ -295,24 +307,28 @@ def dashboard(request):
 
 
     for wearableObject in wearableBatteryUnique: #take all sensors
-        wearableBattery.append(WearableBattery.objects.all().filter(wearable_name__exact=wearableObject,updated__gte=startOfYtd).order_by('updated').first())
+        if WearableBattery.objects.all().filter(wearable_name__exact=wearableObject,updated__gte=startOfYtd).exists():
+            wearableBattery.append(WearableBattery.objects.all().filter(wearable_name__exact=wearableObject,updated__gte=startOfYtd).order_by('updated').first())
     #take only sensorBattery objects, filter by sensor name to prevent repeats, filer by condition, order by datetime, take latest
-    for instance in wearableBattery:
 
-        messageType=""
-        message=""
-        time=None
+    # if all(None for item in wearableBattery) and len(detectorUsage)== 4:
 
-        if(instance.battery)<= 30:
-            messageType="Wearable"
-            message=(str(instance.wearable_name.name)) + " in Center 1 is below 30% Battery, Recharge Required!"
+            for instance in wearableBattery:
 
-            if(str(instance.updated.date()) == str(datetime.today().date())):
-                time = "Today " + str(instance.updated)[11:19]
-            else:
-                time=datetime.strptime(str(instance.updated)[:19],'%Y-%m-%d %H:%M:%S').strftime("%d-%m-%Y %H:%M:%S")
+                messageType=""
+                message=""
+                time=None
 
-            masterList.append([messageType,message,time])
+                if(instance.battery)<= 30:
+                    messageType="Wearable"
+                    message=(str(instance.wearable_name.name)) + " in Center 1 is below 30% Battery, Recharge Required!"
+
+                    if(str(instance.updated.date()) == str(datetime.today().date())):
+                        time = "Today " + str(instance.updated)[11:19]
+                    else:
+                        time=datetime.strptime(str(instance.updated)[:19],'%Y-%m-%d %H:%M:%S').strftime("%d-%m-%Y %H:%M:%S")
+
+                    masterList.append([messageType,message,time])
 
 
 # AlertActivated and Deactivated  #Acknowledgement might be removed
@@ -325,43 +341,48 @@ def dashboard(request):
 
 
     for alertObject in alertUnique: #take all sensors
-
+        if Alert.objects.all().filter(detector__exact=alertObject.detector,datetime__gte=startOfYtd).exists():
             alertList.append(Alert.objects.all().filter(detector__exact=alertObject.detector,datetime__gte=startOfYtd).order_by('datetime').first())
     # take only sensorBattery objects, filter by sensor name to prevent repeats, filer by condition, order by datetime,take latest
-    for instance in alertList:
 
-        messageType=""
-        message=""
-        time=None
+    # if all(None for item in alertList) and len(detectorUsage)== 4:
+            for instance in alertList:
 
-        if(instance.seen==False):
-            messageType="Alert"
-            message="Alert Activated in Center 1! Detector "+ str(instance.detector.name)
+                messageType=""
+                message=""
+                time=None
 
-            if(str(instance.datetime.date()) == str(datetime.today().date())):
-                time = "Today " + str(instance.datetime)[11:19]
+                if(instance.seen==False):
+                    messageType="Alert"
+                    message="Alert Activated in Center 1! Detector "+ str(instance.detector.name)
 
-                alertCounter += 1
+                    if(str(instance.datetime.date()) == str(datetime.today().date())):
+                        time = "Today " + str(instance.datetime)[11:19]
 
-            else:
-                time=datetime.strptime(str(instance.datetime)[:19],'%Y-%m-%d %H:%M:%S').strftime("%d-%m-%Y %H:%M:%S")
+                        alertCounter += 1
 
-            masterList.append([messageType,message,time])
+                    else:
+                        time=datetime.strptime(str(instance.datetime)[:19],'%Y-%m-%d %H:%M:%S').strftime("%d-%m-%Y %H:%M:%S")
 
-        if(instance.seen==True):
-            messageType="Alert"
-            message="Alert Acknowledged in Center 1! Alert Band "+ str(instance.wearable.name) #ack might not be implemented
+                    masterList.append([messageType,message,time])
 
-            if(str(instance.datetime.date()) == str(datetime.today().date())):
-                time = "Today " + str(instance.datetime)[11:19]
-            else:
-                time=datetime.strptime(str(instance.datetime)[:19],'%Y-%m-%d %H:%M:%S').strftime("%d-%m-%Y %H:%M:%S")
+                if(instance.seen==True):
+                    messageType="Alert"
+                    message="Alert Acknowledged in Center 1! Alert Band "+ str(instance.wearable.name) #ack might not be implemented
 
-            masterList.append([messageType,message,time])
+                    if(str(instance.datetime.date()) == str(datetime.today().date())):
+                        time = "Today " + str(instance.datetime)[11:19]
+                    else:
+                        time=datetime.strptime(str(instance.datetime)[:19],'%Y-%m-%d %H:%M:%S').strftime("%d-%m-%Y %H:%M:%S")
+
+                    masterList.append([messageType,message,time])
 
 
     #sort by time
-    newsFeedList = sorted(masterList, key=itemgetter(2))
+    if len(masterList) > 0:
+        newsFeedList = sorted(masterList, key=itemgetter(2))
+    else:
+        newsFeedList = []
 
     print(alertCounter)
     print(detectorCounter)
