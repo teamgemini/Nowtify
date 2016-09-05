@@ -16,7 +16,9 @@ Sensor Management
 
 {% block content %}
 
-		<div class="row">
+    <meta http-equiv="refresh" content="30" /> <!-- refresh every 30seconds -->
+
+    <div class="row">
 			<div class="col-xs-12 col-md-6 col-lg-3">
 				<div class="panel panel-blue panel-widget ">
 					<div class="row no-padding">
@@ -115,7 +117,7 @@ Sensor Management
 
 
       <div class="panel panel-default chat" >
-					<div class="panel-heading" id="accordion"><svg class="glyph stroked two-messages"><use xlink:href="#stroked-two-messages"></use></svg>Newsfeed</div>
+					<div class="panel-heading" id="accordion"><svg class="glyph stroked two-messages"><use xlink:href="#stroked-two-messages"></use></svg>Newsfeed<input type="button" class="btn btn-default" onClick="history.go(0)" value="Refresh" style="float: right"></div>
 
 					<div class="panel-body">
                         <script>
