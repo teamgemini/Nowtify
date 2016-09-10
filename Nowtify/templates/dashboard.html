@@ -15,17 +15,18 @@ Sensor Management
 
 
 {% block content %}
-
+<br>
+<br>
     <meta http-equiv="refresh" content="30" /> <!-- refresh every 30seconds -->
 
     <div class="row">
 			<div class="col-xs-12 col-md-6 col-lg-3">
 				<div class="panel panel-blue panel-widget ">
 					<div class="row no-padding">
-						<div class="col-sm-3 col-lg-5 widget-left">
+						<div class="col-sm-3 col-lg-4 widget-left">
 							<svg class="glyph stroked bag"><use xlink:href="#stroked-bag"></use></svg>
 						</div>
-						<div class="col-sm-9 col-lg-7 widget-right">
+						<div class="col-sm-9 col-lg-6 widget-right">
                             <div class="large">
                                 <script>
                                 alertCounter = {{ alertCounter | safe }}
@@ -40,10 +41,10 @@ Sensor Management
 			<div class="col-xs-12 col-md-6 col-lg-3">
 				<div class="panel panel-orange panel-widget">
 					<div class="row no-padding">
-						<div class="col-sm-3 col-lg-5 widget-left">
+						<div class="col-sm-3 col-lg-4 widget-left">
 							<svg class="glyph stroked empty-message"><use xlink:href="#stroked-empty-message"></use></svg>
 						</div>
-						<div class="col-sm-9 col-lg-7 widget-right">
+						<div class="col-sm-9 col-lg-6 widget-right">
 							<div class="large">T.B.D</div>
 							<div class="text-muted">Alerts This Week</div>
 						</div>
@@ -71,10 +72,10 @@ Sensor Management
 			<div class="col-xs-12 col-md-6 col-lg-3">
 				<div class="panel panel-red panel-widget">
 					<div class="row no-padding">
-						<div class="col-sm-3 col-lg-5 widget-left">
+						<div class="col-sm-3 col-lg-4 widget-left">
 							<svg class="glyph stroked male-user"><use xlink:href="#stroked-male-user"></use></svg>
 						</div>
-						<div class="col-sm-9 col-lg-7 widget-right">
+						<div class="col-sm-9 col-lg-6 widget-right">
 							<div class="large">
                                 <script>
                                     wearableCounter = {{ wearableCounter | safe }}
@@ -86,7 +87,75 @@ Sensor Management
 					</div>
 				</div>
 			</div>
+
+
+
 		</div><!--/.row-->
+
+
+        <div class="section group">
+             <div class="col span_1_of_5">
+                <div style="">
+                    <div class="large">
+                            <script>
+                            alertCounter = {{ alertCounter | safe }}
+                            document.write(alertCounter);
+                            </script>
+                    </div>
+                    <div class="text-muted">Alerts Today</div>
+                </div>
+            </div>
+
+            <div class="col span_1_of_5">
+                <div style="">
+                    <div class="large">
+                            <script>
+                            alertCounter = {{ alertCounter | safe }}
+                            document.write(alertCounter);
+                            </script>
+                    </div>
+                    <div class="text-muted">Alerts Today</div>
+                </div>
+            </div>
+
+            <div class="col span_1_of_5 widget-right" style="background-color: #ffffff">
+                    <div class="large">
+                            <script>
+                            alertCounter = {{ alertCounter | safe }}
+                            document.write(alertCounter);
+                            </script>
+                    </div>
+                    <div class="text-muted">Alerts Today</div>
+            </div>
+
+            <div class="col span_1_of_5 widget-right" style="background-color: #ffffff">
+                <div>
+                    <div class="large">
+                            <script>
+                            alertCounter = {{ alertCounter | safe }}
+                            document.write(alertCounter);
+                            </script>
+                    </div>
+                    <div class="text-muted">Alerts Today</div>
+                </div>
+            </div>
+
+            <div class="col span_1_of_5 widget-right" style="background-color: #ffffff">
+                <div>
+                    <div class="large">
+                            <script>
+                            alertCounter = {{ alertCounter | safe }}
+                            document.write(alertCounter);
+                            </script>
+                    </div>
+                    <div class="text-muted">Alerts Today</div>
+                </div>
+            </div>
+        </div>
+
+        <br>
+        <br>
+
 
 {##}
 {#      <div class="row">#}
