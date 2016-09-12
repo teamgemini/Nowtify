@@ -20,7 +20,52 @@
 
 						<table id="data-table" class="table" data-toggle="table" data-show-refresh="false" data-sort-name="Sensor ID" data-sort-order="asd">
 
-                            <button type="button" class="btn btn-default" data-toggle="modal" data-target="#assignWearable" style="float: right">Rename Sensor</button>
+                          <!-- #modal 1 -->
+                        <div id="renamesensor" class="modal fade" role="dialog">
+                          <div class="modal-dialog">
+
+                            <!-- Modal content-->
+                            <div class="modal-content">
+
+                              <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                <h4 class="modal-title">Rename Sensor</h4>
+                              </div>
+
+                              <div class="modal-body">
+                               <form action="//" method="post">{% csrf_token %}
+                                  <fieldset>
+                                  <div class="form-group">
+                                        <label>Select Sensor ID</label>
+                                        <select class="form-control" name="wearableName" type="text">
+
+                                            <script>
+                                                wearableNamesArrayLength = {{wearableNames|safe}}.length
+                                                for (i = 0; i < wearableNamesArrayLength; i++) {
+                                                    document.write("<option>" + {{wearableNames|safe}}[i][0] + "</option>");
+                                                }
+                                            </script>
+                                        </select>
+                                  </div>
+
+                                  <div class="form-group">
+                                    <label>Enter new sensor ID</label>
+								    <input class="form-control" placeholder="Name" name="assignee" type="text">
+                                  </div>
+
+                                  <input type="submit" class="btn btn-primary" value="Assign"/>
+                                  <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+
+                                  </fieldset>
+                               </form>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+
+
+                            <button type="button" class="btn btn-default" data-toggle="modal" data-target="#renamesensor" style="float: right">Rename Sensor</button>
                             <br>
                             <br>
 						      <thead>

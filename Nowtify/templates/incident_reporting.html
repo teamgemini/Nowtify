@@ -14,6 +14,12 @@ Dashboard
 {% block page3 %}active{% endblock %}
 
 {% block content %}
+{#<script src="{% static 'js/chart.min.js' %}"></script>#}
+{#<script src="{% static 'js/chart-data.js' %}"></script>#}
+{#<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/0.2.0/Chart.min.js" type="text/javascript"></script>#}
+<script src="{% static 'js/chart.min.js' %}"></script>
+<script src="{% static 'js/chart-data.js' %}"></script>
+
 <br>
 <br>
 <div class="row">
@@ -74,6 +80,79 @@ Dashboard
 				</div>
 
 
+            <div class="row">
+			<div class="col-lg-12">
+				<div class="panel panel-default">
+					<div class="panel-heading">Bar Chart</div>
+					<div class="panel-body">
 
+						<div class="canvas-wrapper">
+							<canvas class="main-chart" id="alerts" height="400" width="800"></canvas>
+                            <script>
+                             var barData = {
+{#                                labels : ["January","February","March","April","May","June"],#}
+{#                                datasets : [#}
+{#                                    {#}
+{#                                        data : [456,479,324,569,702,600]#}
+{#                                    },#}
+{#                                    {#}
+{#                                        data : [364,504,605,400,345,320]#}
+{#                                    }#}
+{##}
+{#                                ]#}
+                                 labels : ["January","February","March","April","May","June","July","July","July","July","July","July"],
+                                    datasets : [
+
+                                        {
+                                            fillColor : "rgba(48, 164, 255, 0.2)",
+                                            strokeColor : "rgba(48, 164, 255, 0.8)",
+                                            highlightFill : "rgba(48, 164, 255, 0.75)",
+                                            highlightStroke : "rgba(48, 164, 255, 1)",
+                                            data : [randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor()]
+                                        }
+                                    ]
+                            }
+                             var alerts = document.getElementById("alerts").getContext("2d");
+                             new Chart(alerts).Bar(barData);
+
+{#                                var pieData = [#}
+{#                                    {#}
+{#                                        value: 20,#}
+{#                                        color:"#878BB6"#}
+{#                                    },#}
+{#                                    {#}
+{#                                        value : 40,#}
+{#                                        color : "#4ACAB4"#}
+{#                                    },#}
+{#                                    {#}
+{#                                        value : 10,#}
+{#                                        color : "#FF8153"#}
+{#                                    },#}
+{#                                    {#}
+{#                                        value : 30,#}
+{#                                        color : "#FFEA88"#}
+{#                                    }#}
+{#                                ];#}
+{#                                // Get the context of the canvas element we want to select#}
+{#                                var countries= document.getElementById("countries").getContext("2d");#}
+{#                                new Chart(countries).Pie(pieData);#}
+
+
+                            </script>
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</div><!--/.row-->
+
+    </div>
+</div>
+    <script src="{% static 'js/easypiechart.js' %}"></script>
+    <script src="{% static 'js/easypiechart-data.js' %}"></script>
+    <script src="{% static 'js/jquery-1.11.1.min.js' %}"></script>
+	<script src="{% static 'js/bootstrap.min.js' %}"></script>
+	<script src="{% static 'js/bootstrap-datepicker.js' %}"></script>
+    <script src="{% static 'js/bootstrap-table.js' %}"></script>
 
 {% endblock %}
