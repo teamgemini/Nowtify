@@ -444,9 +444,9 @@ def detector(request):
         else:
             action = "Battery under 30"
 
-            detectorData.append(
-                [str(detectorObject.name), usage, "Center " + str(detectorLocation[count]), str(detectorBattery[count]) + "%",
-                 action, (str(detectorUpdated[count]))[:19]])
+        detectorData.append(
+            [str(detectorObject.name), usage, "Center " + str(detectorLocation[count]), str(detectorBattery[count]) + "%",
+             action, (str(detectorUpdated[count]))[:19]])
         count += 1
 
     return render(request, "detectors.html", {'dataSet': detectorData})
