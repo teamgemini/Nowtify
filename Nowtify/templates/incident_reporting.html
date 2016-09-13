@@ -21,7 +21,7 @@ Dashboard
 				<div class="panel panel-default">
 					<div class="panel-heading"><svg class="glyph stroked email"><use xlink:href="#stroked-email"></use></svg>Alert Report</div>
 					<div class="panel-body">
-						<form action="" method="post">
+                        <form action="/incident_reporting_process/" method="post">{% csrf_token %}
 							<fieldset>
                                  <br>
                                  <br>
@@ -29,7 +29,7 @@ Dashboard
 								<div class="form-group">
 									<label class="col-md-3 control-label" for="name">Name of Client</label>
 									<div class="col-md-9">
-									<input id="elderly" name="name" type="text" placeholder="" class="form-control">
+									<input id="clientName" name="clientName" type="text" placeholder="" class="form-control">
 									</div>
 								</div>
                                 <br>
@@ -38,7 +38,15 @@ Dashboard
 								<div class="form-group">
 									<label class="col-md-3 control-label" for="email">Name of Caregiver</label>
 									<div class="col-md-9">
-										<input id="caregiver" name="caregiver" type="text" placeholder="" class="form-control">
+										<input id="caregiverName" name="caregiverName" type="text" placeholder="" class="form-control">
+									</div>
+								</div>
+                                 <br>
+                                 <br>
+                                <div class="form-group">
+									<label class="col-md-3 control-label" for="email">Your Name</label>
+									<div class="col-md-9">
+										<input id="authorName" name="authorName" type="text" placeholder="" class="form-control">
 									</div>
 								</div>
                                  <br>
@@ -46,7 +54,7 @@ Dashboard
                                 <div class="form-group">
 									<label class="col-md-3 control-label" for="email">Date and Time </label>
 									<div class="col-md-9">
-										<input id="date" name="date" type="datetime-local" placeholder="" class="form-control">
+										<input id="datetime" name="datetime" type="datetime-local" placeholder="" class="form-control">
 									</div>
 								</div>
 
@@ -56,7 +64,7 @@ Dashboard
 								<div class="form-group">
 									<label class="col-md-3 control-label" for="message">Reason</label>
 									<div class="col-md-9">
-										<textarea class="form-control" id="message" name="message" placeholder="Please enter your message here..." rows="5"></textarea>
+										<textarea class="form-control" id="comments" name="comments" placeholder="Please enter your message here..." rows="5"></textarea>
 									</div>
 								</div>
 

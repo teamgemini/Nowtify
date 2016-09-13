@@ -32,7 +32,8 @@ urlpatterns = patterns('',
                        url(r'^incident_reporting/', views.incident_reporting, name='incident_reporting'),
                        url(r'^change_password/', views.settings, name='settings'),
                        url(r'^alert/', views.alert, name='alert'),
-                       url(r'^update_assignment/', views.update_assignment, name='update_assignment')
+                       url(r'^update_assignment/', views.update_assignment, name='update_assignment'),
+                        url(r'^incident_reporting_process/', views.incident_reporting_process, name='incident_reporting_process')
 
 
                        # Nowtify Pages

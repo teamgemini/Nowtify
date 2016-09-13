@@ -13,7 +13,7 @@ from django.contrib.auth.models import User
 from django.db import transaction
 from Nowtify.models import Wearable, WearableBattery, WearableUsage
 from Nowtify.models import Detector, DetectorBattery, DetectorUsage
-from Nowtify.models import Alert, Assignment
+from Nowtify.models import Alert, Assignment, IncidentReport
 from operator import itemgetter
 from datetime import datetime,timedelta
 import time
@@ -618,10 +618,6 @@ def update_assignment(request):
 
     #return render(request, "alert_bands.html", {'successMessage': assignee + ' has been assigned to ' + wearableName })
 
-@login_required(login_url='')
-def incident_reporting(request):
-    return render(request, "incident_reporting.html")
-
 
 @login_required(login_url='')
 def settings(request):
@@ -644,3 +640,25 @@ def handler404(request):
                                   context_instance=RequestContext(request))
     response.status_code = 404
     return response
+
+
+@login_required(login_url='')
+def incident_reporting(request):
+    return render(request, "incident_reporting.html")
+
+
+@login_required(login_url='')
+def incident_reporting_process(request):
+    c = {}
+    c.update(csrf(request))
+
+    clientNameInput = request.POST['clientName']
+    caregiverNameInput = request.POST['caregiverName']
+    authorNameInput = request.POST['authorName']
+    commentsInput = request.POST['comments']
+    datetimeInput = request.POST['datetime']
+
+    incidentReport = IncidentReport(client_name=clientNameInput, caregiver_name=caregiverNameInput, author_name=authorNameInput, comments=commentsInput, datetime=datetimeInput)
+    incidentReport.save()
+
+    return render(request, 'incident_reporting.html', {'error': 'enter'})
