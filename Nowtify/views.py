@@ -644,3 +644,9 @@ def handler404(request):
                                   context_instance=RequestContext(request))
     response.status_code = 404
     return response
+
+
+
+@login_required(login_url='')
+def data_analysis(request):
+    return render(request, "data_analysis.html")
