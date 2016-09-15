@@ -657,8 +657,8 @@ def incident_reporting_process(request):
     authorNameInput = request.POST['authorName']
     commentsInput = request.POST['comments']
     datetimeInput = request.POST['datetime']
-
-    incidentReport = IncidentReport(client_name=clientNameInput, caregiver_name=caregiverNameInput, author_name=authorNameInput, comments=commentsInput, datetime=datetimeInput)
+    dateTimeObject = datetime.strptime(datetimeInput, '%Y-%m-%dT%H:%M')
+    incidentReport = IncidentReport(client_name=clientNameInput, caregiver_name=caregiverNameInput, author_name=authorNameInput, comments=commentsInput, datetime=dateTimeObject)
     incidentReport.save()
 
-    return render(request, 'incident_reporting.html', {'error': 'enter'})
+    return render(request, 'incident_reporting.html', {'error': 'Incident report saved.'})
