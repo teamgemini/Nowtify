@@ -1,3 +1,10 @@
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment-with-locales.js"></script>
+{#<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>#}
+<script src="http://cdn.rawgit.com/Eonasdan/bootstrap-datetimepicker/a549aa8780dbda16f6cff545aeabc3d71073911e/src/js/bootstrap-datetimepicker.js"></script>
+{#<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet"/>#}
+<link href="http://cdn.rawgit.com/Eonasdan/bootstrap-datetimepicker/a549aa8780dbda16f6cff545aeabc3d71073911e/build/css/bootstrap-datetimepicker.css" rel="stylesheet"/>
+
 {% extends "web/base.html" %}
 {% load staticfiles %}
 {% load url from future %}
@@ -6,20 +13,21 @@
 Dashboard
 {% endblock %}
 
-{% block display_title %} Dashboard {% endblock %}
+{% block display_title %} Incident Report {% endblock %}
 
 {% block current_page %}{% endblock %}
 {% block page1 %}{% endblock %}
 {% block page2 %}{% endblock %}
 {% block page3 %}active{% endblock %}
 
-{% block content %}
-{#<script src="{% static 'js/chart.min.js' %}"></script>#}
-{#<script src="{% static 'js/chart-data.js' %}"></script>#}
-{#<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/0.2.0/Chart.min.js" type="text/javascript"></script>#}
-<script src="{% static 'js/chart.min.js' %}"></script>
-<script src="{% static 'js/chart-data.js' %}"></script>
+{#<script src="{% static 'js/moment-with-locales.js' %}"></script>#}
+{#<script src="{% static 'js/bootstrap-datetimepicker.js' %}"></script>#}
+{#<script src="{% static 'js/bootstrap.min.js' %}"></script>#}
+{#<script src="{% static 'js/jquery-3.1.0.js' %}"></script>#}
+{#<link href="{% static 'css/bootstrap-datetimepicker.css' %}" rel="stylesheet">#}
 
+
+{% block content %}
 <br>
 <br>
 <div class="row">
@@ -27,7 +35,7 @@ Dashboard
 				<div class="panel panel-default">
 					<div class="panel-heading"><svg class="glyph stroked email"><use xlink:href="#stroked-email"></use></svg>Alert Report</div>
 					<div class="panel-body">
-						<form action="" method="post">
+                        <form action="/incident_reporting_process/" method="post">{% csrf_token %}
 							<fieldset>
                                  <br>
                                  <br>
@@ -35,7 +43,7 @@ Dashboard
 								<div class="form-group">
 									<label class="col-md-3 control-label" for="name">Name of Client</label>
 									<div class="col-md-9">
-									<input id="elderly" name="name" type="text" placeholder="" class="form-control">
+									<input id="clientName" name="clientName" type="text" placeholder="" class="form-control">
 									</div>
 								</div>
                                 <br>
@@ -44,16 +52,51 @@ Dashboard
 								<div class="form-group">
 									<label class="col-md-3 control-label" for="email">Name of Caregiver</label>
 									<div class="col-md-9">
-										<input id="caregiver" name="caregiver" type="text" placeholder="" class="form-control">
+										<input id="caregiverName" name="caregiverName" type="text" placeholder="" class="form-control">
+									</div>
+								</div>
+                                 <br>
+                                 <br>
+                                <div class="form-group">
+									<label class="col-md-3 control-label" for="email">Your Name</label>
+									<div class="col-md-9">
+										<input id="authorName" name="authorName" type="text" placeholder="" class="form-control">
 									</div>
 								</div>
                                  <br>
                                  <br>
                                 <div class="form-group">
 									<label class="col-md-3 control-label" for="email">Date and Time </label>
-									<div class="col-md-9">
-										<input id="date" name="date" type="datetime-local" placeholder="" class="form-control">
-									</div>
+{#									<div class="col-md-9">#}
+{#										<input id="datetimepicker4" name="datetime" type="text" placeholder="" class="form-control">#}
+{#                                            <script type="text/javascript">#}
+{#                                                $(function () {#}
+{#                                                    $('#datetimepicker4').datetimepicker();#}
+{#                                                });#}
+{#                                            </script>#}
+{#									</div>#}
+
+                                    <div class="container">
+                                        <div class="row">
+                                            <div class='col-sm-6'>
+                                                <div class="form-group">
+                                                    <div class='input-group date' id='datetimepicker1'>
+                                                        <input type='text' class="form-control" />
+                                                        <span class="input-group-addon">
+                                                            <span class="glyphicon glyphicon-calendar"></span>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <script>
+                                                $(function () {
+                                                    $('#datetimepicker1').datetimepicker();
+                                                });
+                                            </script>
+                                        </div>
+                                    </div>
+
+
 								</div>
 
                                  <br>
@@ -62,7 +105,7 @@ Dashboard
 								<div class="form-group">
 									<label class="col-md-3 control-label" for="message">Reason</label>
 									<div class="col-md-9">
-										<textarea class="form-control" id="message" name="message" placeholder="Please enter your message here..." rows="5"></textarea>
+										<textarea class="form-control" id="comments" name="comments" placeholder="Please enter your message here..." rows="5"></textarea>
 									</div>
 								</div>
 
@@ -76,83 +119,28 @@ Dashboard
 								</div>
 							</fieldset>
 						</form>
+                        {% if incidentReported %}
+                        <div class="col-xs-10 col-xs-offset-1 col-sm-8 col-sm-offset-2 col-md-4 col-md-offset-4">
+                            <div class="alert alert-success" role="alertdialog">
+                                <strong><center> Incident has been successfully reported </center></strong>
+                            </div>
+                        </div>
+                        {% endif %}
+
 					</div>
 				</div>
+            </div>
+<div>
 
+<script>
 
-            <div class="row">
-			<div class="col-lg-12">
-				<div class="panel panel-default">
-					<div class="panel-heading">Bar Chart</div>
-					<div class="panel-body">
+    $('.alert-success').delay(3000).fadeOut();
 
-						<div class="canvas-wrapper">
-							<canvas class="main-chart" id="alerts" height="400" width="800"></canvas>
-                            <script>
-                             var barData = {
-{#                                labels : ["January","February","March","April","May","June"],#}
-{#                                datasets : [#}
-{#                                    {#}
-{#                                        data : [456,479,324,569,702,600]#}
-{#                                    },#}
-{#                                    {#}
-{#                                        data : [364,504,605,400,345,320]#}
-{#                                    }#}
-{##}
-{#                                ]#}
-                                 labels : ["January","February","March","April","May","June","July","July","July","July","July","July"],
-                                    datasets : [
+{#    $('#datetimepicker').datetimepicker({#}
+{#    minDate: moment()#}
+{#    });#}
 
-                                        {
-                                            fillColor : "rgba(48, 164, 255, 0.2)",
-                                            strokeColor : "rgba(48, 164, 255, 0.8)",
-                                            highlightFill : "rgba(48, 164, 255, 0.75)",
-                                            highlightStroke : "rgba(48, 164, 255, 1)",
-                                            data : [randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor()]
-                                        }
-                                    ]
-                            }
-                             var alerts = document.getElementById("alerts").getContext("2d");
-                             new Chart(alerts).Bar(barData);
-
-{#                                var pieData = [#}
-{#                                    {#}
-{#                                        value: 20,#}
-{#                                        color:"#878BB6"#}
-{#                                    },#}
-{#                                    {#}
-{#                                        value : 40,#}
-{#                                        color : "#4ACAB4"#}
-{#                                    },#}
-{#                                    {#}
-{#                                        value : 10,#}
-{#                                        color : "#FF8153"#}
-{#                                    },#}
-{#                                    {#}
-{#                                        value : 30,#}
-{#                                        color : "#FFEA88"#}
-{#                                    }#}
-{#                                ];#}
-{#                                // Get the context of the canvas element we want to select#}
-{#                                var countries= document.getElementById("countries").getContext("2d");#}
-{#                                new Chart(countries).Pie(pieData);#}
-
-
-                            </script>
-
-						</div>
-					</div>
-				</div>
-			</div>
-		</div><!--/.row-->
-
-    </div>
-</div>
-    <script src="{% static 'js/easypiechart.js' %}"></script>
-    <script src="{% static 'js/easypiechart-data.js' %}"></script>
-    <script src="{% static 'js/jquery-1.11.1.min.js' %}"></script>
-	<script src="{% static 'js/bootstrap.min.js' %}"></script>
-	<script src="{% static 'js/bootstrap-datepicker.js' %}"></script>
-    <script src="{% static 'js/bootstrap-table.js' %}"></script>
-
+</script>
 {% endblock %}
+
+
