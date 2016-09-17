@@ -705,7 +705,28 @@ def handler404(request):
     return response
 
 
-
 @login_required(login_url='')
 def data_analysis(request):
     return render(request, "data_analysis.html")
+
+
+@login_required(login_url='')
+def incident_reporting(request):
+    return render(request, "incident_reporting.html")
+
+
+@login_required(login_url='')
+def incident_reporting_process(request):
+    c = {}
+    c.update(csrf(request))
+
+    clientNameInput = request.POST['clientName']
+    caregiverNameInput = request.POST['caregiverName']
+    authorNameInput = request.POST['authorName']
+    commentsInput = request.POST['comments']
+    datetimeInput = request.POST['datetime']
+    dateTimeObject = datetime.strptime(datetimeInput, '%Y-%m-%dT%H:%M')
+    incidentReport = IncidentReport(client_name=clientNameInput, caregiver_name=caregiverNameInput, author_name=authorNameInput, comments=commentsInput, datetime=dateTimeObject)
+    incidentReport.save()
+
+    return render(request, 'incident_reporting.html', {'error': 'Incident report saved.'})

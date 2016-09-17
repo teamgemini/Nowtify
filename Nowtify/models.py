@@ -89,7 +89,7 @@ class DetectorBattery(models.Model):
 
 class Alert(models.Model):
     datetime = models.DateTimeField(auto_now_add=True, auto_now=False)
-    detector = models.OneToOneField(Detector)
+    detector = models.ForeignKey(Detector, on_delete=models.CASCADE)
     seen = models.BooleanField(default=False)
     wearable = models.ForeignKey(Wearable, null=True, blank=True, default=None)
 
@@ -104,3 +104,14 @@ class Assignment(models.Model):
 
     class Meta:
         db_table = "NowtifyWeb_assignment"
+
+
+class IncidentReport(models.Model):
+    client_name = models.CharField(max_length=50)
+    caregiver_name = models.CharField(max_length=50)
+    author_name = models.CharField(max_length=50)
+    datetime = models.DateTimeField(auto_now_add=True, auto_now=False)
+    comments = models.CharField(max_length=500)
+
+    class Meta:
+        db_table = "NowtifyWeb_incident_report"
