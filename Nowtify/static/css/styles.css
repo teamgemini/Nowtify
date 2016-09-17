@@ -47,8 +47,8 @@ Version 1.0
 
 /*  GO FULL WIDTH BELOW 480 PIXELS */
 @media only screen and (max-width: 480px) {
-	.col {  margin: 1% 0 1% 5%; }
-	.span_1_of_5, .span_2_of_5, .span_3_of_5, .span_4_of_5, .span_5_of_5 { width: 100%; }
+	.col {  margin: 1% 1% 1% 5%; }
+	.span_1_of_5, .span_2_of_5, .span_3_of_5, .span_4_of_5, .span_5_of_5 { width: 80%; }
 }
 
 

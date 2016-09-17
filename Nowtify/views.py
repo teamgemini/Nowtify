@@ -444,9 +444,9 @@ def detector(request):
         else:
             action = "Battery under 30"
 
-            detectorData.append(
-                [str(detectorObject.name), usage, "Center " + str(detectorLocation[count]), str(detectorBattery[count]) + "%",
-                 action, (str(detectorUpdated[count]))[:19]])
+        detectorData.append(
+            [str(detectorObject.name), usage, "Center " + str(detectorLocation[count]), str(detectorBattery[count]) + "%",
+             action, (str(detectorUpdated[count]))[:19]])
         count += 1
 
     return render(request, "detectors.html", {'dataSet': detectorData})
@@ -644,3 +644,9 @@ def handler404(request):
                                   context_instance=RequestContext(request))
     response.status_code = 404
     return response
+
+
+
+@login_required(login_url='')
+def data_analysis(request):
+    return render(request, "data_analysis.html")
