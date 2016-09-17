@@ -33,7 +33,8 @@ urlpatterns = patterns('',
                        url(r'^change_password/', views.settings, name='settings'),
                        url(r'^alert/', views.alert, name='alert'),
                        url(r'^update_assignment/', views.update_assignment, name='update_assignment'),
-                       url(r'^data_analysis/', views.data_analysis, name='data_analysis')
+                       url(r'^data_analysis/', views.data_analysis, name='data_analysis'),
+                       url(r'^incident_reporting_process/', views.incident_reporting_process, name='incident_reporting_process')
 
 
 
