@@ -22,9 +22,9 @@ Sensor Management
     <div class="row">
 
 
-            <form id="form-id" method="post">{% csrf_token %}
-                <input type="hidden" value="hello" name="data" />
-                <a href="/authentication/" onclick="document.getElementById('form-id').submit();">
+            <form id="form-id" action="/process_data_analysis/" method="post">{% csrf_token %}
+                <input type="hidden" value="hello" name="data"/>
+                <a href="#" onclick="document.getElementById('form-id').submit();">
                 <div class="col-xs-12 col-md-6 col-lg-6">
                     <div class="panel panel-red panel-widget">
                         <div class="row no-padding">
