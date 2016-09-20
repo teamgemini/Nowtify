@@ -115,9 +115,9 @@ def dashboard(request):
     # WearableBattery.objects.all().delete()
     #
     # Alert.objects.all().delete()
+    # DO NOT DELETE YET, Gathering Data over time
 
-
-    # # #insert fake data
+    # #insert fake data
     # wearable1 = Wearable.objects.create(name="wearable1",remarks="superrr1")
     # wearable1Use= WearableUsage.objects.create(wearable_name=wearable1,used=True)
     # wearable1Battery = WearableBattery.objects.create(wearable_name=wearable1,battery=10) #ON  LOW BATT
@@ -133,8 +133,41 @@ def dashboard(request):
     # wearable4 = Wearable.objects.create(name="wearable4",remarks="superrr4")
     # wearable4Use= WearableUsage.objects.create(wearable_name=wearable4,used=False)
     # wearable4Battery = WearableBattery.objects.create(wearable_name=wearable4,battery=15) #OFF LOW BATT
+
+    # wearable5 = Wearable.objects.create(name="wearable5",remarks="i want the name")
+    # wearable5Use= WearableUsage.objects.create(wearable_name=wearable5,used=True)
+    # wearable5Battery = WearableBattery.objects.create(wearable_name=wearable5,battery=13) #ON  LOW BATT
+    #
+    # assignment5 = Assignment.objects.create(name="Donald Duck",wearable_name=wearable5)
     #
     #
+    # wearable6 = Wearable.objects.create(name="wearable6",remarks="More names")
+    # wearable6Use= WearableUsage.objects.create(wearable_name=wearable6,used=False)
+    # wearable6Battery = WearableBattery.objects.create(wearable_name=wearable6,battery=50) #OFF
+    #
+    # assignment6 = Assignment.objects.create(name="Donald Duck",wearable_name=wearable6)
+    #
+    #
+    #
+    # wearable7 = Wearable.objects.create(name="wearable7",remarks="No Caregiver")
+    # wearable7Use= WearableUsage.objects.create(wearable_name=wearable7,used=True)
+    # wearable7Battery = WearableBattery.objects.create(wearable_name=wearable7,battery=13) #ON  LOW BATT
+    #
+    # wearable8 = Wearable.objects.create(name="wearable8",remarks="Also No Caregiver")
+    # wearable8Use= WearableUsage.objects.create(wearable_name=wearable8,used=False)
+    # wearable8Battery = WearableBattery.objects.create(wearable_name=wearable8,battery=50) #OFF
+
+    # wearable20 = Wearable.objects.create(name="wearable20",remarks="Caregiver20")
+    # wearable20Use= WearableUsage.objects.create(wearable_name=wearable20,used=True)
+    # wearable20Battery = WearableBattery.objects.create(wearable_name=wearable20,battery=13) #ON  LOW BATT
+    #
+    # wearable21 = Wearable.objects.create(name="wearable21",remarks="Caregiver10")
+    # wearable21Use= WearableUsage.objects.create(wearable_name=wearable21,used=False)
+    # wearable21Battery = WearableBattery.objects.create(wearable_name=wearable21,battery=50) #OFF
+    #
+    # assignment20 = Assignment.objects.create(name="ccccccc", wearable_name=wearable20)
+    # assignment21 = Assignment.objects.create(name="ddddddd", wearable_name=wearable21)
+
     # detector1 = Detector.objects.create(name="detector1",remarks="ultraaaa1")
     # detector1Use= DetectorUsage.objects.create(detector_name=detector1,used=True)
     # detector1Battery = DetectorBattery.objects.create(detector_name=detector1,battery=10)  #ON ,low batt
@@ -163,6 +196,9 @@ def dashboard(request):
 
     detectorBatteryUnique = []
     detectorBattery = []
+
+    # assignmentUnique = []
+    # assignmentList = []
 
     wearableUsageUnique = []
     wearableUsage = []
@@ -267,21 +303,30 @@ def dashboard(request):
     # there are many rows of data, this code will filter by each unique wearable, arrange from newest to oldest data
     # and get the first one, aka the latest data
 
-
     for wearableObject in wearableUsageUnique:
         if WearableUsage.objects.all().filter(wearable_name__exact=wearableObject,updated__gte=startOfYtd).exists():
             wearableUsage.append(WearableUsage.objects.all().filter(wearable_name__exact=wearableObject,updated__gte=startOfYtd).order_by('updated').first()) # order by time only for ON OFF
 
-        # if all(None for item in wearableUsage) and len(detectorUsage)== 4:
+    #call for all assignment objects
+    allAssignment = Assignment.objects.all()
 
     for instance in wearableUsage:
         messageType=""
         message=""
         time=None
+        caregiver = "" #to store assigned caregiver name
 
         if instance.used == True:
             messageType="Wearable"
-            message=str(instance.wearable_name.name) + " in Center 1 has been Switched ON"
+
+            #get assignment for the wearable instance
+            if allAssignment.filter(wearable_name__exact=instance.wearable_name, update__gte=startOfYtd).exists():
+                caregiver = allAssignment.filter(wearable_name__exact=instance.wearable_name, update__gte=startOfYtd).order_by('update').first().name
+                message = str(instance.wearable_name.name) + " in Center 1 has been Switched ON by " + str(caregiver)
+            else:
+                message = str(
+                    instance.wearable_name.name) + " in Center 1 has been Switched ON, no Caregiver assigned yet"
+
             if(str(instance.updated.date()) == str(datetime.today().date())):
                 timestamp = "Today " + str(instance.updated)[11:19]
             else:
@@ -292,7 +337,14 @@ def dashboard(request):
 
         if instance.used == False:
             messageType="Wearable"
-            message=str(instance.wearable_name.name) + " in Center 1 has been Switched OFF"
+
+            # compare lists to see if a Caregiver has been assigned to the wearable,change message accordingly
+            if allAssignment.filter(wearable_name__exact=instance.wearable_name, update__gte=startOfYtd).exists():
+                caregiver = allAssignment.filter(wearable_name__exact=instance.wearable_name, update__gte=startOfYtd).order_by('update').first().name
+                message = str(instance.wearable_name.name) + " in Center 1 has been Switched OFF by " + str(caregiver)
+            else:
+                message = str(
+                    instance.wearable_name.name) + " in Center 1 has been Switched OFF, no Caregiver assigned yet"
 
             if(str(instance.updated.date()) == str(datetime.today().date())):
                 timestamp = "Today " + str(instance.updated)[11:19]
@@ -322,10 +374,17 @@ def dashboard(request):
         messageType=""
         message=""
         timestamp=None
+        caregiver = ""
 
         if(instance.battery)<= 30:
             messageType="Wearable"
-            message=(str(instance.wearable_name.name)) + " in Center 1 is below 30% Battery, Recharge Required!"
+
+            if allAssignment.filter(wearable_name__exact=instance.wearable_name, update__gte=startOfYtd).exists():
+                caregiver = allAssignment.filter(wearable_name__exact=instance.wearable_name,update__gte=startOfYtd).order_by('update').first().name
+                message = (str(instance.wearable_name.name)) + " in Center 1 is below 30% Battery, Recharge Required!, Assigned to " + caregiver
+            else:
+                message= (str(instance.wearable_name.name)) + " in Center 1 is below 30% Battery, Recharge Required! No Caregiver Assigned yet"
+
 
             if(str(instance.updated.date()) == str(datetime.today().date())):
                 timestamp = "Today " + str(instance.updated)[11:19]
