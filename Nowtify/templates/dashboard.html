@@ -20,309 +20,309 @@ Sensor Management
     <meta http-equiv="refresh" content="30" /> <!-- refresh every 30seconds -->
 
     <div class="row">
-			<div class="col-xs-12 col-md-6 col-lg-3">
-				<div class="panel panel-blue panel-widget ">
-					<div class="row no-padding">
-						<div class="col-sm-3 col-lg-4 widget-left">
-							<svg class="glyph stroked bag"><use xlink:href="#stroked-bag"></use></svg>
-						</div>
-						<div class="col-sm-9 col-lg-6 widget-right">
-                            <div class="large">
-                                <script>
-                                alertCounter = {{ alertCounter | safe }}
-                                document.write(alertCounter);
-                                </script>
+
+
+            <form id="form-id" method="post">{% csrf_token %}
+                <input type="hidden" value="hello" name="data" />
+                <a href="/authentication/" onclick="document.getElementById('form-id').submit();">
+                <div class="col-xs-12 col-md-6 col-lg-6">
+                    <div class="panel panel-red panel-widget">
+                        <div class="row no-padding">
+                            <div class="col-sm-2 col-lg-2 widget-left">
+                                <svg class="glyph stroked empty-message"><use xlink:href="#stroked-empty-message"></use></svg>
                             </div>
-							<div class="text-muted">Alerts Today</div>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="col-xs-12 col-md-6 col-lg-3">
+                            <div class="col-sm-9 col-lg-6 widget-right">
+                                <div class="large">
+                                    <script>
+                                        alertCounter = {{ alertCounter | safe }}
+                                        document.write(alertCounter);
+                                    </script>
+
+                                </div>
+                                <div class="text-muted">Alerts Today</div>
+                            </div>
+                        </div>
+                    </div>
+			    </div></a>
+            </form>
+
+            <a href="/detectors/"><div class="col-xs-12 col-md-6 col-lg-6">
 				<div class="panel panel-orange panel-widget">
 					<div class="row no-padding">
-						<div class="col-sm-3 col-lg-4 widget-left">
+						<div class="col-sm-2 col-lg-2 widget-left">
 							<svg class="glyph stroked empty-message"><use xlink:href="#stroked-empty-message"></use></svg>
 						</div>
 						<div class="col-sm-9 col-lg-6 widget-right">
-							<div class="large">T.B.D</div>
+							<div class="large">
+                                <script>
+                                    alertCounter = {{ alertCounter | safe }}
+                                    document.write(alertCounter);
+                                </script>
+                            </div>
+							<div class="text-muted">Sensors On</div>
+						</div>
+					</div>
+				</div>
+			</div></a>
+
+             <a href="/data_analysis/"><div class="col-xs-12 col-md-6 col-lg-6">
+				<div class="panel panel-orange panel-widget">
+					<div class="row no-padding">
+						<div class="col-sm-2 col-lg-2 widget-left">
+							<svg class="glyph stroked empty-message"><use xlink:href="#stroked-empty-message"></use></svg>
+						</div>
+						<div class="col-sm-9 col-lg-6 widget-right">
+							<div class="large">
+                                <script>
+                                    alertCounter = {{ alertCounter | safe }}
+                                    document.write(alertCounter);
+                                </script>
+                            </div>
 							<div class="text-muted">Alerts This Week</div>
 						</div>
 					</div>
 				</div>
-			</div>
-			<div class="col-xs-12 col-md-6 col-lg-3">
+			</div></a>
+
+             <a href="/data_analysis/"><div class="col-xs-12 col-md-6 col-lg-6">
 				<div class="panel panel-teal panel-widget">
 					<div class="row no-padding">
-						<div class="col-sm-3 col-lg-5 widget-left">
-							<svg class="glyph stroked male-user"><use xlink:href="#stroked-male-user"></use></svg>
-						</div>
-						<div class="col-sm-9 col-lg-7 widget-right">
-							<div class="large">
-                                <script>
-                                    detectorCounter = {{ detectorCounter | safe }}
-                                    document.write(detectorCounter);
-                                </script>
-                            </div>
-							<div class="text-muted">Detectors ON</div>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="col-xs-12 col-md-6 col-lg-3">
-				<div class="panel panel-red panel-widget">
-					<div class="row no-padding">
-						<div class="col-sm-3 col-lg-4 widget-left">
-							<svg class="glyph stroked male-user"><use xlink:href="#stroked-male-user"></use></svg>
+						<div class="col-sm-2 col-lg-2 widget-left">
+							<svg class="glyph stroked empty-message"><use xlink:href="#stroked-empty-message"></use></svg>
 						</div>
 						<div class="col-sm-9 col-lg-6 widget-right">
 							<div class="large">
                                 <script>
-                                    wearableCounter = {{ wearableCounter | safe }}
-                                    document.write(wearableCounter);
+                                    alertCounter = {{ alertCounter | safe }}
+                                    document.write(alertCounter);
                                 </script>
                             </div>
-							<div class="text-muted">Alert Bands ON</div>
+							<div class="text-muted">Wearables On</div>
 						</div>
 					</div>
 				</div>
-			</div>
+			</div></a>
 
-
-		</div><!--/.row-->
-
-        <div class="row">
-            <div class="col-xs-12 col-md-4 col-lg-2">
-                <div class="panel panel-red panel-widget">
+             <a href="/data_analysis/"><div class="col-xs-12 col-md-6 col-lg-6">
+				<div class="panel panel-blue panel-widget">
 					<div class="row no-padding">
-                        <div class="col-sm-4 col-lg-4 widget-left">
-                             <svg class="glyph stroked male-user"><use xlink:href="#stroked-male-user"></use></svg>
-                        </div>
-                        <div class="col-sm-9 col-lg-8 widget-right">
-                            <div class="large">
+						<div class="col-sm-2 col-lg-2 widget-left">
+							<svg class="glyph stroked empty-message"><use xlink:href="#stroked-empty-message"></use></svg>
+						</div>
+						<div class="col-sm-9 col-lg-6 widget-right">
+							<div class="large">
                                 <script>
-                                    detectorCounter = {{ detectorCounter | safe }}
-                                    document.write(detectorCounter);
+                                    alertCounter = {{ alertCounter | safe }}
+                                    document.write(alertCounter + " out of " + "10");
                                 </script>
-                        </div>
-                             <div class="text-muted">Detectors ON</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-             <div class="col-xs-12 col-md-4 col-lg-2">
-                <div class="panel panel-red panel-widget">
-					<div class="row no-padding">
-                        <div class="col-sm-4 col-lg-4 widget-left">
-                             <svg class="glyph stroked male-user"><use xlink:href="#stroked-male-user"></use></svg>
-                        </div>
-                        <div class="col-sm-9 col-lg-8 widget-right">
-                            <div class="large">
-                                <script>
-                                    detectorCounter = {{ detectorCounter | safe }}
-                                    document.write(detectorCounter);
-                                </script>
-                        </div>
-                             <div class="text-muted">Detectors ON</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-             <div class="col-xs-12 col-md-4 col-lg-2">
-                <div class="panel panel-red panel-widget">
-					<div class="row no-padding">
-                        <div class="col-sm-4 col-lg-4 widget-left">
-                             <svg class="glyph stroked male-user"><use xlink:href="#stroked-male-user"></use></svg>
-                        </div>
-                        <div class="col-sm-9 col-lg-8 widget-right">
-                            <div class="large">
-                                <script>
-                                    detectorCounter = {{ detectorCounter | safe }}
-                                    document.write(detectorCounter);
-                                </script>
-                        </div>
-                             <div class="text-muted">Detectors ON</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-             <div class="col-xs-12 col-md-4 col-lg-2">
-                <div class="panel panel-red panel-widget">
-					<div class="row no-padding">
-                        <div class="col-sm-4 col-lg-4 widget-left">
-                             <svg class="glyph stroked male-user"><use xlink:href="#stroked-male-user"></use></svg>
-                        </div>
-                        <div class="col-sm-9 col-lg-8 widget-right">
-                            <div class="large">
-                                <script>
-                                    detectorCounter = {{ detectorCounter | safe }}
-                                    document.write(detectorCounter);
-                                </script>
-                        </div>
-                             <div class="text-muted">Detectors ON</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-             <div class="col-xs-12 col-md-4 col-lg-2">
-                <div class="panel panel-red panel-widget">
-					<div class="row no-padding">
-                        <div class="col-sm-4 col-lg-4 widget-left">
-                             <svg class="glyph stroked male-user"><use xlink:href="#stroked-male-user"></use></svg>
-                        </div>
-                        <div class="col-sm-9 col-lg-8 widget-right">
-                            <div class="large">
-                                <script>
-                                    detectorCounter = {{ detectorCounter | safe }}
-                                    document.write(detectorCounter);
-                                </script>
-                        </div>
-                             <div class="text-muted">Detectors ON</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-        </div>
+                            </div>
+							<div class="text-muted">Alerts This Month</div>
+						</div>
+					</div>
+				</div>
+			</div></a>
 
 
+{#			<div class="col-xs-10 col-md-5 col-lg-3">#}
+{#				<div class="panel panel-teal panel-widget">#}
+{#					<div class="row no-padding">#}
+{#						<div class="col-sm-3 col-lg-5 widget-left">#}
+{#							<svg class="glyph stroked male-user"><use xlink:href="#stroked-male-user"></use></svg>#}
+{#						</div>#}
+{#						<div class="col-sm-9 col-lg-7 widget-right">#}
+{#							<div class="large">#}
+{#                                <script>#}
+{#                                    detectorCounter = {{ detectorCounter | safe }}#}
+{#                                    document.write(detectorCounter);#}
+{#                                </script>#}
+{#                            </div>#}
+{#							<div class="text-muted">Detectors ON</div>#}
+{#						</div>#}
+{#					</div>#}
+{#				</div>#}
+{#			</div>#}
+{#			<div class="col-xs-10 col-md-5 col-lg-3">#}
+{#				<div class="panel panel-red panel-widget">#}
+{#					<div class="row no-padding">#}
+{#						<div class="col-sm-3 col-lg-4 widget-left">#}
+{#							<svg class="glyph stroked male-user"><use xlink:href="#stroked-male-user"></use></svg>#}
+{#						</div>#}
+{#						<div class="col-sm-9 col-lg-6 widget-right">#}
+{#							<div class="large">#}
+{#                                <script>#}
+{#                                    wearableCounter = {{ wearableCounter | safe }}#}
+{#                                    document.write(wearableCounter);#}
+{#                                </script>#}
+{#                            </div>#}
+{#							<div class="text-muted">Alert Bands ON</div>#}
+{#						</div>#}
+{#					</div>#}
+{#				</div>#}
+{#			</div>#}
+{##}
+{#            <div class="col-xs-10 col-md-5 col-lg-3">#}
+{#				<div class="panel panel-red panel-widget">#}
+{#					<div class="row no-padding">#}
+{#						<div class="col-sm-3 col-lg-4 widget-left">#}
+{#							<svg class="glyph stroked male-user"><use xlink:href="#stroked-male-user"></use></svg>#}
+{#						</div>#}
+{#						<div class="col-sm-9 col-lg-6 widget-right">#}
+{#							<div class="large">#}
+{#                                <script>#}
+{#                                    wearableCounter = {{ wearableCounter | safe }}#}
+{#                                    document.write(wearableCounter);#}
+{#                                </script>#}
+{#                            </div>#}
+{#							<div class="text-muted">Alert Bands ON</div>#}
+{#						</div>#}
+{#					</div>#}
+{#				</div>#}
+{#			</div>#}
 
-        <div class="row-fluid">
-            <div class="span2 offset2">
-                <div class="col span_1_of_5 widget-right" style="background-color: #ffffff">
-                <div>
-                    <div class="large">
-                            <script>
-                            alertCounter = {{ alertCounter | safe }}
-                            document.write(alertCounter);
-                            </script>
-                    </div>
-                    <div class="text-muted">Alerts Today</div>
-                </div>
-            </div>
-            </div>
-            <div class="span2 offset2">
-                <div class="col span_1_of_5 widget-right" style="background-color: #ffffff">
-                <div>
-                    <div class="large">
-                            <script>
-                            alertCounter = {{ alertCounter | safe }}
-                            document.write(alertCounter);
-                            </script>
-                    </div>
-                    <div class="text-muted">Alerts Today</div>
-                </div>
-            </div>
-            </div>
-            <div class="span2">
-                <div class="col span_1_of_5 widget-right" style="background-color: #ffffff">
-                <div>
-                    <div class="large">
-                            <script>
-                            alertCounter = {{ alertCounter | safe }}
-                            document.write(alertCounter);
-                            </script>
-                    </div>
-                    <div class="text-muted">Alerts Today</div>
-                </div>
-            </div>
-            </div>
-            <div class="span2">
-                <div class="col span_1_of_5 widget-right" style="background-color: #ffffff">
-                <div>
-                    <div class="large">
-                            <script>
-                            alertCounter = {{ alertCounter | safe }}
-                            document.write(alertCounter);
-                            </script>
-                    </div>
-                    <div class="text-muted">Alerts Today</div>
-                </div>
-            </div>
-            </div>
-            <div class="span2">
-                <div class="col span_1_of_5 widget-right" style="background-color: #ffffff">
-                <div>
-                    <div class="large">
-                            <script>
-                            alertCounter = {{ alertCounter | safe }}
-                            document.write(alertCounter);
-                            </script>
-                    </div>
-                    <div class="text-muted">Alerts Today</div>
-                </div>
-            </div>
-            </div>
-        </div>
+        {#            <div class="col-xs-10 col-md-5 col-lg-3">#}
+{#				<div class="panel panel-red panel-widget">#}
+{#					<div class="row no-padding">#}
+{#						<div class="col-sm-3 col-lg-4 widget-left">#}
+{#							<svg class="glyph stroked male-user"><use xlink:href="#stroked-male-user"></use></svg>#}
+{#						</div>#}
+{#						<div class="col-sm-9 col-lg-6 widget-right">#}
+{#							<div class="large">#}
+{#                                <script>#}
+{#                                    wearableCounter = {{ wearableCounter | safe }}#}
+{#                                    document.write(wearableCounter);#}
+{#                                </script>#}
+{#                            </div>#}
+{#							<div class="text-muted">Alert Bands ON</div>#}
+{#						</div>#}
+{#					</div>#}
+{#				</div>#}
+{#			</div>#}
 
 
-        <div class="section group">
-             <div class="col span_1_of_5">
-                <div style="">
-                    <div class="large">
-                            <script>
-                            alertCounter = {{ alertCounter | safe }}
-                            document.write(alertCounter);
-                            </script>
-                    </div>
-                    <div class="text-muted">Alerts Today</div>
-                </div>
-            </div>
+		</center></div><!--/.row-->
 
-            <div class="col span_1_of_5">
-                <div style="">
-                    <div class="large">
-                            <script>
-                            alertCounter = {{ alertCounter | safe }}
-                            document.write(alertCounter);
-                            </script>
-                    </div>
-                    <div class="text-muted">Alerts Today</div>
-                </div>
-            </div>
+{#        <div class="row">#}
+{#            <div class="col-xs-12 col-md-4 col-lg-2">#}
+{#                <div class="panel panel-red panel-widget">#}
+{#					<div class="row no-padding">#}
+{#                        <div class="col-sm-4 col-lg-4 widget-left">#}
+{#                             <svg class="glyph stroked male-user"><use xlink:href="#stroked-male-user"></use></svg>#}
+{#                        </div>#}
+{#                        <div class="col-sm-9 col-lg-8 widget-right">#}
+{#                            <div class="large">#}
+{#                                <script>#}
+{#                                    detectorCounter = {{ detectorCounter | safe }}#}
+{#                                    document.write(detectorCounter);#}
+{#                                </script>#}
+{#                        </div>#}
+{#                             <div class="text-muted">Detectors ON</div>#}
+{#                        </div>#}
+{#                    </div>#}
+{#                </div>#}
+{#            </div>#}
+{##}
+{#             <div class="col-xs-12 col-md-4 col-lg-2">#}
+{#                <div class="panel panel-red panel-widget">#}
+{#					<div class="row no-padding">#}
+{#                        <div class="col-sm-4 col-lg-4 widget-left">#}
+{#                             <svg class="glyph stroked male-user"><use xlink:href="#stroked-male-user"></use></svg>#}
+{#                        </div>#}
+{#                        <div class="col-sm-9 col-lg-8 widget-right">#}
+{#                            <div class="large">#}
+{#                                <script>#}
+{#                                    detectorCounter = {{ detectorCounter | safe }}#}
+{#                                    document.write(detectorCounter);#}
+{#                                </script>#}
+{#                        </div>#}
+{#                             <div class="text-muted">Detectors ON</div>#}
+{#                        </div>#}
+{#                    </div>#}
+{#                </div>#}
+{#            </div>#}
+{##}
+{#             <div class="col-xs-12 col-md-4 col-lg-2">#}
+{#                <div class="panel panel-red panel-widget">#}
+{#					<div class="row no-padding">#}
+{#                        <div class="col-sm-4 col-lg-4 widget-left">#}
+{#                             <svg class="glyph stroked male-user"><use xlink:href="#stroked-male-user"></use></svg>#}
+{#                        </div>#}
+{#                        <div class="col-sm-9 col-lg-8 widget-right">#}
+{#                            <div class="large">#}
+{#                                <script>#}
+{#                                    detectorCounter = {{ detectorCounter | safe }}#}
+{#                                    document.write(detectorCounter);#}
+{#                                </script>#}
+{#                        </div>#}
+{#                             <div class="text-muted">Detectors ON</div>#}
+{#                        </div>#}
+{#                    </div>#}
+{#                </div>#}
+{#            </div>#}
+{##}
+{#             <div class="col-xs-12 col-md-4 col-lg-2">#}
+{#                <div class="panel panel-red panel-widget">#}
+{#					<div class="row no-padding">#}
+{#                        <div class="col-sm-4 col-lg-4 widget-left">#}
+{#                             <svg class="glyph stroked male-user"><use xlink:href="#stroked-male-user"></use></svg>#}
+{#                        </div>#}
+{#                        <div class="col-sm-9 col-lg-8 widget-right">#}
+{#                            <div class="large">#}
+{#                                <script>#}
+{#                                    detectorCounter = {{ detectorCounter | safe }}#}
+{#                                    document.write(detectorCounter);#}
+{#                                </script>#}
+{#                        </div>#}
+{#                             <div class="text-muted">Detectors ON</div>#}
+{#                        </div>#}
+{#                    </div>#}
+{#                </div>#}
+{#            </div>#}
+{##}
+{#             <div class="col-xs-12 col-md-4 col-lg-2">#}
+{#                <div class="panel panel-red panel-widget">#}
+{#					<div class="row no-padding">#}
+{#                        <div class="col-sm-4 col-lg-4 widget-left">#}
+{#                             <svg class="glyph stroked male-user"><use xlink:href="#stroked-male-user"></use></svg>#}
+{#                        </div>#}
+{#                        <div class="col-sm-9 col-lg-8 widget-right">#}
+{#                            <div class="large">#}
+{#                                <script>#}
+{#                                    detectorCounter = {{ detectorCounter | safe }}#}
+{#                                    document.write(detectorCounter);#}
+{#                                </script>#}
+{#                        </div>#}
+{#                             <div class="text-muted">Detectors ON</div>#}
+{#                        </div>#}
+{#                    </div>#}
+{#                </div>#}
+{#            </div>#}
+{##}
+{##}
+{#            <div class="col-xs-12 col-md-4 col-lg-2">#}
+{#                <div class="panel panel-red panel-widget">#}
+{#					<div class="row no-padding">#}
+{#                        <div class="col-sm-4 col-lg-4 widget-left">#}
+{#                             <svg class="glyph stroked male-user"><use xlink:href="#stroked-male-user"></use></svg>#}
+{#                        </div>#}
+{#                        <div class="col-sm-9 col-lg-8 widget-right">#}
+{#                            <div class="large">#}
+{#                                <script>#}
+{#                                    detectorCounter = {{ detectorCounter | safe }}#}
+{#                                    document.write(detectorCounter);#}
+{#                                </script>#}
+{#                        </div>#}
+{#                             <div class="text-muted">Detectors ON</div>#}
+{#                        </div>#}
+{#                    </div>#}
+{#                </div>#}
+{#            </div>#}
+{##}
+{##}
+{#        </div>#}
 
-            <div class="col span_1_of_5 widget-right" style="background-color: #ffffff">
-                    <div class="large">
-                            <script>
-                            alertCounter = {{ alertCounter | safe }}
-                            document.write(alertCounter);
-                            </script>
-                    </div>
-                    <div class="text-muted">Alerts Today</div>
-            </div>
 
-            <div class="col span_1_of_5 widget-right" style="background-color: #ffffff">
-                <div>
-                    <div class="large">
-                            <script>
-                            alertCounter = {{ alertCounter | safe }}
-                            document.write(alertCounter);
-                            </script>
-                    </div>
-                    <div class="text-muted">Alerts Today</div>
-                </div>
-            </div>
-
-            <div class="col span_1_of_5 widget-right" style="background-color: #ffffff">
-                <div>
-                    <div class="large">
-                            <script>
-                            alertCounter = {{ alertCounter | safe }}
-                            document.write(alertCounter);
-                            </script>
-                    </div>
-                    <div class="text-muted">Alerts Today</div>
-                </div>
-            </div>
-        </div>
-
-        <br>
-        <br>
-
+    <br>
+    <br>
 
 {##}
 {#      <div class="row">#}

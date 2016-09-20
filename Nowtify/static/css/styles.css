@@ -144,7 +144,8 @@ h3, h4 {
 }
 
 .navbar-header .navbar-brand span {
-	color: #30a5ff;
+	/*color: #30a5ff;*/
+	color: #9E2B56;
 }
 
 /*Buttons*/
