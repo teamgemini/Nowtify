@@ -145,13 +145,37 @@ Data Analysis
                                         </div>
                                     </div>
                        </div>
+{#----------------------#}
+                      <div id="select_date4" class="form-group col-lg-12" style="display: none;">
 
+                              <label class="col-sm-1" for="start_date">From</label>
+                                    <div class="col-md-3">
+{#                                      <input name="start_date" type="date" placeholder="" class="form-control">#}
+                                        <div class='input-group date' id='datetimepicker7'>
+                                            <input type='text' class="form-control" />
+                                            <span class="input-group-addon">
+                                                <span class="glyphicon glyphicon-calendar"></span>
+                                            </span>
+                                        </div>
+                                    </div>
+
+                             <label class="col-md-1" for="end_date">To</label>
+                                    <div class="col-md-3">
+{#                                        <input name="end_date" type="date" placeholder="" class="form-control">#}
+                                        <div class='input-group date' id='datetimepicker8'>
+                                            <input type='text' class="form-control" />
+                                            <span class="input-group-addon">
+                                                <span class="glyphicon glyphicon-calendar"></span>
+                                            </span>
+                                        </div>
+                                    </div>
+                       </div>
 
                         <div id="select_time" class="form-group col-lg-12" style="display: none;">
                             <label class="col-sm-1" for="start_date">Start Time</label>
                                 <div class="col-md-3">
 {#                                    <input name="start_time" type="date" placeholder="start time" class="form-control">#}
-                                        <div class='input-group date' id='datetimepicker7'>
+                                        <div class='input-group date' id='datetimepicker9'>
                                             <input name="start_time" type='text' class="form-control" />
                                             <span class="input-group-addon">
                                                 <span class="glyphicon glyphicon-time"></span>
@@ -160,7 +184,7 @@ Data Analysis
 
                                         <script type="text/javascript">
                                             $(function () {
-                                                $('#datetimepicker7').datetimepicker({
+                                                $('#datetimepicker9').datetimepicker({
                                                     format: 'LT',
                                                     stepping: 30
                                                 });
@@ -174,7 +198,7 @@ Data Analysis
                             <label class="col-md-1" for="end_date">End Time</label>
                                 <div class="col-md-3">
 {#                                    <input name="end_time" type="date" placeholder="end time" class="form-control">#}
-                                        <div class='input-group date' id='datetimepicker8'>
+                                        <div class='input-group date' id='datetimepicker10'>
                                             <input name="start_time" type='text' class="form-control" />
                                             <span class="input-group-addon">
                                                 <span class="glyphicon glyphicon-time"></span>
@@ -183,7 +207,7 @@ Data Analysis
 
                                         <script type="text/javascript">
                                             $(function () {
-                                                $('#datetimepicker8').datetimepicker({
+                                                $('#datetimepicker10').datetimepicker({
                                                     format: 'LT',
                                                     stepping: 30
                                                 });
@@ -287,11 +311,15 @@ Data Analysis
                     $('#datetimepicker1').datetimepicker({
                         viewMode: 'months',
                         format: 'MM/YYYY',
+                        maxDate: new Date()
+
                     });
                     $('#datetimepicker2').datetimepicker({
                         viewMode: 'months',
                         format: 'MM/YYYY',
-                        useCurrent: false //Important!
+                        useCurrent: false, //Important!
+                        maxDate: new Date()
+
                     });
 
                     $("#datetimepicker1").on("dp.change", function (e) {
@@ -312,13 +340,13 @@ Data Analysis
                 document.getElementById("select_date2").style.display = "block";
                 $(function () {
                     $('#datetimepicker3').datetimepicker({
-                       format: 'DD/MM/YYYY',
-                       daysOfWeekDisabled:[0,2,3,4,5,6]
+                        format: 'DD/MM/YYYY',
+                        daysOfWeekDisabled:[0,2,3,4,5,6]
                     });
                     $('#datetimepicker4').datetimepicker({
                         format: 'DD/MM/YYYY',
-                        daysOfWeekDisabled:[0,1,2,3,4,6],
-                        useCurrent: false //Important!
+                        useCurrent: false, //Important!
+                        daysOfWeekDisabled:[0,1,2,3,4,6]
                     });
 
                     $("#datetimepicker3").on("dp.change", function (e) {
@@ -335,17 +363,18 @@ Data Analysis
                 document.getElementById("select_date2").style.display = "none";
             }
 
-            if (that.value == "3") {
-{#                alert("check");#}
+            if(that.value == "2"){
                 document.getElementById("select_date3").style.display = "block";
-                document.getElementById("select_time").style.display = "block";
                 $(function () {
                     $('#datetimepicker5').datetimepicker({
                        format: 'DD/MM/YYYY',
+                        maxDate: new Date()
+
                     });
                     $('#datetimepicker6').datetimepicker({
                         format: 'DD/MM/YYYY',
-                        useCurrent: false //Important!
+                        useCurrent: false, //Important!
+                        maxDate: new Date()
                     });
 
                     $("#datetimepicker5").on("dp.change", function (e) {
@@ -355,10 +384,40 @@ Data Analysis
                     $("#datetimepicker6").on("dp.change", function (e) {
                     $('#datetimepicker5').data("DateTimePicker").maxDate(e.date);
                     });
+
+                });
+
+            }else {
+                document.getElementById("select_date3").style.display = "none";
+            }
+
+
+            if (that.value == "3") {
+{#                alert("check");#}
+                document.getElementById("select_date4").style.display = "block";
+                document.getElementById("select_time").style.display = "block";
+                $(function () {
+                    $('#datetimepicker7').datetimepicker({
+                       format: 'DD/MM/YYYY',
+                        maxDate: new Date()
+                    });
+                    $('#datetimepicker8').datetimepicker({
+                        format: 'DD/MM/YYYY',
+                        useCurrent: false, //Important!
+                        maxDate: new Date()
+                    });
+
+                    $("#datetimepicker7").on("dp.change", function (e) {
+                    $('#datetimepicker8').data("DateTimePicker").minDate(e.date);
+                    });
+
+                    $("#datetimepicker8").on("dp.change", function (e) {
+                    $('#datetimepicker7').data("DateTimePicker").maxDate(e.date);
+                    });
                 });
 
             } else {
-                document.getElementById("select_date3").style.display = "none";
+                document.getElementById("select_date4").style.display = "none";
                 document.getElementById("select_time").style.display = "none";
             }
 
