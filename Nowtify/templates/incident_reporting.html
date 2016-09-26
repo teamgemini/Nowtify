@@ -31,16 +31,31 @@ Dashboard
 <br>
 <br>
 <div class="row">
+
+
+    {% if incidentReported %}
+    <div class="col-xs-10 col-xs-offset-1 col-sm-8 col-sm-offset-2 col-md-4 col-md-offset-4">
+        <div class="alert alert-success" role="alertdialog">
+            <strong><center>Incident Report has been Submitted!</center></strong>
+        </div>
+    </div>
+    {% endif %}
+
+
 			<div class="col-md-12">
-				<div class="panel panel-default">
-					<div class="panel-heading"><svg class="glyph stroked email"><use xlink:href="#stroked-email"></use></svg>Alert Report</div>
-					<div class="panel-body">
+
+                <div class="panel panel-default">
+
+                    <div class="panel-heading"><svg class="glyph stroked email"><use xlink:href="#stroked-email"></use></svg>Alert Report</div>
+                    <div class="panel-body">
+
                         <form action="/incident_reporting_process/" method="post">{% csrf_token %}
 							<fieldset>
                                  <br>
                                  <br>
 								<!-- Name input-->
 								<div class="form-group">
+
 									<label class="col-md-3 control-label" for="name">Name of Client</label>
 									<div class="col-md-9">
 									<input id="clientName" name="clientName" type="text" placeholder="" class="form-control">
@@ -81,7 +96,7 @@ Dashboard
                                             <div class='col-sm-6'>
                                                 <div class="form-group">
                                                     <div class='input-group date' id='datetimepicker1'>
-                                                        <input type='text' class="form-control" />
+                                                        <input type='text' id="datetime" name="datetime" class="form-control" />
                                                         <span class="input-group-addon">
                                                             <span class="glyphicon glyphicon-calendar"></span>
                                                         </span>
@@ -119,13 +134,7 @@ Dashboard
 								</div>
 							</fieldset>
 						</form>
-                        {% if incidentReported %}
-                        <div class="col-xs-10 col-xs-offset-1 col-sm-8 col-sm-offset-2 col-md-4 col-md-offset-4">
-                            <div class="alert alert-success" role="alertdialog">
-                                <strong><center> Incident has been successfully reported </center></strong>
-                            </div>
-                        </div>
-                        {% endif %}
+
 
 					</div>
 				</div>
