@@ -1,3 +1,5 @@
+import calendar
+
 from django.shortcuts import render
 from django.shortcuts import HttpResponseRedirect
 from django.shortcuts import redirect
@@ -186,7 +188,17 @@ def dashboard(request):
     # #
     # alert1 = Alert.objects.create(detector=detector1,wearable=wearable1,seen=False) #activated
     # alert2 = Alert.objects.create(detector=detector2,wearable=wearable2,seen=True) #acknowledged
-
+    #
+    # wearableJJ = Wearable.objects.create(name="wearableJJ",remarks="wearableJJ")
+    # wearableJJUse= WearableUsage.objects.create(wearable_name=wearableJJ,used=True)
+    # wearableJJBattery = WearableBattery.objects.create(wearable_name=wearableJJ,battery=50) #ON
+    #
+    # detectorJJ = Detector.objects.create(name="detectorJJ",remarks="detectorJJ")
+    # detectorJJUse= DetectorUsage.objects.create(detector_name=detectorJJ,used=True)
+    # detectorJJBattery = DetectorBattery.objects.create(detector_name=detectorJJ,battery=50) #OFF
+    #
+    # testingTime= (datetime.now() - timedelta(days=1)).replace(hour=2, minute=2, second=2, microsecond=2)
+    # alertJJ = Alert.objects.create(detector=detectorJJ,wearable=wearableJJ,seen=False,datetime=testingTime) #activated
 
     masterList= []
 
@@ -211,7 +223,42 @@ def dashboard(request):
     alertUnique= []
     alertList= []
 
+    alertWeekList= []
+    alertMonthList= []
+
     startOfYtd = (datetime.now()- timedelta(days=1)).replace(hour=0, minute=0, second=0, microsecond=0) #yesterday's 00:00:00
+
+
+    startOfWeekNum = 1
+    daysAfterStartOfWeek = 0
+    endOfWeekNum = 7 #not used. for reference
+
+    if (datetime.now().isoweekday == 1):
+        daysAfterStartOfWeek = 0
+
+    if(datetime.now().isoweekday() > 1):
+        daysAfterStartOfWeek = datetime.now().isoweekday()-1 #if 4, 4-3 = 1 which is monday
+    #get start of week (monday) 00:00:00:00
+
+    startOfWeek = (datetime.now() - timedelta(days=daysAfterStartOfWeek)).replace(hour=0, minute=0, second=0, microsecond=0)
+
+
+    if(datetime.now().isoweekday() < 7):
+        daysToEndOfWeek = 7 - (datetime.now().isoweekday())
+
+    if(datetime.now().isoweekday() == 7):
+        daysToEndOfWeek = 0
+
+    #get end of week (sunday) 23:59:59:59
+    endOfWeek = (datetime.now() + timedelta(days=daysToEndOfWeek)).replace(hour=23, minute=59, second=59, microsecond=59)
+
+
+    startOfMonth = 1
+    today = datetime.now()
+    thisMonth = today.month
+    # thisYear = today.year
+    # calendar.monthrange(thisYear,thisMonth)
+
 
 #DetectorOnOff
     detectorCounter = 0
@@ -396,6 +443,8 @@ def dashboard(request):
 
 # AlertActivated and Deactivated  #Acknowledgement might be removed
     alertCounter = 0
+    weeklyCounter = 0
+    monthlyCounter = 0
 
     for instanceAlert in Alert.objects.all():
         alertUnique.append(instanceAlert)
@@ -440,6 +489,18 @@ def dashboard(request):
 
             masterList.append([messageType,message,timestamp])
 
+            # get by alerts this week
+    for alertObject in alertUnique:  # take all alerts for this week
+        if (alertObject.datetime >= startOfWeek):
+            if Alert.objects.all().filter(detector__exact=alertObject.detector, datetime__range=(startOfWeek, endOfWeek)).exists():
+                alertWeekList.append(Alert.objects.all().filter(detector__exact=alertObject.detector, datetime__range=(startOfWeek, endOfWeek)).order_by('datetime').first())
+                weeklyCounter += 1
+
+    for alertObject in alertUnique:  # take all alerts for this Month
+        if Alert.objects.all().filter(detector__exact=alertObject.detector, datetime__month=thisMonth).exists():
+            alertMonthList.append(Alert.objects.all().filter
+                                  (detector__exact=alertObject.detector, datetime__month=thisMonth).order_by('datetime').first())
+            monthlyCounter += 1
 
     #sort by time
     if len(masterList) > 0:
@@ -450,8 +511,7 @@ def dashboard(request):
     print(alertCounter)
     print(detectorCounter)
     print(wearableCounter)
-    return render(request, "dashboard.html",{'dataSet': newsFeedList, 'alertCounter': alertCounter, 'detectorCounter':detectorCounter,'wearableCounter': wearableCounter})
-
+    return render(request, "dashboard.html",{'dataSet': newsFeedList, 'alertCounter': alertCounter,'weeklyCounter': weeklyCounter,'monthlyCounter': monthlyCounter, 'detectorCounter':detectorCounter,'wearableCounter': wearableCounter})
 
 
 @login_required(login_url='')

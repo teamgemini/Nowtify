@@ -55,8 +55,8 @@ Sensor Management
 						<div class="col-sm-9 col-lg-6 widget-right">
 							<div class="large">
                                 <script>
-                                    alertCounter = {{ alertCounter | safe }}
-                                    document.write(alertCounter);
+                                    detectorCounter = {{ detectorCounter | safe }}
+                                    document.write(detectorCounter);
                                 </script>
                             </div>
 							<div class="text-muted">Sensors On</div>
@@ -74,8 +74,8 @@ Sensor Management
 						<div class="col-sm-9 col-lg-6 widget-right">
 							<div class="large">
                                 <script>
-                                    alertCounter = {{ alertCounter | safe }}
-                                    document.write(alertCounter);
+                                    weeklyCounter = {{ weeklyCounter | safe }}
+                                    document.write(weeklyCounter);
                                 </script>
                             </div>
 							<div class="text-muted">Alerts This Week</div>
@@ -93,8 +93,8 @@ Sensor Management
 						<div class="col-sm-9 col-lg-6 widget-right">
 							<div class="large">
                                 <script>
-                                    alertCounter = {{ alertCounter | safe }}
-                                    document.write(alertCounter);
+                                    wearableCounter = {{ wearableCounter | safe }}
+                                    document.write(wearableCounter);
                                 </script>
                             </div>
 							<div class="text-muted">Wearables On</div>
@@ -112,8 +112,8 @@ Sensor Management
 						<div class="col-sm-9 col-lg-6 widget-right">
 							<div class="large">
                                 <script>
-                                    alertCounter = {{ alertCounter | safe }}
-                                    document.write(alertCounter + " out of " + "10");
+                                    monthlyCounter = {{ monthlyCounter | safe }}
+                                    document.write(monthlyCounter + " out of " + "10");
                                 </script>
                             </div>
 							<div class="text-muted">Alerts This Month</div>
