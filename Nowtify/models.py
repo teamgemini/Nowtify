@@ -88,7 +88,7 @@ class DetectorBattery(models.Model):
 
 
 class Alert(models.Model):
-    datetime = models.DateTimeField(auto_now_add=True, auto_now=False)
+    datetime = models.DateTimeField()
     detector = models.OneToOneField(Detector)
     seen = models.BooleanField(default=False)
     wearable = models.ForeignKey(Wearable, null=True, blank=True, default=None)
