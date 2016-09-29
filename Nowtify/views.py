@@ -17,7 +17,7 @@ from Nowtify.models import Wearable, WearableBattery, WearableUsage
 from Nowtify.models import Detector, DetectorBattery, DetectorUsage
 from Nowtify.models import Alert, Assignment, IncidentReport
 from operator import itemgetter
-from datetime import datetime,timedelta
+from datetime import datetime,timedelta,date
 import time
 
 
@@ -498,8 +498,7 @@ def dashboard(request):
 
     for alertObject in alertUnique:  # take all alerts for this Month
         if Alert.objects.all().filter(detector__exact=alertObject.detector, datetime__month=thisMonth).exists():
-            alertMonthList.append(Alert.objects.all().filter
-                                  (detector__exact=alertObject.detector, datetime__month=thisMonth).order_by('datetime').first())
+            alertMonthList.append(Alert.objects.all().filter(detector__exact=alertObject.detector, datetime__month=thisMonth).order_by('datetime').first())
             monthlyCounter += 1
 
     #sort by time
@@ -790,3 +789,110 @@ def incident_reporting_process(request):
     incidentReport.save()
 
     return render(request, 'incident_reporting.html', {'incidentReported': True})
+
+@login_required(login_url='')
+def data_analysis_query(request):
+    c = {}
+    c.update(csrf(request))
+
+    dataTitle = request.POST.get('data_title',"EmptyTitle")
+    dataType = request.POST.get('data_type',"EmptyType")
+
+    startMonth = request.POST.get('datetimepicker1',1111) #month
+
+    endMonth = request.POST.get('datetimepicker2',2222) #month
+    #
+    startWeek = request.POST.get('datetimepicker3',3333) #week
+    endWeek = request.POST.get('datetimepicker4',4444) #week
+
+
+    startDay = request.POST.get('datetimepicker5',5555) #day
+    endDay = request.POST.get('datetimepicker6',6666) #day
+
+
+    startTimeSlotDate = request.POST.get('datetimepicker7',7777) #timeslot date
+    endTimeSlotDate = request.POST.get('datetimepicker8',8888)#timeslot date
+
+    startTimeSlotTime = request.POST.get('datetimepicker9',9999) #timeslot time
+    endTimeSlotTime = request.POST.get('datetimepicker10',1010) #timeslot time
+
+    getType = None #0 = month  1 = week  2 = day  3 = timeslot
+    getTitle = None
+    # 0 =Highest Number of Alert   1 = Total Number of Alert   2= Highest Number of Incident Reported
+    # 3 = Total Number of Incident Reported   #4 = Incident Reports
+
+    alertQuery = Alert.objects.all()
+
+    incidentQuery = IncidentReport.objects.all()
+
+    labelList = [] #list of labels to be returned
+    dataList = []  # FINAL LIST, sorted by criteria
+    listOfMonths = []
+    # totalList = []
+
+    #computing filter by month,highest num of alerts
+
+    if (dataType == "0" ) and (dataTitle == "0" or dataTitle == "1" or dataTitle == "2" or dataTitle == "3"):
+        #01/2016 is given by the input
+
+        monthE = endMonth[:2]  # 01
+        yearE = endMonth[3:] #2016
+
+        #monthAndYearDateTimeObject = datetime.strptime(endMonth, '%Y-%m-%d %H:%M')
+
+        temp = calendar.monthrange(int(yearE), int(monthE))  # (1,31) returns a tuple
+        lastDayOfMonth = temp[1] #31
+
+        endDate = yearE + "-" + monthE + "-" + str(lastDayOfMonth) + " 23:59" #2016-01-31 23:59
+
+        endDateTimeObject = datetime.strptime(endDate, '%Y-%m-%d %H:%M')
+
+
+
+        #01/2016
+        monthS = startMonth[:2] #01
+        yearS = startMonth[3:] #2016
+
+        startDate = yearS + "-" + monthS + "-01" + " 00:00" #2016-01-01 00:00
+
+        startDateTimeObject = datetime.strptime(startDate, '%Y-%m-%d %H:%M')
+
+
+        numberOfYears = int(yearE) - int(yearS)
+        numberOfMonths = int(monthE) - int(monthS)
+        totalNumberOfMonths = numberOfYears * 12 + numberOfMonths #get number of months to determine the list of months
+
+        firstDayOfStartDateTime= startDateTimeObject.replace(day=1) #all become 1st of the month
+
+
+        counter = 1
+        listOfMonths.append(firstDayOfStartDateTime) #add current to list of months
+        labelList.append((firstDayOfStartDateTime.replace(month=(firstDayOfStartDateTime.month))).strftime("%b %Y")) #add current to label
+
+        while(counter <= totalNumberOfMonths): #for each count, add 1 to the month and add to the list of months
+            new = firstDayOfStartDateTime.replace(month=(firstDayOfStartDateTime.month + counter))
+            listOfMonths.append(new)
+            labelList.append(new.strftime("%b %Y"))
+            counter += 1
+
+
+        if(dataTitle == "0" or dataTitle == "1"): #if alerts
+            selectedQuery = alertQuery
+        elif(dataTitle == "2" or dataTitle == "3"): #if incident reports
+            selectedQuery = incidentQuery
+        else:
+            selectedQuery = alertQuery #TO REMOVE !!!!!!!!!!!!!!!!!!!!!!!!!
+
+        for eachMonth in listOfMonths: #each month, count the number of objects that is the same as the month
+            countForMonth = (selectedQuery.filter(datetime__month=eachMonth.month)).count()
+            dataList.append(countForMonth)
+
+
+        if(dataTitle == "0" or dataTitle == "2"): #if need to sort by Highest Alert or Highest Incident Reports
+            dataList, labelList = (list(t) for t in zip(*sorted(zip(dataList, labelList),reverse=True)))
+
+
+        return render(request, 'data_analysis.html', {'dataList':dataList,'labels':labelList,'dataTitle':dataTitle,'dataType':dataType,'startMonth':startMonth,'endMonth':endMonth,'totalNumOfMonths':totalNumberOfMonths,'listOfMonths':listOfMonths,'monthE':monthE,'yearE':yearE})
+
+    else:
+        return render (request,'data_analysis.html')
