@@ -259,12 +259,13 @@ def dashboard(request):
     # thisYear = today.year
     # calendar.monthrange(thisYear,thisMonth)
 
+    detectorList = Detector.objects.all()
+    detectorUsageList = DetectorUsage.objects.all()
+    detectorBatteryList = DetectorBattery.objects.all()
 
 #DetectorOnOff
     detectorCounter = 0
-    print(Detector.objects.all())
-    print("see above")
-    for instanceDetector in Detector.objects.all():
+    for instanceDetector in detectorList:
         detectorUsageUnique.append(instanceDetector)
     print (detectorUsageUnique)
     # there are many rows of data, this code will filter by each unique sensor, arrange from newest to oldest data
@@ -272,8 +273,8 @@ def dashboard(request):
 
 
     for detectorObject in detectorUsageUnique:
-        if DetectorUsage.objects.all().filter(detector_name__exact=detectorObject,updated__gte=startOfYtd).exists():
-            detectorUsage.append(DetectorUsage.objects.all().filter(detector_name__exact=detectorObject,updated__gte=startOfYtd).order_by('updated').first()) # order by time only for ON OFF
+        if detectorUsageList.filter(detector_name__exact=detectorObject,updated__gte=startOfYtd).exists():
+            detectorUsage.append(detectorUsageList().filter(detector_name__exact=detectorObject,updated__gte=startOfYtd).order_by('updated').first()) # order by time only for ON OFF
 
     # if all(None for item in detectorUsage) and len(detectorUsage)== 4:
 
@@ -309,15 +310,15 @@ def dashboard(request):
 
 
 #DetectorBattery
-    for instanceDetector in Detector.objects.all():
+    for instanceDetector in detectorList:
         detectorBatteryUnique.append(instanceDetector)
     # there are many rows of data, this code will filter by each unique sensor, arrange from newest to oldest data
     # and get the first one, aka the latest data
 
 
     for detectorObject in detectorBatteryUnique: #take all sensors
-        if DetectorBattery.objects.all().filter(detector_name__exact=detectorObject,updated__gte=startOfYtd).exists():
-            detectorBattery.append(DetectorBattery.objects.all().filter(detector_name__exact=detectorObject,updated__gte=startOfYtd).order_by('updated').first())
+        if detectorBatteryList.filter(detector_name__exact=detectorObject,updated__gte=startOfYtd).exists():
+            detectorBattery.append(detectorBatteryList.filter(detector_name__exact=detectorObject,updated__gte=startOfYtd).order_by('updated').first())
     #take only sensorBattery objects, filter by sensor name to prevent repeats, filer by condition, order by datetime,take latest
 
     # if all(None for item in detectorBattery) and len(detectorUsage)== 4:
@@ -345,14 +346,18 @@ def dashboard(request):
 #WearableOnOff
     wearableCounter = 0
 
-    for instanceWearable in Wearable.objects.all():
+    wearableList = Wearable.objects.all()
+    wearableUsageList = WearableUsage.objects.all()
+    wearableBatteryList = WearableBattery.obkects.all()
+
+    for instanceWearable in wearableList:
         wearableUsageUnique.append(instanceWearable)
     # there are many rows of data, this code will filter by each unique wearable, arrange from newest to oldest data
     # and get the first one, aka the latest data
 
     for wearableObject in wearableUsageUnique:
-        if WearableUsage.objects.all().filter(wearable_name__exact=wearableObject,updated__gte=startOfYtd).exists():
-            wearableUsage.append(WearableUsage.objects.all().filter(wearable_name__exact=wearableObject,updated__gte=startOfYtd).order_by('updated').first()) # order by time only for ON OFF
+        if wearableUsageList.filter(wearable_name__exact=wearableObject,updated__gte=startOfYtd).exists():
+            wearableUsage.append(wearableUsageList.filter(wearable_name__exact=wearableObject,updated__gte=startOfYtd).order_by('updated').first()) # order by time only for ON OFF
 
     #call for all assignment objects
     allAssignment = Assignment.objects.all()
@@ -403,15 +408,15 @@ def dashboard(request):
 
 
 #WearableBattery
-    for instanceWearable in Wearable.objects.all():
+    for instanceWearable in wearableList:
         wearableBatteryUnique.append(instanceWearable)
     # there are many rows of data, this code will filter by each unique sensor, arrange from newest to oldest data
     # and get the first one, aka the latest data
 
 
     for wearableObject in wearableBatteryUnique: #take all sensors
-        if WearableBattery.objects.all().filter(wearable_name__exact=wearableObject,updated__gte=startOfYtd).exists():
-            wearableBattery.append(WearableBattery.objects.all().filter(wearable_name__exact=wearableObject,updated__gte=startOfYtd).order_by('updated').first())
+        if wearableBatteryList.filter(wearable_name__exact=wearableObject,updated__gte=startOfYtd).exists():
+            wearableBattery.append(wearableBatteryList.filter(wearable_name__exact=wearableObject,updated__gte=startOfYtd).order_by('updated').first())
     #take only sensorBattery objects, filter by sensor name to prevent repeats, filer by condition, order by datetime, take latest
 
     # if all(None for item in wearableBattery) and len(detectorUsage)== 4:
@@ -446,15 +451,17 @@ def dashboard(request):
     weeklyCounter = 0
     monthlyCounter = 0
 
-    for instanceAlert in Alert.objects.all():
+    allAlertList = Alert.objects.all()
+
+    for instanceAlert in allAlertList:
         alertUnique.append(instanceAlert)
     # there are many rows of data, this code will filter by each unique alert, arrange from newest to oldest data
     # and get the first one, aka the latest data
 
 
     for alertObject in alertUnique: #take all sensors
-        if Alert.objects.all().filter(detector__exact=alertObject.detector,datetime__gte=startOfYtd).exists():
-            alertList.append(Alert.objects.all().filter(detector__exact=alertObject.detector,datetime__gte=startOfYtd).order_by('datetime').first())
+        if allAlertList.filter(detector__exact=alertObject.detector,datetime__gte=startOfYtd).exists():
+            alertList.append(allAlertList.filter(detector__exact=alertObject.detector,datetime__gte=startOfYtd).order_by('datetime').first())
     # take only sensorBattery objects, filter by sensor name to prevent repeats, filer by condition, order by datetime,take latest
 
     # if all(None for item in alertList) and len(detectorUsage)== 4:
@@ -492,13 +499,13 @@ def dashboard(request):
             # get by alerts this week
     for alertObject in alertUnique:  # take all alerts for this week
         if (alertObject.datetime >= startOfWeek):
-            if Alert.objects.all().filter(detector__exact=alertObject.detector, datetime__range=(startOfWeek, endOfWeek)).exists():
-                alertWeekList.append(Alert.objects.all().filter(detector__exact=alertObject.detector, datetime__range=(startOfWeek, endOfWeek)).order_by('datetime').first())
+            if allAlertList.filter(detector__exact=alertObject.detector, datetime__range=(startOfWeek, endOfWeek)).exists():
+                alertWeekList.append(allAlertList.filter(detector__exact=alertObject.detector, datetime__range=(startOfWeek, endOfWeek)).order_by('datetime').first())
                 weeklyCounter += 1
 
     for alertObject in alertUnique:  # take all alerts for this Month
-        if Alert.objects.all().filter(detector__exact=alertObject.detector, datetime__month=thisMonth).exists():
-            alertMonthList.append(Alert.objects.all().filter(detector__exact=alertObject.detector, datetime__month=thisMonth).order_by('datetime').first())
+        if allAlertList(detector__exact=alertObject.detector, datetime__month=thisMonth).exists():
+            alertMonthList.append(allAlertList.filter(detector__exact=alertObject.detector, datetime__month=thisMonth).order_by('datetime').first())
             monthlyCounter += 1
 
     #sort by time
