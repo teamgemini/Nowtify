@@ -233,36 +233,14 @@ Data Analysis
 			<div class="col-lg-12">
 				<div class="panel panel-default">
 					<div class="panel-heading">Bar Chart</div>
-					{{ dataType }}<br>
-                    {{ dataTitle }}<br>
-                    {{ startMonth }}<br>
-                    {{ endMonth }}<br>
-                    {{ monthE }}<br>
-                    {{ yearE }}<br>
-                    {{ number }}<br>
 
-
-                    {{ totalNumOfMonths }}<br>
-                    {{ listOfMonths }}<br>
-
-                    {{ dataList }}<br>
-                    {{ labels }}<br>
                     <div class="panel-body">
 
 						<div class="canvas-wrapper">
 							<canvas class="main-chart" id="alerts" height="400" width="800"></canvas>
                             <script>
                              var barData = {
-{#                                labels : ["January","February","March","April","May","June"],#}
-{#                                datasets : [#}
-{#                                    {#}
-{#                                        data : [456,479,324,569,702,600]#}
-{#                                    },#}
-{#                                    {#}
-{#                                        data : [364,504,605,400,345,320]#}
-{#                                    }#}
-{##}
-{#                                ]#}
+
                                  labels : {{ labels | safe }},
                                     datasets : [
 
@@ -272,7 +250,7 @@ Data Analysis
                                             highlightFill : "rgba(48, 164, 255, 0.75)",
                                             highlightStroke : "rgba(48, 164, 255, 1)",
                                             data: {{ dataList | safe }}
-                                            //data : [randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor()]
+
                                         }
                                     ]
                             }

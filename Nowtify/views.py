@@ -875,7 +875,8 @@ def data_analysis_query(request):
 
         if (dataTitle == "0" or dataTitle == "2"):  # if need to sort by Highest Alert or Highest Incident Reports
             dataList, labelList = (list(t) for t in zip(*sorted(zip(dataList, labelList), reverse=True)))
-        return render(request, 'data_analysis.html',{'dataList': dataList, 'labels': labelList, 'dataTitle': dataTitle, 'dataType': dataType,'startMonth': startWeek, 'endMonth': endWeek, 'totalNumOfMonths': numberOfWeeks,'listOfMonths': listOfWeeks, 'monthE': monthE, 'yearE': yearE})
+
+        return render(request, 'data_analysis.html',{'dataList': dataList, 'labels': labelList})
 
     #computing filter by DAY
     if(dataType == "2") and (dataTitle == "0" or dataTitle == "1" or dataTitle == "2" or dataTitle == "3"):
@@ -917,8 +918,7 @@ def data_analysis_query(request):
         if (dataTitle == "0" or dataTitle == "2"):  # if need to sort by Highest Alert or Highest Incident Reports
             dataList, labelList = (list(t) for t in zip(*sorted(zip(dataList, labelList), reverse=True)))
 
-        return render(request, 'data_analysis.html',{'dataList': dataList, 'labels': labelList, 'dataTitle': dataTitle, 'dataType': dataType,'startMonth': startDay, 'endMonth': endDay, 'totalNumOfMonths': numberOfDays,'listOfMonths': listOfDays,'monthE': monthE, 'yearE': yearE})
-
+        return render(request, 'data_analysis.html',{'dataList': dataList, 'labels': labelList})
 
     #computing filter by MONTH
     if (dataType == "0" ) and (dataTitle == "0" or dataTitle == "1" or dataTitle == "2" or dataTitle == "3"):
@@ -983,7 +983,7 @@ def data_analysis_query(request):
             dataList, labelList = (list(t) for t in zip(*sorted(zip(dataList, labelList),reverse=True)))
 
 
-        return render(request, 'data_analysis.html', {'dataList':dataList,'labels':labelList,'dataTitle':dataTitle,'dataType':dataType,'startMonth':startMonth,'endMonth':endMonth,'totalNumOfMonths':totalNumberOfMonths,'listOfMonths':listOfMonths,'monthE':monthE,'yearE':yearE})
+        return render(request, 'data_analysis.html',{'dataList': dataList, 'labels': labelList})
 
     #filter by TimeSlot
     if (dataType == "3") and (dataTitle == "0" or dataTitle == "1" or dataTitle == "2" or dataTitle == "3"):
@@ -1030,8 +1030,7 @@ def data_analysis_query(request):
         if (dataTitle == "0" or dataTitle == "2"):  # if need to sort by Highest Alert or Highest Incident Reports
             dataList, labelList = (list(t) for t in zip(*sorted(zip(dataList, labelList), reverse=True)))
 
-        return render(request, 'data_analysis.html',
-                      {'dataList': dataList, 'labels': labelList, 'dataTitle': dataTitle, 'dataType': dataType,'startMonth': startTimeSlotDate, 'endMonth': endTimeSlotDate, 'totalNumOfMonths': numberOfDays,'listOfMonths': listOfTimeSlotDays, 'monthE': monthE, 'yearE': yearE})
+        return render(request, 'data_analysis.html', {'dataList': dataList, 'labels': labelList})
 
     else:
         return render (request,'data_analysis.html')
