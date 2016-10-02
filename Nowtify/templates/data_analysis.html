@@ -176,7 +176,7 @@ Data Analysis
                                 <div class="col-md-3">
 {#                                    <input name="start_time" type="date" placeholder="start time" class="form-control">#}
                                         <div class='input-group date' id='datetimepicker9'>
-                                            <input name="start_time" type='text' class="form-control"  name='datetimepicker9'/>
+                                            <input name="start_time" type='text' class="form-control"/>
                                             <span class="input-group-addon">
                                                 <span class="glyphicon glyphicon-time"></span>
                                             </span>
@@ -199,7 +199,7 @@ Data Analysis
                                 <div class="col-md-3">
 {#                                    <input name="end_time" type="date" placeholder="end time" class="form-control">#}
                                         <div class='input-group date' id='datetimepicker10'>
-                                            <input name="start_time" type='text' class="form-control"  name='datetimepicker10' />
+                                            <input name="end_time" type='text' class="form-control"/>
                                             <span class="input-group-addon">
                                                 <span class="glyphicon glyphicon-time"></span>
                                             </span>
@@ -263,7 +263,7 @@ Data Analysis
 {#                                    }#}
 {##}
 {#                                ]#}
-                                 labels : {{ labels }},
+                                 labels : {{ labels | safe }},
                                     datasets : [
 
                                         {
@@ -271,7 +271,7 @@ Data Analysis
                                             strokeColor : "rgba(48, 164, 255, 0.8)",
                                             highlightFill : "rgba(48, 164, 255, 0.75)",
                                             highlightStroke : "rgba(48, 164, 255, 1)",
-                                            data: {{ dataList }}
+                                            data: {{ dataList | safe }}
                                             //data : [randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor(),randomScalingFactor()]
                                         }
                                     ]
