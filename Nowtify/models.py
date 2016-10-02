@@ -115,3 +115,13 @@ class IncidentReport(models.Model):
 
     class Meta:
         db_table = "NowtifyWeb_incident_report"
+
+
+class ForceData(models.Model):
+    activation_time = models.DateTimeField(primary_key=True)
+    detector_name = models.ForeignKey(Detector, on_delete=models.CASCADE)
+    force = models.IntegerField(default=0)
+    datetime = models.DateTimeField()
+
+    class Meta:
+        db_table = "NowtifyWeb_force_data"
