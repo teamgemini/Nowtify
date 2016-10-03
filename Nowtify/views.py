@@ -274,7 +274,7 @@ def dashboard(request):
 
     for detectorObject in detectorUsageUnique:
         if detectorUsageList.filter(detector_name__exact=detectorObject,updated__gte=startOfYtd).exists():
-            detectorUsage.append(detectorUsageList().filter(detector_name__exact=detectorObject,updated__gte=startOfYtd).order_by('updated').first()) # order by time only for ON OFF
+            detectorUsage.append(detectorUsageList.filter(detector_name__exact=detectorObject,updated__gte=startOfYtd).order_by('updated').first()) # order by time only for ON OFF
 
     # if all(None for item in detectorUsage) and len(detectorUsage)== 4:
 
@@ -348,7 +348,7 @@ def dashboard(request):
 
     wearableList = Wearable.objects.all()
     wearableUsageList = WearableUsage.objects.all()
-    wearableBatteryList = WearableBattery.obkects.all()
+    wearableBatteryList = WearableBattery.objects.all()
 
     for instanceWearable in wearableList:
         wearableUsageUnique.append(instanceWearable)
@@ -504,7 +504,7 @@ def dashboard(request):
                 weeklyCounter += 1
 
     for alertObject in alertUnique:  # take all alerts for this Month
-        if allAlertList(detector__exact=alertObject.detector, datetime__month=thisMonth).exists():
+        if allAlertList.filter(detector__exact=alertObject.detector, datetime__month=thisMonth).exists():
             alertMonthList.append(allAlertList.filter(detector__exact=alertObject.detector, datetime__month=thisMonth).order_by('datetime').first())
             monthlyCounter += 1
 
