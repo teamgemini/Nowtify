@@ -117,6 +117,7 @@ def dashboard(request):
     # WearableBattery.objects.all().delete()
     #
     # Alert.objects.all().delete()
+    #IncidentReport.objects.all().delete()
     # DO NOT DELETE YET, Gathering Data over time
 
     # #insert fake data
@@ -135,7 +136,7 @@ def dashboard(request):
     # wearable4 = Wearable.objects.create(name="wearable4",remarks="superrr4")
     # wearable4Use= WearableUsage.objects.create(wearable_name=wearable4,used=False)
     # wearable4Battery = WearableBattery.objects.create(wearable_name=wearable4,battery=15) #OFF LOW BATT
-
+    #
     # wearable5 = Wearable.objects.create(name="wearable5",remarks="i want the name")
     # wearable5Use= WearableUsage.objects.create(wearable_name=wearable5,used=True)
     # wearable5Battery = WearableBattery.objects.create(wearable_name=wearable5,battery=13) #ON  LOW BATT
