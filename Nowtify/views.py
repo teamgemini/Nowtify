@@ -118,9 +118,9 @@ def dashboard(request):
     # #
     # Alert.objects.all().delete()
     # IncidentReport.objects.all().delete()
-    # DO NOT DELETE YET, Gathering Data over time
-
-    # insert fake data
+    # # DO NOT DELETE YET, Gathering Data over time
+    #
+    # #insert fake data
     # datestr = "2016-10-05 14:45:00"
     # dateobj = datetime.strptime(datestr, '%Y-%m-%d %H:%M:%S')
     #
@@ -129,7 +129,7 @@ def dashboard(request):
     # wearable1Battery = WearableBattery.objects.create(wearable_name=wearable1,battery=40,updated = dateobj) #ON  LOW BATT
     #
     # assignment1 = Assignment.objects.create(name="Shawn", wearable_name=wearable1,update = dateobj)
-
+    #
     # wearable2 = Wearable.objects.create(name="Wearable 2",remarks="superrr2")
     # wearable2Use= WearableUsage.objects.create(wearable_name=wearable2,used=True,updated = dateobj)
     # wearable2Battery = WearableBattery.objects.create(wearable_name=wearable2,battery=70,updated = dateobj) #ON
@@ -142,7 +142,7 @@ def dashboard(request):
     # wearable3 = Wearable.objects.create(name="Wearable 3",remarks="superrr3")
     # wearable3Use= WearableUsage.objects.create(wearable_name=wearable3,used=True,updated = dateobj2)
     # wearable3Battery = WearableBattery.objects.create(wearable_name=wearable3,battery=50,updated = dateobj2) #OFF
-    # #
+    #
     # assignment3 = Assignment.objects.create(name="Dennis", wearable_name=wearable3,update = dateobj2)
     #
     # wearable4 = Wearable.objects.create(name="Wearable 4",remarks="superrr4")
@@ -163,13 +163,13 @@ def dashboard(request):
     # wearable6Battery = WearableBattery.objects.create(wearable_name=wearable6,battery=50,updated = dateobj2) #OFF
     # #
     # assignment6 = Assignment.objects.create(name="Mickey",wearable_name=wearable6,update = dateobj2)
-
-
+    #
+    #
     #
     # detector1 = Detector.objects.create(name="Sensor 1",remarks="ultraaaa1")
     # detector1Use= DetectorUsage.objects.create(detector_name=detector1,used=True,updated = dateobj)
     # detector1Battery = DetectorBattery.objects.create(detector_name=detector1,battery=70,updated = dateobj)  #ON ,low batt
-
+    #
     # detector2 = Detector.objects.create(name="Sensor 2",remarks="ultraaaa2")
     # detector2Use= DetectorUsage.objects.create(detector_name=detector2,used=True,updated = dateobj)
     # detector2Battery = DetectorBattery.objects.create(detector_name=detector2,battery=50,updated = dateobj) #ON
@@ -177,7 +177,7 @@ def dashboard(request):
     # detector3 = Detector.objects.create(name="Sensor 3",remarks="ultraaaa3")
     # detector3Use= DetectorUsage.objects.create(detector_name=detector3,used=True,updated = dateobj2)
     # detector3Battery = DetectorBattery.objects.create(detector_name=detector3,battery=40,updated = dateobj2) #OFF
-    # #
+    #
     # detector4 = Detector.objects.create(name="Sensor 4",remarks="ultraaaa4")
     # detector4Use= DetectorUsage.objects.create(detector_name=detector4,used=True,updated = dateobj2)
     # detector4Battery = DetectorBattery.objects.create(detector_name=detector4,battery=60,updated = dateobj2) #OFF ,low batt
@@ -189,14 +189,14 @@ def dashboard(request):
     # detector6 = Detector.objects.create(name="Sensor 6",remarks="ultraaaa6")
     # detector6Use= DetectorUsage.objects.create(detector_name=detector6,used=True,updated = dateobj2)
     # detector6Battery = DetectorBattery.objects.create(detector_name=detector6,battery=45,updated = dateobj2) #OFF ,low batt
-
-    #Generate for August
+    #
+    # #Generate for August
     # alert1 = Alert.objects.create(detector=detector1,wearable=wearable1,seen=False,datetime=datetime.strptime('2016-08-01 14:30:30', '%Y-%m-%d %H:%M:%S'))#1
     # alert1a = Alert.objects.create(detector=detector1,wearable=wearable1,seen=False,datetime=datetime.strptime('2016-08-01 15:30:30', '%Y-%m-%d %H:%M:%S'))
     # alert1b = Alert.objects.create(detector=detector1,wearable=wearable1,seen=False,datetime=datetime.strptime('2016-08-01 16:30:30', '%Y-%m-%d %H:%M:%S'))
     # alert1c = Alert.objects.create(detector=detector1,wearable=wearable1,seen=False,datetime=datetime.strptime('2016-08-01 17:30:30', '%Y-%m-%d %H:%M:%S'))
     # report1= IncidentReport.objects.create(client_name='Tan',caregiver_name='Shawn',author_name='Shawn',datetime=datetime.strptime('2016-08-01 14:30:30', '%Y-%m-%d %H:%M:%S'),comments='TESTING')
-    # # #
+    #
     # alert2 = Alert.objects.create(detector=detector2,wearable=wearable2,seen=False,datetime=datetime.strptime('2016-08-02 14:30:30', '%Y-%m-%d %H:%M:%S'))#2
     # report2= IncidentReport.objects.create(client_name='Tan',caregiver_name='Shawn',author_name='Shawn',datetime=datetime.strptime('2016-08-02 14:30:30', '%Y-%m-%d %H:%M:%S'),comments='TESTING')
     #
@@ -218,11 +218,11 @@ def dashboard(request):
     # alert6c = Alert.objects.create(detector=detector6,wearable=wearable6,seen=False,datetime=datetime.strptime('2016-08-08 17:30:30', '%Y-%m-%d %H:%M:%S'))
     # alert6d = Alert.objects.create(detector=detector6,wearable=wearable6,seen=False,datetime=datetime.strptime('2016-08-08 18:30:30', '%Y-%m-%d %H:%M:%S'))
     # report6= IncidentReport.objects.create(client_name='Tan',caregiver_name='Shawn',author_name='Shawn',datetime=datetime.strptime('2016-08-08 14:30:30', '%Y-%m-%d %H:%M:%S'),comments='TESTING')
-
+    #
     # alert7 = Alert.objects.create(detector=detector1,wearable=wearable1,seen=False,datetime=datetime.strptime('2016-08-09 14:30:30', '%Y-%m-%d %H:%M:%S'))#9
     # alert7a = Alert.objects.create(detector=detector1,wearable=wearable1,seen=False,datetime=datetime.strptime('2016-08-09 15:30:30', '%Y-%m-%d %H:%M:%S'))
     # report7= IncidentReport.objects.create(client_name='Tan',caregiver_name='Shawn',author_name='Shawn',datetime=datetime.strptime('2016-08-09 14:30:30', '%Y-%m-%d %H:%M:%S'),comments='TESTING')
-    # #
+    #
     # alert8 = Alert.objects.create(detector=detector2,wearable=wearable2,seen=False,datetime=datetime.strptime('2016-08-10 14:30:30', '%Y-%m-%d %H:%M:%S'))#10
     # alert8a = Alert.objects.create(detector=detector2,wearable=wearable2,seen=False,datetime=datetime.strptime('2016-08-10 15:30:30', '%Y-%m-%d %H:%M:%S'))
     # alert8b = Alert.objects.create(detector=detector2,wearable=wearable2,seen=False,datetime=datetime.strptime('2016-08-10 16:30:30', '%Y-%m-%d %H:%M:%S'))
@@ -256,7 +256,7 @@ def dashboard(request):
     # alert13c = Alert.objects.create(detector=detector1,wearable=wearable1,seen=False,datetime=datetime.strptime('2016-08-17 17:30:30', '%Y-%m-%d %H:%M:%S'))
     # alert13d = Alert.objects.create(detector=detector1,wearable=wearable1,seen=False,datetime=datetime.strptime('2016-08-17 18:30:30', '%Y-%m-%d %H:%M:%S'))
     # report13= IncidentReport.objects.create(client_name='Tan',caregiver_name='Shawn',author_name='Shawn',datetime=datetime.strptime('2016-08-17 14:30:30', '%Y-%m-%d %H:%M:%S'),comments='TESTING')
-    # #
+    #
     #
     # alert14 = Alert.objects.create(detector=detector2,wearable=wearable2,seen=False,datetime=datetime.strptime('2016-08-18 14:30:30', '%Y-%m-%d %H:%M:%S'))#18
     # report18= IncidentReport.objects.create(client_name='Tan',caregiver_name='Shawn',author_name='Shawn',datetime=datetime.strptime('2016-08-18 14:30:30', '%Y-%m-%d %H:%M:%S'),comments='TESTING')
@@ -281,16 +281,16 @@ def dashboard(request):
     # alert18c = Alert.objects.create(detector=detector6,wearable=wearable6,seen=False,datetime=datetime.strptime('2016-08-24 14:37:30', '%Y-%m-%d %H:%M:%S'))
     # alert18d = Alert.objects.create(detector=detector6,wearable=wearable6,seen=False,datetime=datetime.strptime('2016-08-24 14:38:30', '%Y-%m-%d %H:%M:%S'))
     # report18= IncidentReport.objects.create(client_name='Tan',caregiver_name='Shawn',author_name='Shawn',datetime=datetime.strptime('2016-08-24 15:30:30', '%Y-%m-%d %H:%M:%S'),comments='TESTING')
-
-    # #
+    #
+    #
     # alert19 = Alert.objects.create(detector=detector1,wearable=wearable1,seen=False,datetime=datetime.strptime('2016-08-25 14:30:30', '%Y-%m-%d %H:%M:%S'))#25
     # report19= IncidentReport.objects.create(client_name='Tan',caregiver_name='Shawn',author_name='Shawn',datetime=datetime.strptime('2016-08-25 14:30:30', '%Y-%m-%d %H:%M:%S'),comments='TESTING')
-    # #
+    #
     # alert20 = Alert.objects.create(detector=detector2,wearable=wearable2,seen=False,datetime=datetime.strptime('2016-08-26 14:30:30', '%Y-%m-%d %H:%M:%S'))#26
     # alert20a = Alert.objects.create(detector=detector2,wearable=wearable2,seen=False,datetime=datetime.strptime('2016-08-26 15:30:30', '%Y-%m-%d %H:%M:%S'))
     # report20= IncidentReport.objects.create(client_name='Tan',caregiver_name='Shawn',author_name='Shawn',datetime=datetime.strptime('2016-08-26 15:30:30', '%Y-%m-%d %H:%M:%S'),comments='TESTING')
     #
-    # #
+    #
     # alert21 = Alert.objects.create(detector=detector3,wearable=wearable3,seen=False,datetime=datetime.strptime('2016-08-29 14:30:30', '%Y-%m-%d %H:%M:%S'))#29
     # alert21a = Alert.objects.create(detector=detector3,wearable=wearable3,seen=False,datetime=datetime.strptime('2016-08-29 14:31:30', '%Y-%m-%d %H:%M:%S'))
     # alert21b = Alert.objects.create(detector=detector3,wearable=wearable3,seen=False,datetime=datetime.strptime('2016-08-29 14:32:30', '%Y-%m-%d %H:%M:%S'))
@@ -305,16 +305,16 @@ def dashboard(request):
     # alert23b = Alert.objects.create(detector=detector5,wearable=wearable5,seen=False,datetime=datetime.strptime('2016-08-31 14:35:30', '%Y-%m-%d %H:%M:%S'))
     # alert23c = Alert.objects.create(detector=detector5,wearable=wearable5,seen=False,datetime=datetime.strptime('2016-08-31 14:36:30', '%Y-%m-%d %H:%M:%S'))
     # report23= IncidentReport.objects.create(client_name='Tan',caregiver_name='Shawn',author_name='Shawn',datetime=datetime.strptime('2016-08-31 14:35:30', '%Y-%m-%d %H:%M:%S'),comments='TESTING')
-
-
+    #
+    #
     # #Generate for September
     # salert1 = Alert.objects.create(detector=detector1,wearable=wearable1,seen=False,datetime=datetime.strptime('2016-09-01 14:30:30', '%Y-%m-%d %H:%M:%S'))#1
     # sreport1= IncidentReport.objects.create(client_name='Tan',caregiver_name='Shawn',author_name='Shawn',datetime=datetime.strptime('2016-09-01 14:30:30', '%Y-%m-%d %H:%M:%S'),comments='TESTING')
     #
-    # # salert2 = Alert.objects.create(detector=detector2,wearable=wearable2,seen=False,datetime=datetime.strptime('2016-09-02 14:30:30', '%Y-%m-%d %H:%M:%S'))#2
+    # salert2 = Alert.objects.create(detector=detector2,wearable=wearable2,seen=False,datetime=datetime.strptime('2016-09-02 14:30:30', '%Y-%m-%d %H:%M:%S'))#2
     # salert2a = Alert.objects.create(detector=detector1,wearable=wearable1,seen=False,datetime=datetime.strptime('2016-09-02 15:30:30', '%Y-%m-%d %H:%M:%S'))
-    # # sreport2= IncidentReport.objects.create(client_name='Tan',caregiver_name='Shawn',author_name='Shawn',datetime=datetime.strptime('2016-09-02 14:30:30', '%Y-%m-%d %H:%M:%S'),comments='TESTING')
-    # #
+    # sreport2= IncidentReport.objects.create(client_name='Tan',caregiver_name='Shawn',author_name='Shawn',datetime=datetime.strptime('2016-09-02 14:30:30', '%Y-%m-%d %H:%M:%S'),comments='TESTING')
+    #
     # salert3 = Alert.objects.create(detector=detector3,wearable=wearable3,seen=False,datetime=datetime.strptime('2016-09-05 14:30:30', '%Y-%m-%d %H:%M:%S'))#5
     # salert3a = Alert.objects.create(detector=detector3,wearable=wearable3,seen=False,datetime=datetime.strptime('2016-09-05 15:30:30', '%Y-%m-%d %H:%M:%S'))
     # salert3b= Alert.objects.create(detector=detector3,wearable=wearable3,seen=False,datetime=datetime.strptime('2016-09-05 16:30:30', '%Y-%m-%d %H:%M:%S'))
@@ -330,14 +330,14 @@ def dashboard(request):
     # salert6b = Alert.objects.create(detector=detector6,wearable=wearable6,seen=False,datetime=datetime.strptime('2016-09-07 16:30:30', '%Y-%m-%d %H:%M:%S'))
     # salert6c = Alert.objects.create(detector=detector6,wearable=wearable6,seen=False,datetime=datetime.strptime('2016-09-07 17:30:30', '%Y-%m-%d %H:%M:%S'))
     # salert6d = Alert.objects.create(detector=detector6,wearable=wearable6,seen=False,datetime=datetime.strptime('2016-09-07 18:30:30', '%Y-%m-%d %H:%M:%S'))
-    # # sreport6= IncidentReport.objects.create(client_name='Tan',caregiver_name='Shawn',author_name='Shawn',datetime=datetime.strptime('2016-09-07 17:30:30', '%Y-%m-%d %H:%M:%S'),comments='TESTING')
+    # sreport6= IncidentReport.objects.create(client_name='Tan',caregiver_name='Shawn',author_name='Shawn',datetime=datetime.strptime('2016-09-07 17:30:30', '%Y-%m-%d %H:%M:%S'),comments='TESTING')
     #
     # salert7 = Alert.objects.create(detector=detector1,wearable=wearable1,seen=False,datetime=datetime.strptime('2016-09-08 14:30:30', '%Y-%m-%d %H:%M:%S'))#8
     # sreport7= IncidentReport.objects.create(client_name='Tan',caregiver_name='Shawn',author_name='Shawn',datetime=datetime.strptime('2016-09-08 14:30:30', '%Y-%m-%d %H:%M:%S'),comments='TESTING')
     #
     # salert7a = Alert.objects.create(detector=detector1,wearable=wearable1,seen=False,datetime=datetime.strptime('2016-09-09 15:30:30', '%Y-%m-%d %H:%M:%S'))#9
     # sreport7a= IncidentReport.objects.create(client_name='Tan',caregiver_name='Shawn',author_name='Shawn',datetime=datetime.strptime('2016-09-09 14:30:30', '%Y-%m-%d %H:%M:%S'),comments='TESTING')
-    # # #
+    #
     # salert8 = Alert.objects.create(detector=detector2,wearable=wearable2,seen=False,datetime=datetime.strptime('2016-09-12 14:30:30', '%Y-%m-%d %H:%M:%S'))#12
     # salert8a = Alert.objects.create(detector=detector2,wearable=wearable2,seen=False,datetime=datetime.strptime('2016-09-12 15:30:30', '%Y-%m-%d %H:%M:%S'))
     # salert8b = Alert.objects.create(detector=detector2,wearable=wearable2,seen=False,datetime=datetime.strptime('2016-09-12 16:30:30', '%Y-%m-%d %H:%M:%S'))
@@ -363,7 +363,7 @@ def dashboard(request):
     #
     # salert12 = Alert.objects.create(detector=detector6,wearable=wearable6,seen=False,datetime=datetime.strptime('2016-09-15 14:30:30', '%Y-%m-%d %H:%M:%S'))#15
     # sreport12= IncidentReport.objects.create(client_name='Tan',caregiver_name='Shawn',author_name='Shawn',datetime=datetime.strptime('2016-09-15 14:30:30', '%Y-%m-%d %H:%M:%S'),comments='TESTING')
-
+    #
     # salert13 = Alert.objects.create(detector=detector1,wearable=wearable1,seen=False,datetime=datetime.strptime('2016-09-16 14:30:30', '%Y-%m-%d %H:%M:%S'))#16
     # sreport13= IncidentReport.objects.create(client_name='Tan',caregiver_name='Shawn',author_name='Shawn',datetime=datetime.strptime('2016-09-16 14:30:30', '%Y-%m-%d %H:%M:%S'),comments='TESTING')
     #
@@ -373,7 +373,7 @@ def dashboard(request):
     # salert13d = Alert.objects.create(detector=detector1,wearable=wearable1,seen=False,datetime=datetime.strptime('2016-09-19 18:30:30', '%Y-%m-%d %H:%M:%S'))
     # sreport13= IncidentReport.objects.create(client_name='Tan',caregiver_name='Shawn',author_name='Shawn',datetime=datetime.strptime('2016-09-19 14:30:30', '%Y-%m-%d %H:%M:%S'),comments='TESTING')
     #
-    # #
+    #
     # salert14 = Alert.objects.create(detector=detector2,wearable=wearable2,seen=False,datetime=datetime.strptime('2016-09-20 14:30:30', '%Y-%m-%d %H:%M:%S'))#20
     # salert15 = Alert.objects.create(detector=detector3,wearable=wearable3,seen=False,datetime=datetime.strptime('2016-09-20 14:30:30', '%Y-%m-%d %H:%M:%S'))
     # sreport15= IncidentReport.objects.create(client_name='Tan',caregiver_name='Shawn',author_name='Shawn',datetime=datetime.strptime('2016-09-20 14:30:30', '%Y-%m-%d %H:%M:%S'),comments='TESTING')
@@ -397,11 +397,11 @@ def dashboard(request):
     # salert18c = Alert.objects.create(detector=detector6,wearable=wearable6,seen=False,datetime=datetime.strptime('2016-09-26 14:37:30', '%Y-%m-%d %H:%M:%S'))
     # salert18d = Alert.objects.create(detector=detector6,wearable=wearable6,seen=False,datetime=datetime.strptime('2016-09-26 14:38:30', '%Y-%m-%d %H:%M:%S'))
     # sreport18= IncidentReport.objects.create(client_name='Tan',caregiver_name='Shawn',author_name='Shawn',datetime=datetime.strptime('2016-09-26 14:37:30', '%Y-%m-%d %H:%M:%S'),comments='TESTING')
-
-
+    #
+    #
     # salert19 = Alert.objects.create(detector=detector1,wearable=wearable1,seen=False,datetime=datetime.strptime('2016-09-27 14:30:30', '%Y-%m-%d %H:%M:%S'))#27
     # sreport19= IncidentReport.objects.create(client_name='Tan',caregiver_name='Shawn',author_name='Shawn',datetime=datetime.strptime('2016-09-27 14:30:30', '%Y-%m-%d %H:%M:%S'),comments='TESTING')
-    # #
+    #
     # salert20 = Alert.objects.create(detector=detector2,wearable=wearable2,seen=False,datetime=datetime.strptime('2016-09-28 14:30:30', '%Y-%m-%d %H:%M:%S'))#28
     # salert20a = Alert.objects.create(detector=detector2,wearable=wearable2,seen=False,datetime=datetime.strptime('2016-09-28 15:20:30', '%Y-%m-%d %H:%M:%S'))
     # salert20b = Alert.objects.create(detector=detector2,wearable=wearable2,seen=False,datetime=datetime.strptime('2016-09-28 15:30:30', '%Y-%m-%d %H:%M:%S'))
@@ -415,7 +415,7 @@ def dashboard(request):
     # salert22 = Alert.objects.create(detector=detector4,wearable=wearable4,seen=False,datetime=datetime.strptime('2016-09-30 14:30:30', '%Y-%m-%d %H:%M:%S'))#30
     # sreport22= IncidentReport.objects.create(client_name='Tan',caregiver_name='Shawn',author_name='Shawn',datetime=datetime.strptime('2016-09-30 14:30:30', '%Y-%m-%d %H:%M:%S'),comments='TESTING')
     #
-    #
+
 
 
 
