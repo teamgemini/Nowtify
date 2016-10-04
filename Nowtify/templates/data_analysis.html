@@ -45,11 +45,10 @@ Data Analysis
         {#                                        }#}
         {#                                    </script>#}
                                             <option selected="selected">Select data title</option>
-                                            <option value="0">Highest Number of Alert</option>
-                                            <option value="1">Total Number of Alert</option>
-                                            <option value="2">Highest Number of Incident Reported</option>
-                                            <option value="3">Total Number of Incident Reported</option>
-                                            <option value="4">Incident Reports</option>
+                                            <option value="Highest Number of Alert">Highest Number of Alert</option>
+                                            <option value="Total Number of Alert">Total Number of Alert</option>
+                                            <option value="Highest Number of Incident Reported">Highest Number of Incident Reported</option>
+                                            <option value="Total Number of Incident Reported">Total Number of Incident Reported</option>
                                         </select>
                                     </div>
 
@@ -58,10 +57,10 @@ Data Analysis
                                     <div class="col-sm-3">
                                         <select onchange="iftimeslot(this);" placeholder="please select" class="form-control" name="data_type" name="data_type" type="text">
                                         <option selected="selected">Select a period</option>
-                                        <option value="0">By month</option>
-                                        <option value="1">By Week</option>
-                                        <option value="2">By Day</option>
-                                        <option value="3">Timeslot</option>
+                                        <option value="By Month">By Month</option>
+                                        <option value="By Week">By Week</option>
+                                        <option value="By Day">By Day</option>
+                                        <option value="By Timeslot">By Timeslot</option>
                                         </select>
                                      </div>
 
@@ -232,7 +231,7 @@ Data Analysis
     <div class="row">
 			<div class="col-lg-12">
 				<div class="panel panel-default">
-					<div class="panel-heading">Bar Chart</div>
+					<div class="panel-heading">{{ dataTitle }},{{ dataType }} {{ start }} {{ end }}</div>
 
                     <div class="panel-body">
 
@@ -296,7 +295,7 @@ Data Analysis
      <script>
         function iftimeslot(that) {
 
-            if(that.value == "0"){
+            if(that.value == "By Month"){
 
                 document.getElementById("select_date1").style.display = "block";
                 $(function () {
@@ -328,7 +327,7 @@ Data Analysis
                 document.getElementById("select_date1").style.display = "none";
             }
 
-            if(that.value == "1"){
+            if(that.value == "By Week"){
                 document.getElementById("select_date2").style.display = "block";
                 $(function () {
                     $('#datetimepicker3').datetimepicker({
@@ -355,7 +354,7 @@ Data Analysis
                 document.getElementById("select_date2").style.display = "none";
             }
 
-            if(that.value == "2"){
+            if(that.value == "By Day"){
                 document.getElementById("select_date3").style.display = "block";
                 $(function () {
                     $('#datetimepicker5').datetimepicker({
@@ -384,7 +383,7 @@ Data Analysis
             }
 
 
-            if (that.value == "3") {
+            if (that.value == "By Timeslot") {
 {#                alert("check");#}
                 document.getElementById("select_date4").style.display = "block";
                 document.getElementById("select_time").style.display = "block";

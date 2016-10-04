@@ -113,7 +113,7 @@ Sensor Management
 							<div class="large">
                                 <script>
                                     monthlyCounter = {{ monthlyCounter | safe }}
-                                    document.write(monthlyCounter + " out of " + "10");
+                                    document.write(monthlyCounter);
                                 </script>
                             </div>
 							<div class="text-muted">Alerts This Month</div>
@@ -412,6 +412,7 @@ Sensor Management
 
 
     </script>
-
+    <script src="{% static 'js/jquery-3.1.0.js' %}"></script>
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
 
 {% endblock %}
