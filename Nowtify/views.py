@@ -108,7 +108,7 @@ def index(request):
 @login_required(login_url='')
 def dashboard(request):
 
-    return render(request, "dashboard.html",{'dataSet': newsFeedList, 'alertCounter': alertCounter,'weeklyCounter': weeklyCounter,'monthlyCounter': monthlyCounter, 'detectorCounter':detectorCounter,'wearableCounter': wearableCounter})
+    return render(request, "dashboard.html")
 
 
 @login_required(login_url='')
