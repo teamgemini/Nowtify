@@ -125,10 +125,3 @@ class ForceData(models.Model):
 
     class Meta:
         db_table = "NowtifyWeb_force_data"
-
-        alert1 = Alert.objects.create(detector=detector1, wearable=wearable1, seen=False,
-                                      datetime=datetime.strptime('2016-08-01 14:30:30', '%Y-%m-%d %H:%M:%S'))  # 1
-        alert1a = Alert.objects.create(detector=detector1, wearable=wearable1, seen=False,
-                                       datetime=datetime.strptime('2016-08-01 15:30:30', '%Y-%m-%d %H:%M:%S'))
-        alert1b = Alert.objects.create(detector=detector1, wearable=wearable1, seen=False,
-                                       datetime=datetime.strptime('2016-08-01 16:30:30', '%Y-%m-%d %H:%M:%S'))
