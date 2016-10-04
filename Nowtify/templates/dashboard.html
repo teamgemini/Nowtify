@@ -56,7 +56,7 @@ Sensor Management
 							<div class="large">
                                 <script>
                                     detectorCounter = {{ detectorCounter | safe }}
-                                    document.write(detectorCounter);
+                                    document.write(detectorCounter) + 'out of 6';
                                 </script>
                             </div>
 							<div class="text-muted">Sensors On</div>
@@ -84,7 +84,7 @@ Sensor Management
 				</div>
 			</div></a>
 
-             <a href="/data_analysis/"><div class="col-xs-12 col-md-6 col-lg-6">
+             <a href="/alert_bands/"><div class="col-xs-12 col-md-6 col-lg-6">
 				<div class="panel panel-teal panel-widget">
 					<div class="row no-padding">
 						<div class="col-sm-2 col-lg-2 widget-left">
@@ -94,7 +94,7 @@ Sensor Management
 							<div class="large">
                                 <script>
                                     wearableCounter = {{ wearableCounter | safe }}
-                                    document.write(wearableCounter);
+                                    document.write(wearableCounter) + 'out of 6';
                                 </script>
                             </div>
 							<div class="text-muted">Wearables On</div>
