@@ -89,9 +89,9 @@ class DetectorBattery(models.Model):
 
 class Alert(models.Model):
     datetime = models.DateTimeField()
-    detector_name = models.ForeignKey(Detector, on_delete=models.CASCADE)
+    detector = models.ForeignKey(Detector, on_delete=models.CASCADE)
     seen = models.BooleanField(default=False)
-    wearable_name = models.ForeignKey(Wearable, null=True, blank=True, default=None)
+    wearable = models.ForeignKey(Wearable, null=True, blank=True, default=None)
 
     class Meta:
         db_table = "NowtifyWeb_alert"
