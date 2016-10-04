@@ -89,9 +89,9 @@ class DetectorBattery(models.Model):
 
 class Alert(models.Model):
     datetime = models.DateTimeField()
-    detector = models.ForeignKey(Detector, on_delete=models.CASCADE)
+    detector_name = models.ForeignKey(Detector, on_delete=models.CASCADE)
     seen = models.BooleanField(default=False)
-    wearable = models.ForeignKey(Wearable, null=True, blank=True, default=None)
+    wearable_name = models.ForeignKey(Wearable, null=True, blank=True, default=None)
 
     class Meta:
         db_table = "NowtifyWeb_alert"
@@ -125,3 +125,10 @@ class ForceData(models.Model):
 
     class Meta:
         db_table = "NowtifyWeb_force_data"
+
+        alert1 = Alert.objects.create(detector=detector1, wearable=wearable1, seen=False,
+                                      datetime=datetime.strptime('2016-08-01 14:30:30', '%Y-%m-%d %H:%M:%S'))  # 1
+        alert1a = Alert.objects.create(detector=detector1, wearable=wearable1, seen=False,
+                                       datetime=datetime.strptime('2016-08-01 15:30:30', '%Y-%m-%d %H:%M:%S'))
+        alert1b = Alert.objects.create(detector=detector1, wearable=wearable1, seen=False,
+                                       datetime=datetime.strptime('2016-08-01 16:30:30', '%Y-%m-%d %H:%M:%S'))
