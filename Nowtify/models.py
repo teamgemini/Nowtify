@@ -20,7 +20,7 @@ class Wearable(models.Model):
 class WearableUsage(models.Model):
     wearable_name = models.ForeignKey(Wearable, on_delete=models.CASCADE)
     used = models.BooleanField(default=False)
-    updated = models.DateTimeField(auto_now_add=True, auto_now=False)
+    updated = models.DateTimeField()
 
     class Meta:
         db_table = "NowtifyWeb_wearable_usage"
@@ -29,7 +29,7 @@ class WearableUsage(models.Model):
 class WearableBattery(models.Model):
     wearable_name = models.ForeignKey(Wearable, on_delete=models.CASCADE)
     battery = models.IntegerField(default=0)
-    updated = models.DateTimeField(auto_now_add=True, auto_now=False)
+    updated = models.DateTimeField()
 
     class Meta:
         db_table = "NowtifyWeb_wearable_battery"
@@ -72,7 +72,7 @@ class Detector(models.Model):
 class DetectorUsage(models.Model):
     detector_name = models.ForeignKey(Detector, on_delete=models.CASCADE)
     used = models.BooleanField(default=False)
-    updated = models.DateTimeField(auto_now_add=True, auto_now=False)
+    updated = models.DateTimeField()
 
     class Meta:
         db_table = "NowtifyWeb_detector_usage"
@@ -81,7 +81,7 @@ class DetectorUsage(models.Model):
 class DetectorBattery(models.Model):
     detector_name = models.ForeignKey(Detector, on_delete=models.CASCADE)
     battery = models.IntegerField(default=0)
-    updated = models.DateTimeField(auto_now_add=True, auto_now=False)
+    updated = models.DateTimeField()
 
     class Meta:
         db_table = "NowtifyWeb_detector_battery"
@@ -89,7 +89,7 @@ class DetectorBattery(models.Model):
 
 class Alert(models.Model):
     datetime = models.DateTimeField()
-    detector = models.OneToOneField(Detector)
+    detector = models.ForeignKey(Detector, on_delete=models.CASCADE)
     seen = models.BooleanField(default=False)
     wearable = models.ForeignKey(Wearable, null=True, blank=True, default=None)
 
@@ -100,7 +100,7 @@ class Alert(models.Model):
 class Assignment(models.Model):
     wearable_name = models.ForeignKey(Wearable, on_delete=models.CASCADE)
     name = models.CharField(max_length=50)
-    update = models.DateTimeField(auto_now_add=True, auto_now=False)
+    update = models.DateTimeField()
 
     class Meta:
         db_table = "NowtifyWeb_assignment"
@@ -110,7 +110,7 @@ class IncidentReport(models.Model):
     client_name = models.CharField(max_length=50)
     caregiver_name = models.CharField(max_length=50)
     author_name = models.CharField(max_length=50)
-    datetime = models.DateTimeField(auto_now_add=True, auto_now=False)
+    datetime = models.DateTimeField()
     comments = models.CharField(max_length=500)
 
     class Meta:

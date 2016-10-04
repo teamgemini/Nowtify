@@ -34,8 +34,8 @@ Data Analysis
                     <form action="/data_analysis/" method="post">{% csrf_token %}
                           <fieldset>
                           <div class="form-group col-lg-12">
-                              <label class="col-sm-1">Select</label>
-                                    <div class="col-sm-3">
+                              <label class="col-sm-2">Show Data For</label>
+                                    <div class="col-sm-4">
                                         <select class="form-control" name="data_title"  id="data_title" type="text">
 
         {#                                    <script>#}
@@ -45,23 +45,22 @@ Data Analysis
         {#                                        }#}
         {#                                    </script>#}
                                             <option selected="selected">Select data title</option>
-                                            <option value="0">Highest Number of Alert</option>
-                                            <option value="1">Total Number of Alert</option>
-                                            <option value="2">Highest Number of Incident Reported</option>
-                                            <option value="3">Total Number of Incident Reported</option>
-                                            <option value="4">Incident Reports</option>
+                                            <option value="Highest Number of Alert">Highest Number of Alert</option>
+                                            <option value="Total Number of Alert">Total Number of Alert</option>
+                                            <option value="Highest Number of Incident Reported">Highest Number of Incident Reported</option>
+                                            <option value="Total Number of Incident Reported">Total Number of Incident Reported</option>
                                         </select>
                                     </div>
 
 
-                                    <label class="col-sm-1">Filter</label>
-                                    <div class="col-sm-3">
+                                    <label class="col-sm-1">Sort By</label>
+                                    <div class="col-sm-4">
                                         <select onchange="iftimeslot(this);" placeholder="please select" class="form-control" name="data_type" name="data_type" type="text">
                                         <option selected="selected">Select a period</option>
-                                        <option value="0">By month</option>
-                                        <option value="1">By Week</option>
-                                        <option value="2">By Day</option>
-                                        <option value="3">Timeslot</option>
+                                        <option value="By Month">By Month</option>
+                                        <option value="By Week">By Week</option>
+                                        <option value="By Day">By Day</option>
+                                        <option value="By Timeslot">By Timeslot</option>
                                         </select>
                                      </div>
 
@@ -69,10 +68,11 @@ Data Analysis
 
 {#----------------------#}
 
-                       <div id="select_date1"  name="select_date1" class="form-group col-lg-12" style="display: none;">
 
-                              <label class="col-sm-1" for="start_date">From</label>
-                                    <div class="col-md-3">
+                          <div id="select_date1"  name="select_date1" class="form-group col-lg-12" style="display: none;">
+
+                              <label class="col-sm-2" for="start_date">From</label>
+                                    <div class="col-md-4">
 {#                                      <input name="start_date" type="date" placeholder="" class="form-control">#}
                                         <div class='input-group date' id='datetimepicker1'>
                                             <input type='text' class="form-control" name='datetimepicker1'/>
@@ -83,7 +83,7 @@ Data Analysis
                                     </div>
 
                              <label class="col-md-1" for="end_date">To</label>
-                                    <div class="col-md-3">
+                                    <div class="col-md-4">
 {#                                        <input name="end_date" type="date" placeholder="" class="form-control">#}
                                         <div class='input-group date' id='datetimepicker2'>
                                             <input type='text' class="form-control"  name='datetimepicker2'/>
@@ -97,8 +97,8 @@ Data Analysis
 
                       <div id="select_date2" name="select_date2" class="form-group col-lg-12" style="display: none;">
 
-                              <label class="col-sm-1" for="start_date">From</label>
-                                    <div class="col-md-3">
+                              <label class="col-sm-2" for="start_date">From</label>
+                                    <div class="col-md-4">
 {#                                      <input name="start_date" type="date" placeholder="" class="form-control">#}
                                         <div class='input-group date' id='datetimepicker3'>
                                             <input type='text' class="form-control"  name='datetimepicker3' />
@@ -109,7 +109,7 @@ Data Analysis
                                     </div>
 
                              <label class="col-md-1" for="end_date">To</label>
-                                    <div class="col-md-3">
+                                    <div class="col-md-4">
 {#                                        <input name="end_date" type="date" placeholder="" class="form-control">#}
                                         <div class='input-group date' id='datetimepicker4'>
                                             <input type='text' class="form-control"  name='datetimepicker4'/>
@@ -123,8 +123,8 @@ Data Analysis
 {#----------------------#}
                       <div id="select_date3" name="select_date3" class="form-group col-lg-12" style="display: none;">
 
-                              <label class="col-sm-1" for="start_date">From</label>
-                                    <div class="col-md-3">
+                              <label class="col-sm-2" for="start_date">From</label>
+                                    <div class="col-md-4">
 {#                                      <input name="start_date" type="date" placeholder="" class="form-control">#}
                                         <div class='input-group date' id='datetimepicker5'>
                                             <input type='text' class="form-control" name='datetimepicker5' />
@@ -135,7 +135,7 @@ Data Analysis
                                     </div>
 
                              <label class="col-md-1" for="end_date">To</label>
-                                    <div class="col-md-3">
+                                    <div class="col-md-4">
 {#                                        <input name="end_date" type="date" placeholder="" class="form-control">#}
                                         <div class='input-group date' id='datetimepicker6'>
                                             <input type='text' class="form-control"  name='datetimepicker6'/>
@@ -148,8 +148,8 @@ Data Analysis
 {#----------------------#}
                       <div id="select_date4" name="select_date4" class="form-group col-lg-12" style="display: none;">
 
-                              <label class="col-sm-1" for="start_date">From</label>
-                                    <div class="col-md-3">
+                              <label class="col-sm-2" for="start_date">From</label>
+                                    <div class="col-md-4">
 {#                                      <input name="start_date" type="date" placeholder="" class="form-control">#}
                                         <div class='input-group date' id='datetimepicker7'>
                                             <input type='text' class="form-control" name='datetimepicker7'/>
@@ -160,7 +160,7 @@ Data Analysis
                                     </div>
 
                              <label class="col-md-1" for="end_date">To</label>
-                                    <div class="col-md-3">
+                                    <div class="col-md-4">
 {#                                        <input name="end_date" type="date" placeholder="" class="form-control">#}
                                         <div class='input-group date' id='datetimepicker8'>
                                             <input type='text' class="form-control"  name='datetimepicker8'/>
@@ -172,8 +172,8 @@ Data Analysis
                        </div>
 
                         <div id="select_time" name="select_time" class="form-group col-lg-12" style="display: none;">
-                            <label class="col-sm-1" for="start_date">Start Time</label>
-                                <div class="col-md-3">
+                            <label class="col-sm-2" for="start_date">Start Time</label>
+                                <div class="col-md-4">
 {#                                    <input name="start_time" type="date" placeholder="start time" class="form-control">#}
                                         <div class='input-group date' id='datetimepicker9'>
                                             <input name="start_time" type='text' class="form-control"/>
@@ -196,7 +196,7 @@ Data Analysis
                                 </div>
 
                             <label class="col-md-1" for="end_date">End Time</label>
-                                <div class="col-md-3">
+                                <div class="col-md-4">
 {#                                    <input name="end_time" type="date" placeholder="end time" class="form-control">#}
                                         <div class='input-group date' id='datetimepicker10'>
                                             <input name="end_time" type='text' class="form-control"/>
@@ -229,10 +229,12 @@ Data Analysis
             </div>
         </div>
     </div>
+
+  {% if dataTitle %}
     <div class="row">
 			<div class="col-lg-12">
 				<div class="panel panel-default">
-					<div class="panel-heading">Bar Chart</div>
+					<div class="panel-heading">{{ dataTitle }}{{ dataType }} {{ start }} {{ end }}</div>
 
                     <div class="panel-body">
 
@@ -287,6 +289,7 @@ Data Analysis
 				</div>
 			</div>
 		</div><!--/.row-->
+    {% endif %}
     </div>
 
     <script>
@@ -296,7 +299,7 @@ Data Analysis
      <script>
         function iftimeslot(that) {
 
-            if(that.value == "0"){
+            if(that.value == "By Month"){
 
                 document.getElementById("select_date1").style.display = "block";
                 $(function () {
@@ -328,7 +331,7 @@ Data Analysis
                 document.getElementById("select_date1").style.display = "none";
             }
 
-            if(that.value == "1"){
+            if(that.value == "By Week"){
                 document.getElementById("select_date2").style.display = "block";
                 $(function () {
                     $('#datetimepicker3').datetimepicker({
@@ -355,7 +358,7 @@ Data Analysis
                 document.getElementById("select_date2").style.display = "none";
             }
 
-            if(that.value == "2"){
+            if(that.value == "By Day"){
                 document.getElementById("select_date3").style.display = "block";
                 $(function () {
                     $('#datetimepicker5').datetimepicker({
@@ -384,7 +387,7 @@ Data Analysis
             }
 
 
-            if (that.value == "3") {
+            if (that.value == "By Timeslot") {
 {#                alert("check");#}
                 document.getElementById("select_date4").style.display = "block";
                 document.getElementById("select_time").style.display = "block";
@@ -422,5 +425,7 @@ Data Analysis
 {#	<script src="{% static 'js/bootstrap.min.js' %}"></script>#}
 {#	<script src="{% static 'js/bootstrap-datepicker.js' %}"></script>#}
 {#    <script src="{% static 'js/bootstrap-table.js' %}"></script>#}
+{#    <script src="{% static 'js/jquery-3.1.0.js' %}"></script>#}
+{#    <script src="{% static 'js/bootstrap.min.js' %}"></script>#}
 
 {% endblock %}
