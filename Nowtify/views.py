@@ -117,9 +117,9 @@ def dashboard(request):
     # #
     # Alert.objects.all().delete()
     # IncidentReport.objects.all().delete()
-    # # DO NOT DELETE YET, Gathering Data over time
-    #
-    # #insert fake data
+    # # # DO NOT DELETE YET, Gathering Data over time
+    # #
+    # # #insert fake data
     # datestr = "2016-10-05 14:45:00"
     # dateobj = datetime.strptime(datestr, '%Y-%m-%d %H:%M:%S')
     #
@@ -309,8 +309,8 @@ def dashboard(request):
     # #Generate for September
     # salert1 = Alert.objects.create(detector=detector1,wearable=wearable1,seen=False,datetime=datetime.strptime('2016-09-01 14:30:30', '%Y-%m-%d %H:%M:%S'))#1
     # sreport1= IncidentReport.objects.create(client_name='Tan',caregiver_name='Shawn',author_name='Shawn',datetime=datetime.strptime('2016-09-01 14:30:30', '%Y-%m-%d %H:%M:%S'),comments='TESTING')
-
-    # salert2 = Alert.objects.create(detector=detector2,wearable=wearable2,seen=False,datetime=datetime.strptime('2016-09-02 14:30:30', '%Y-%m-%d %H:%M:%S'))#2
+    #
+    # # salert2 = Alert.objects.create(detector=detector2,wearable=wearable2,seen=False,datetime=datetime.strptime('2016-09-02 14:30:30', '%Y-%m-%d %H:%M:%S'))#2
     # salert2a = Alert.objects.create(detector=detector1,wearable=wearable1,seen=False,datetime=datetime.strptime('2016-09-02 15:30:30', '%Y-%m-%d %H:%M:%S'))
     # sreport2= IncidentReport.objects.create(client_name='Tan',caregiver_name='Shawn',author_name='Shawn',datetime=datetime.strptime('2016-09-02 14:30:30', '%Y-%m-%d %H:%M:%S'),comments='TESTING')
 
@@ -371,7 +371,7 @@ def dashboard(request):
     # salert13c = Alert.objects.create(detector=detector1,wearable=wearable1,seen=False,datetime=datetime.strptime('2016-09-19 17:30:30', '%Y-%m-%d %H:%M:%S'))
     # salert13d = Alert.objects.create(detector=detector1,wearable=wearable1,seen=False,datetime=datetime.strptime('2016-09-19 18:30:30', '%Y-%m-%d %H:%M:%S'))
     # sreport13= IncidentReport.objects.create(client_name='Tan',caregiver_name='Shawn',author_name='Shawn',datetime=datetime.strptime('2016-09-19 14:30:30', '%Y-%m-%d %H:%M:%S'),comments='TESTING')
-    #
+
 
     # salert14 = Alert.objects.create(detector=detector2,wearable=wearable2,seen=False,datetime=datetime.strptime('2016-09-20 14:30:30', '%Y-%m-%d %H:%M:%S'))#20
     # salert15 = Alert.objects.create(detector=detector3,wearable=wearable3,seen=False,datetime=datetime.strptime('2016-09-20 14:30:30', '%Y-%m-%d %H:%M:%S'))
@@ -441,9 +441,6 @@ def dashboard(request):
     detectorBatteryUnique = []
     detectorBattery = []
 
-    # assignmentUnique = []
-    # assignmentList = []
-
     wearableUsageUnique = []
     wearableUsage = []
 
@@ -487,9 +484,12 @@ def dashboard(request):
 
     startOfMonth = 1
     today = datetime.now()
-    thisMonth = today.month
-    # thisYear = today.year
-    # calendar.monthrange(thisYear,thisMonth)
+    thisMonthNum = today.month
+    thisYearNum = today.year
+    thisMonthEndNum = str(calendar.monthrange(thisYearNum,thisMonthNum)[1])
+    thisMonthStartNum = "1"
+    thisMonthStart = datetime.strptime(thisMonthStartNum + "/" + str(thisMonthNum)+ "/" + str(thisYearNum) + " 00:00:00", "%d/%m/%Y %H:%M:%S")
+    thisMonthEnd = datetime.strptime(thisMonthEndNum + "/" + str(thisMonthNum) + "/" + str(thisYearNum) + " 23:59:59", "%d/%m/%Y %H:%M:%S")
 
     detectorList = Detector.objects.all()
     detectorUsageList = DetectorUsage.objects.all()
@@ -553,7 +553,6 @@ def dashboard(request):
             detectorBattery.append(detectorBatteryList.filter(detector_name__exact=detectorObject,updated__gte=startOfYtd).order_by('updated').first())
     #take only sensorBattery objects, filter by sensor name to prevent repeats, filer by condition, order by datetime,take latest
 
-    # if all(None for item in detectorBattery) and len(detectorUsage)== 4:
 
     for instance in detectorBattery:
 
@@ -678,7 +677,7 @@ def dashboard(request):
             masterList.append([messageType,message,timestamp])
 
 
-# AlertActivated and Deactivated  #Acknowledgement might be removed
+# AlertActivated
     alertCounter = 0
     weeklyCounter = 0
     monthlyCounter = 0
@@ -736,9 +735,10 @@ def dashboard(request):
                 weeklyCounter += 1
 
     for alertObject in alertUnique:  # take all alerts for this Month
-        if allAlertList.filter(detector__exact=alertObject.detector, datetime__month=thisMonth).exists():
-            alertMonthList.append(allAlertList.filter(detector__exact=alertObject.detector, datetime__month=thisMonth).order_by('datetime').first())
-            monthlyCounter += 1
+        if(alertObject.datetime >= thisMonthStart):
+            if allAlertList.filter(detector__exact=alertObject.detector, datetime__range=(thisMonthStart,thisMonthEnd)).exists():
+                alertMonthList.append(allAlertList.filter(detector__exact=alertObject.detector, datetime__range=(thisMonthStart,thisMonthEnd)).order_by('datetime').first())
+                monthlyCounter += 1
 
     #sort by time
     if len(masterList) > 0:
@@ -1112,7 +1112,7 @@ def data_analysis_query(request):
         if (dataTitle == "Highest Number of Alert" or dataTitle == "Highest Number of Incident Reported"):  # if need to sort by Highest Alert or Highest Incident Reports
             dataList, labelList = (list(t) for t in zip(*sorted(zip(dataList, labelList), reverse=True)))
 
-        return render(request, 'data_analysis.html',{'dataList': dataList, 'labels': labelList, 'dataTitle': dataTitle + ',', 'dataType': dataType,'start': ' from ' + startWeek, 'end': ' to '+ endWeek})
+        return render(request, 'data_analysis.html',{'dataList': dataList, 'labels': labelList, 'dataTitle': dataTitle + ',', 'dataType': dataType,'start': ' From: ' + startWeek, 'end': ' To: '+ endWeek})
 
     #computing filter by DAY
     if(dataType == "By Day"):
@@ -1146,13 +1146,13 @@ def data_analysis_query(request):
             selectedQuery = incidentQuery
 
         for eachDay in listOfDays:  # each day, count the number of objects occur on that day
-            countForDay = (selectedQuery.filter(datetime__day=eachDay.day)).count()
+            countForDay = (selectedQuery.filter(datetime__startswith=eachDay.date)).count()
             dataList.append(countForDay)
 
         if (dataTitle == "Highest Number of Alert" or dataTitle == "Highest Number of Incident Reported"):  # if need to sort by Highest Alert or Highest Incident Reports
             dataList, labelList = (list(t) for t in zip(*sorted(zip(dataList, labelList), reverse=True)))
 
-        return render(request, 'data_analysis.html',{'dataList': dataList, 'labels': labelList, 'dataTitle': dataTitle + ',', 'dataType': dataType,'start': ' from ' + startDay, 'end': ' to ' + endDay})
+        return render(request, 'data_analysis.html',{'dataList': dataList, 'labels': labelList, 'dataTitle': dataTitle + ',', 'dataType': dataType,'start': ' From: ' + startDay, 'end': ' To: ' + endDay})
 
     #computing filter by MONTH
     if (dataType == "By Month" ):
@@ -1217,7 +1217,7 @@ def data_analysis_query(request):
             dataList, labelList = (list(t) for t in zip(*sorted(zip(dataList, labelList),reverse=True)))
 
 
-        return render(request, 'data_analysis.html',{'dataList': dataList, 'labels': labelList, 'dataTitle': dataTitle + ',', 'dataType': dataType,'start': ' from ' + startMonth, 'end': ' to ' + endMonth})
+        return render(request, 'data_analysis.html',{'dataList': dataList, 'labels': labelList, 'dataTitle': dataTitle + ',', 'dataType': dataType,'start': ' From: ' + startMonth, 'end': ' To: ' + endMonth})
 
     #filter by TimeSlot
     if (dataType == "By Timeslot"):
@@ -1264,7 +1264,11 @@ def data_analysis_query(request):
         if(dataTitle == "Highest Number of Alert" or dataTitle == "Highest Number of Incident Reported"):  # if need to sort by Highest Alert or Highest Incident Reports
             dataList, labelList = (list(t) for t in zip(*sorted(zip(dataList, labelList), reverse=True)))
 
-        return render(request, 'data_analysis.html',{'dataList': dataList, 'labels': labelList, 'dataTitle': dataTitle + ',', 'dataType': dataType,'start': ' from ' + (startDate + " " + str(startTimeSlotTime),'%Y-%m-%d %I:%M %p'), 'end': ' to ' + (endDate + " " + str(startTimeSlotTime),'%Y-%m-%d %I:%M %p')})
+        #strings for Title on return
+        start = "From " + dayS + "/" + monthS + "/" + yearS + " To " + dayE + "/" + monthE + "/" + yearE + ","
+        end = str(startTimeSlotTime) +" To "+ str(endTimeSlotTime)
+
+        return render(request, 'data_analysis.html',{'dataList': dataList, 'labels': labelList, 'dataTitle': dataTitle + ',', 'dataType': dataType,'start':start,'end':end})
 
     else:
         return render (request,'data_analysis.html')
