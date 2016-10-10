@@ -120,7 +120,7 @@ class IncidentReport(models.Model):
 class ForceData(models.Model):
     activation_time = models.DateTimeField(primary_key=True)
     detector_name = models.ForeignKey(Detector, on_delete=models.CASCADE)
-    force = models.IntegerField(default=0)
+    force = models.CharField(max_length=250)
     datetime = models.DateTimeField()
 
     class Meta:
