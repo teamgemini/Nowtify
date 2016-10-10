@@ -616,7 +616,8 @@ def dashboard(request):
             if(str(instance.updated.date()) == str(datetime.today().date())):
                 timestamp = "Today " + str(instance.updated)[11:19]
             else:
-                timestamp=datetime.strptime(str(instance.updated)[:19],'%Y-%m-%d %H:%M:%S').strftime("%d-%m-%Y %H:%M:%S")
+                # timestamp=datetime.strptime(str(instance.updated)[:19],'%Y-%m-%d %H:%M:%S').strftime("%d-%m-%Y %H:%M:%S")
+                timestamp = '01:00:00'
             wearableCounter += 1
 
             t2 = datetime.now()
