@@ -11,12 +11,6 @@ import os
 
 from django.core.wsgi import get_wsgi_application
 
-# Fix django closing connection to MemCachier after every request (#11331)
-from django.core.cache.backends.memcached import BaseMemcachedCache
-
-
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "Nowtify.settings")
 
 application = get_wsgi_application()
-
-BaseMemcachedCache.close = lambda self, **kwargs: None
