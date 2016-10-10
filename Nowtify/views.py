@@ -610,13 +610,13 @@ def dashboard(request):
                 message = str(
                     instance.wearable_name.name) + " in Center 1 has been Switched ON, no Caregiver assigned yet"
 
-            if(str(instance.updated.date()) == str(datetime.today().date())):
-                timestamp = "Today " + str(instance.updated)[11:19]
-            else:
-                timestamp=datetime.strptime(str(instance.updated)[:19],'%Y-%m-%d %H:%M:%S').strftime("%d-%m-%Y %H:%M:%S")
+            # if(str(instance.updated.date()) == str(datetime.today().date())):
+            #     timestamp = "Today " + str(instance.updated)[11:19]
+            # else:
+            #     timestamp=datetime.strptime(str(instance.updated)[:19],'%Y-%m-%d %H:%M:%S').strftime("%d-%m-%Y %H:%M:%S")
             wearableCounter += 1
 
-            masterList.append([messageType,message,timestamp])
+            masterList.append([messageType,message,'01:00:00'])
 
         if instance.used == False:
             messageType="Wearable"
@@ -629,12 +629,12 @@ def dashboard(request):
                 message = str(
                     instance.wearable_name.name) + " in Center 1 has been Switched OFF, no Caregiver assigned yet"
 
-            if(str(instance.updated.date()) == str(datetime.today().date())):
-                timestamp = "Today " + str(instance.updated)[11:19]
-            else:
-                timestamp=datetime.strptime(str(instance.updated)[:19],'%Y-%m-%d %H:%M:%S').strftime("%d-%m-%Y %H:%M:%S")
+            # if(str(instance.updated.date()) == str(datetime.today().date())):
+            #     timestamp = "Today " + str(instance.updated)[11:19]
+            # else:
+            #     timestamp=datetime.strptime(str(instance.updated)[:19],'%Y-%m-%d %H:%M:%S').strftime("%d-%m-%Y %H:%M:%S")
 
-            masterList.append([messageType,message,timestamp])
+            masterList.append([messageType,message,'01:00:00'])
 
 
 
@@ -669,12 +669,12 @@ def dashboard(request):
                 message= (str(instance.wearable_name.name)) + " in Center 1 is below 30% Battery, Recharge Required! No Caregiver Assigned yet"
 
 
-            if(str(instance.updated.date()) == str(datetime.today().date())):
-                timestamp = "Today " + str(instance.updated)[11:19]
-            else:
-                timestamp=datetime.strptime(str(instance.updated)[:19],'%Y-%m-%d %H:%M:%S').strftime("%d-%m-%Y %H:%M:%S")
+            # if(str(instance.updated.date()) == str(datetime.today().date())):
+            #     timestamp = "Today " + str(instance.updated)[11:19]
+            # else:
+            #     timestamp=datetime.strptime(str(instance.updated)[:19],'%Y-%m-%d %H:%M:%S').strftime("%d-%m-%Y %H:%M:%S")
 
-            masterList.append([messageType,message,timestamp])
+            masterList.append([messageType,message,'01:00:00'])
 
 
 # AlertActivated
