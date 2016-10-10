@@ -580,15 +580,18 @@ def dashboard(request):
     wearableUsageList = WearableUsage.objects.all()
     wearableBatteryList = WearableBattery.objects.all()
 
-
+    tstart = datetime.now()
     for instanceWearable in wearableList:
         wearableUsageUnique.append(instanceWearable)
     # there are many rows of data, this code will filter by each unique wearable, arrange from newest to oldest data
     # and get the first one, aka the latest data
+    tdiff0 = str(datetime.now() - tstart)
 
+    tstart2 = datetime.now()
     for wearableObject in wearableUsageUnique:
         if wearableUsageList.filter(wearable_name__exact=wearableObject,updated__gte=startOfYtd).exists():
             wearableUsage.append(wearableUsageList.filter(wearable_name__exact=wearableObject,updated__gte=startOfYtd).order_by('updated').first()) # order by time only for ON OFF
+    tdiff2 = str( datetime.now() - tstart2)
 
     #call for all assignment objects
     allAssignment = Assignment.objects.all()
@@ -623,7 +626,7 @@ def dashboard(request):
             t2 = datetime.now()
             tdiff = str(t2-t1)
 
-            masterList.append([messageType,message + tdiff ,timestamp])
+            masterList.append([messageType + tdiff0 ,message + tdiff ,timestamp + tdiff2])
 
 
         if instance.used == False:
