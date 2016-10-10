@@ -20,7 +20,6 @@ from operator import itemgetter
 from datetime import datetime,timedelta,date
 
 
-
 def custom_login(request):
     if request.user.is_authenticated():
         return HttpResponseRedirect("dashboard")
@@ -580,42 +579,6 @@ def dashboard(request):
     wearableList = Wearable.objects.all()
     wearableUsageList = WearableUsage.objects.all()
     wearableBatteryList = WearableBattery.objects.all()
-    wearableList = Wearable.objects.all()
-    wearableUsageList = WearableUsage.objects.all()
-    wearableBatteryList = WearableBattery.objects.all()
-    wearableList = Wearable.objects.all()
-    wearableUsageList = WearableUsage.objects.all()
-    wearableBatteryList = WearableBattery.objects.all()
-    wearableList = Wearable.objects.all()
-    wearableUsageList = WearableUsage.objects.all()
-    wearableBatteryList = WearableBattery.objects.all()
-    wearableList = Wearable.objects.all()
-    wearableUsageList = WearableUsage.objects.all()
-    wearableBatteryList = WearableBattery.objects.all()
-    wearableList = Wearable.objects.all()
-    wearableUsageList = WearableUsage.objects.all()
-    wearableBatteryList = WearableBattery.objects.all()
-    wearableList = Wearable.objects.all()
-    wearableUsageList = WearableUsage.objects.all()
-    wearableBatteryList = WearableBattery.objects.all()
-    wearableList = Wearable.objects.all()
-    wearableUsageList = WearableUsage.objects.all()
-    wearableBatteryList = WearableBattery.objects.all()
-    wearableList = Wearable.objects.all()
-    wearableUsageList = WearableUsage.objects.all()
-    wearableBatteryList = WearableBattery.objects.all()
-    wearableList = Wearable.objects.all()
-    wearableUsageList = WearableUsage.objects.all()
-    wearableBatteryList = WearableBattery.objects.all()
-    wearableList = Wearable.objects.all()
-    wearableUsageList = WearableUsage.objects.all()
-    wearableBatteryList = WearableBattery.objects.all()
-    wearableList = Wearable.objects.all()
-    wearableUsageList = WearableUsage.objects.all()
-    wearableBatteryList = WearableBattery.objects.all()
-    wearableList = Wearable.objects.all()
-    wearableUsageList = WearableUsage.objects.all()
-    wearableBatteryList = WearableBattery.objects.all()
 
 
     for instanceWearable in wearableList:
@@ -630,7 +593,10 @@ def dashboard(request):
     #call for all assignment objects
     allAssignment = Assignment.objects.all()
 
+    tdiff = ''
+
     for instance in wearableUsage:
+        t1 = datetime.now()
         messageType=""
         message=""
         time=None
@@ -653,7 +619,11 @@ def dashboard(request):
                 timestamp=datetime.strptime(str(instance.updated)[:19],'%Y-%m-%d %H:%M:%S').strftime("%d-%m-%Y %H:%M:%S")
             wearableCounter += 1
 
-            masterList.append([messageType,message,timestamp])
+            t2 = datetime.now()
+            tdiff = str(t2-t1)
+
+            masterList.append([messageType,message + tdiff ,timestamp])
+
 
         if instance.used == False:
             messageType="Wearable"
