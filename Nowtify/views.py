@@ -1317,22 +1317,23 @@ def view_incident_reports(request):
         if incidentList.filter(datetime__range=(startDateTimeObject, endDateTimeObject)).exists():
             wantedReports.append(incidentList.filter(datetime__range=(startDateTimeObject, endDateTimeObject)).order_by('datetime'))
 
-            for eachReport in wantedReports:
-                clientName = eachReport[0].client_name
-                caregiverName = eachReport[0].caregiver_name
-                authorName = eachReport[0].author_name
-                dateTime = str(eachReport[0].datetime)
-                comments = eachReport[0].comments
-                listToReturn.append([clientName, caregiverName, authorName, dateTime, comments])  # already sorted by datetime
 
             title = 'Displaying Incident Reports from ' + dayS + "-" + monthS + "-" + yearS+ ' to ' + dayE + "-" + monthE + "-" + yearE
 
         else:
             title = 'No Data to Display'
 
+        for eachReport in wantedReports[0]:
+            clientName = eachReport.client_name
+            caregiverName = eachReport.caregiver_name
+            authorName = eachReport.author_name
+            dateTime = str(eachReport.datetime)
+            comments = eachReport.comments
+            listToReturn.append([clientName, caregiverName, authorName, dateTime, comments])  # already sorted by datetime
 
 
-        return render(request, "view_incident_reports.html", {'dataSet': listToReturn, 'title': title})
+
+        return render(request, "view_incident_reports.html", {'wantedReports':wantedReports,'dataSet': listToReturn, 'title': title})
 
     else:
         return render(request,"view_incident_reports.html")
