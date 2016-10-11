@@ -34,7 +34,8 @@ urlpatterns = patterns('',
                        url(r'^alert/', views.alert, name='alert'),
                        url(r'^incident_reporting_process',views.incident_reporting_process,name='incident_reporting_process'),
                        url(r'^update_assignment/', views.update_assignment, name='update_assignment'),
-                       url(r'^data_analysis/', views.data_analysis_query, name='data_analysis')
+                       url(r'^data_analysis/', views.data_analysis_query, name='data_analysis'),
+                       url(r'^view_incident_reports/', views.view_incident_reports, name='view_incident_reports')
 
 
 

@@ -1283,3 +1283,8 @@ def data_analysis_query(request):
 
     else:
         return render (request,'data_analysis.html')
+
+
+@login_required(login_url='')
+def view_incident_reports(request):
+    return render(request, "view_incident_reports.html")
