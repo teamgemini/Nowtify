@@ -1,8 +1,13 @@
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+<link href="https://nightly.datatables.net/css/jquery.dataTables.css" rel="stylesheet" type="text/css" />
+<script src="https://nightly.datatables.net/js/jquery.dataTables.js"></script>
+
+{#<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>#}
 <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.3/moment.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment-with-locales.js"></script>
 <script src="http://cdn.rawgit.com/Eonasdan/bootstrap-datetimepicker/a549aa8780dbda16f6cff545aeabc3d71073911e/src/js/bootstrap-datetimepicker.js"></script>
 <link href="http://cdn.rawgit.com/Eonasdan/bootstrap-datetimepicker/a549aa8780dbda16f6cff545aeabc3d71073911e/build/css/bootstrap-datetimepicker.css" rel="stylesheet"/>
+
 
 {% extends "web/base.html" %}
 {% load staticfiles %}
@@ -74,15 +79,15 @@ Data Analysis
 
 {#-----------Show table if data exists-----------#}
 
-{#    {% if data_for_view_report_incident_exists_show_table_below %}#}
+    {% if dataSet%}
          <div class="row">
 			<div class="col-lg-12">
 				<div class="panel panel-default">
 
-                        <div class="panel-heading">To make this dynamic and reflect the data title</div>
+                    <div class="panel-heading">{{ title }}</div>
 					<div class="panel-body">
 
-						<table id="data-table" class="table" data-toggle="table" data-show-refresh="false" data-sort-name="Sensor ID" data-sort-order="asd">
+						<table id="data-table" class="table" data-toggle="table" data-show-refresh="false" data-sort-name="Client Name" data-sort-order="asd">
 						      <thead>
 						    <tr>
                                <th>Client Name</th>
@@ -97,10 +102,10 @@ Data Analysis
 				</div>
 			</div>
 		</div>
-
+{% endif %}
       <script>
 
-     var data = {{ dataSet|safe }}
+     var data = {{ dataSet | safe }}
 
           $('#data-table').DataTable( {
             data: data,
@@ -149,9 +154,11 @@ Data Analysis
 <script type="text/javascript">
     $(function () {
         $('#datetimepicker1').datetimepicker({
+            format: 'DD/MM/YYYY',
             maxDate: new Date()
         });
         $('#datetimepicker2').datetimepicker({
+            format: 'DD/MM/YYYY',
             useCurrent: false, //Important! See issue #1075
             maxDate: new Date()
         });
@@ -162,6 +169,22 @@ Data Analysis
             $('#datetimepicker1').data("DateTimePicker").maxDate(e.date);
         });
     });
+
+
+$(function(){
+    $(".dropdown").hover(
+            function() {
+                $('.dropdown-menu', this).stop( true, true ).fadeIn("fast");
+                $(this).toggleClass('open');
+                $('b', this).toggleClass("caret caret-up");
+            },
+            function() {
+                $('.dropdown-menu', this).stop( true, true ).fadeOut("fast");
+                $(this).toggleClass('open');
+                $('b', this).toggleClass("caret caret-up");
+            });
+    });
+
 </script>
 
 {% endblock %}

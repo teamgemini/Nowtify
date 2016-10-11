@@ -107,7 +107,10 @@ Dashboard
                                             </div>
                                             <script>
                                                 $(function () {
-                                                    $('#datetimepicker1').datetimepicker();
+                                                    $('#datetimepicker1').datetimepicker({
+                                                        format: 'DD/MM/YYYY hh:mm A'
+                                                    });
+
                                                 });
                                             </script>
                                         </div>
@@ -150,6 +153,20 @@ Dashboard
 {#    $('#datetimepicker').datetimepicker({#}
 {#    minDate: moment()#}
 {#    });#}
+    $(function(){
+    $(".dropdown").hover(
+            function() {
+                $('.dropdown-menu', this).stop( true, true ).fadeIn("fast");
+                $(this).toggleClass('open');
+                $('b', this).toggleClass("caret caret-up");
+            },
+            function() {
+                $('.dropdown-menu', this).stop( true, true ).fadeOut("fast");
+                $(this).toggleClass('open');
+                $('b', this).toggleClass("caret caret-up");
+            });
+    });
+
 
 </script>
 
