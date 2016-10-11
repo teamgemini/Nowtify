@@ -18,7 +18,9 @@ Dashboard
 {% block current_page %}{% endblock %}
 {% block page1 %}{% endblock %}
 {% block page2 %}{% endblock %}
-{% block page3 %}active{% endblock %}
+{% block page3 %}{% endblock %}
+{% block page4 %}active{% endblock %}
+{% block page5 %}{% endblock %}
 
 {#<script src="{% static 'js/moment-with-locales.js' %}"></script>#}
 {#<script src="{% static 'js/bootstrap-datetimepicker.js' %}"></script>#}
@@ -46,7 +48,7 @@ Dashboard
 
                 <div class="panel panel-default">
 
-                    <div class="panel-heading"><svg class="glyph stroked email"><use xlink:href="#stroked-email"></use></svg>Alert Report</div>
+                    <div class="panel-heading"><svg class="glyph stroked email"><use xlink:href="#stroked-email"></use></svg>Report An Incident</div>
                     <div class="panel-body">
 
                         <form action="/incident_reporting_process/" method="post">{% csrf_token %}
@@ -105,7 +107,10 @@ Dashboard
                                             </div>
                                             <script>
                                                 $(function () {
-                                                    $('#datetimepicker1').datetimepicker();
+                                                    $('#datetimepicker1').datetimepicker({
+                                                        format: 'DD/MM/YYYY hh:mm A'
+                                                    });
+
                                                 });
                                             </script>
                                         </div>
@@ -148,6 +153,20 @@ Dashboard
 {#    $('#datetimepicker').datetimepicker({#}
 {#    minDate: moment()#}
 {#    });#}
+    $(function(){
+    $(".dropdown").hover(
+            function() {
+                $('.dropdown-menu', this).stop( true, true ).fadeIn("fast");
+                $(this).toggleClass('open');
+                $('b', this).toggleClass("caret caret-up");
+            },
+            function() {
+                $('.dropdown-menu', this).stop( true, true ).fadeOut("fast");
+                $(this).toggleClass('open');
+                $('b', this).toggleClass("caret caret-up");
+            });
+    });
+
 
 </script>
 

@@ -1283,3 +1283,57 @@ def data_analysis_query(request):
 
     else:
         return render (request,'data_analysis.html')
+
+
+@login_required(login_url='')
+def view_incident_reports(request):
+    c = {}
+    c.update(csrf(request))
+
+    start = request.POST.get('datetimepicker1', 'nothing')  # startDate
+
+    end = request.POST.get('datetimepicker2', 'nothing')  # endDate
+
+    if start != 'nothing':
+        incidentList = IncidentReport.objects.all()
+
+        wantedReports = []
+        listToReturn = []
+
+        dayS = start[:2]
+        monthS = start[3:5]
+        yearS = start[6:]
+
+        startDate = yearS + "-" + monthS + "-" + dayS + " 00:00:00"
+        startDateTimeObject = datetime.strptime(startDate, '%Y-%m-%d %H:%M:%S')
+
+        dayE = end[:2]
+        monthE = end[3:5]
+        yearE = end[6:]
+
+        endDate = yearE + "-" + monthE + "-" + dayE + " 23:59:59"
+        endDateTimeObject = datetime.strptime(endDate, '%Y-%m-%d %H:%M:%S')
+
+        if incidentList.filter(datetime__range=(startDateTimeObject, endDateTimeObject)).exists():
+            wantedReports.append(incidentList.filter(datetime__range=(startDateTimeObject, endDateTimeObject)).order_by('datetime'))
+
+
+            title = 'Displaying Incident Reports from ' + dayS + "-" + monthS + "-" + yearS+ ' to ' + dayE + "-" + monthE + "-" + yearE
+
+        else:
+            title = 'No Data to Display'
+
+        for eachReport in wantedReports[0]:
+            clientName = eachReport.client_name
+            caregiverName = eachReport.caregiver_name
+            authorName = eachReport.author_name
+            dateTime = str(eachReport.datetime)
+            comments = eachReport.comments
+            listToReturn.append([clientName, caregiverName, authorName, dateTime, comments])  # already sorted by datetime
+
+
+
+        return render(request, "view_incident_reports.html", {'wantedReports':wantedReports,'dataSet': listToReturn, 'title': title})
+
+    else:
+        return render(request,"view_incident_reports.html")
