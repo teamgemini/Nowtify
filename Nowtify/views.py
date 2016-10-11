@@ -1314,9 +1314,6 @@ def view_incident_reports(request):
         endDate = yearE + "-" + monthE + "-" + dayE + " 23:59:59"
         endDateTimeObject = datetime.strptime(endDate, '%Y-%m-%d %H:%M:%S')
 
-        one = incidentList[0].datetime
-        two = incidentList[2].datetime
-
         if incidentList.filter(datetime__range=(startDateTimeObject, endDateTimeObject)).exists():
             wantedReports.append(incidentList.filter(datetime__range=(startDateTimeObject, endDateTimeObject)).order_by('datetime'))
 
@@ -1335,7 +1332,7 @@ def view_incident_reports(request):
 
 
 
-        return render(request, "view_incident_reports.html", {'dataSet': listToReturn, 'title': title,'start':str(startDateTimeObject),'end':str(endDateTimeObject),'incidentList':incidentList,'wantedReports':wantedReports,'one':one,'two':two})
+        return render(request, "view_incident_reports.html", {'dataSet': listToReturn, 'title': title})
 
     else:
         return render(request,"view_incident_reports.html")
