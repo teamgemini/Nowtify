@@ -780,7 +780,7 @@ def dashboard(request):
     # else:
     #     newsFeedList = []
 
-    return render(request, "dashboard.html",{'wearableUsageList':wearableUsageList,'wearableUsage':wearableUsage,'alertCounter': alertCounter,'weeklyCounter': weeklyCounter,'monthlyCounter': monthlyCounter, 'detectorCounter':detectorCounter,'wearableCounter': wearableCounter})
+    return render(request, "dashboard.html",{'alertCounter': alertCounter,'weeklyCounter': weeklyCounter,'monthlyCounter': monthlyCounter, 'detectorCounter':detectorCounter,'wearableCounter': wearableCounter})
 
 
 @login_required(login_url='')
