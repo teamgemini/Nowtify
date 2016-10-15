@@ -1320,17 +1320,17 @@ def view_incident_reports(request):
 
             title = 'Displaying Incident Reports from ' + dayS + "-" + monthS + "-" + yearS+ ' to ' + dayE + "-" + monthE + "-" + yearE
 
+            for eachReport in wantedReports[0]:
+                clientName = eachReport.client_name
+                caregiverName = eachReport.caregiver_name
+                authorName = eachReport.author_name
+                dateTime = str(eachReport.datetime)
+                comments = eachReport.comments
+                listToReturn.append(
+                    [clientName, caregiverName, authorName, dateTime, comments])  # already sorted by datetime
+
         else:
             title = 'No Data to Display'
-
-        for eachReport in wantedReports[0]:
-            clientName = eachReport.client_name
-            caregiverName = eachReport.caregiver_name
-            authorName = eachReport.author_name
-            dateTime = str(eachReport.datetime)
-            comments = eachReport.comments
-            listToReturn.append([clientName, caregiverName, authorName, dateTime, comments])  # already sorted by datetime
-
 
 
         return render(request, "view_incident_reports.html", {'wantedReports':wantedReports,'dataSet': listToReturn, 'title': title})
