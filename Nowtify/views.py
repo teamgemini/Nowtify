@@ -119,9 +119,9 @@ def dashboard(request):
     # # # DO NOT DELETE YET, Gathering Data over time
     # #
     # # #insert fake data
-    # datestr = "2016-10-10 14:45:00"
+    # datestr = "2016-10-15 14:45:00"
     # dateobj = datetime.strptime(datestr, '%Y-%m-%d %H:%M:%S')
-    #
+
     # wearable1 = Wearable.objects.create(name="Wearable 1",remarks="superrr1")
     # wearable1Use= WearableUsage.objects.create(wearable_name=wearable1,used=True,updated = dateobj)
     # wearable1Battery = WearableBattery.objects.create(wearable_name=wearable1,battery=40,updated = dateobj) #ON  LOW BATT
@@ -483,6 +483,8 @@ def dashboard(request):
 
     startOfMonth = 1
     today = datetime.now()
+    startOfToday = (datetime.now()).replace(hour=0, minute=0, second=0, microsecond=0)
+    endOfToday = (datetime.now()).replace(hour=23, minute=59, second=59, microsecond=59)
     thisMonthNum = today.month
     thisYearNum = today.year
     thisMonthEndNum = str(calendar.monthrange(thisYearNum,thisMonthNum)[1])
@@ -498,77 +500,85 @@ def dashboard(request):
     detectorCounter = 0
     for instanceDetector in detectorList:
         detectorUsageUnique.append(instanceDetector)
-    print (detectorUsageUnique)
+
     # there are many rows of data, this code will filter by each unique sensor, arrange from newest to oldest data
     # and get the first one, aka the latest data
 
 
+    # for detectorObject in detectorUsageUnique: REMOVED FOR DEPLOYMENT
+    #     if detectorUsageList.filter(detector_name__exact=detectorObject,updated__gte=startOfYtd).exists():
+    #         detectorUsage.append(detectorUsageList.filter(detector_name__exact=detectorObject,updated__gte=startOfYtd).order_by('updated').first()) # order by time only for ON OFF
+
+ #For DEPLOYMENT
     for detectorObject in detectorUsageUnique:
-        if detectorUsageList.filter(detector_name__exact=detectorObject,updated__gte=startOfYtd).exists():
-            detectorUsage.append(detectorUsageList.filter(detector_name__exact=detectorObject,updated__gte=startOfYtd).order_by('updated').first()) # order by time only for ON OFF
+        if detectorUsageList.filter(detector_name__exact=detectorObject,updated__range=(startOfToday,endOfToday)).exists():
+            detectorUsage.append(detectorUsageList.filter(detector_name__exact=detectorObject,updated__range=(startOfToday,endOfToday)).order_by('-updated').first()) # order by time only for ON OFF
 
-    # if all(None for item in detectorUsage) and len(detectorUsage)== 4:
-
+    # order by time only for ON OFF
     for instance in detectorUsage:
-        messageType=""
-        message=""
-        timestamp=None
-
         if instance.used == True:
-            messageType="Sensor"
-            message=str(instance.detector_name.name) + " in Center 1 has been Switched ON"
-
-            if(str(instance.updated.date()) == str(datetime.today().date())):
-                timestamp = "Today " + str(instance.updated)[11:19]
-            else:
-                timestamp=datetime.strptime(str(instance.updated)[:19],'%Y-%m-%d %H:%M:%S').strftime("%d-%m-%Y %H:%M:%S")
             detectorCounter += 1
 
-            masterList.append([messageType,message,timestamp])
+    # for instance in detectorUsage: REMOVED FOR DEPLOYMENT
+    #     messageType=""
+    #     message=""
+    #     timestamp=None
+    #
+    #     if instance.used == True:
+    #         messageType="Sensor"
+    #         message=str(instance.detector_name.name) + " in Center 1 has been Switched ON"
+    #
+    #         if(str(instance.updated.date()) == str(datetime.today().date())):
+    #             timestamp = "Today " + str(instance.updated)[11:19]
+    #         else:
+    #             timestamp=datetime.strptime(str(instance.updated)[:19],'%Y-%m-%d %H:%M:%S').strftime("%d-%m-%Y %H:%M:%S")
+    #         detectorCounter += 1
+    #
+    #         masterList.append([messageType,message,timestamp])
+    #
+    #     if instance.used == False:
+    #         messageType="Sensor"
+    #         message=str(instance.detector_name.name) + " in Center 1 has been Switched OFF"
+    #
+    #         if(str(instance.updated.date()) == str(datetime.today().date())):
+    #             timestamp = "Today " + str(instance.updated)[11:19]
+    #         else:
+    #             timestamp=datetime.strptime(str(instance.updated)[:19],'%Y-%m-%d %H:%M:%S').strftime("%d-%m-%Y %H:%M:%S")
+    #         masterList.append([messageType,message,timestamp])
 
-        if instance.used == False:
-            messageType="Sensor"
-            message=str(instance.detector_name.name) + " in Center 1 has been Switched OFF"
-
-            if(str(instance.updated.date()) == str(datetime.today().date())):
-                timestamp = "Today " + str(instance.updated)[11:19]
-            else:
-                timestamp=datetime.strptime(str(instance.updated)[:19],'%Y-%m-%d %H:%M:%S').strftime("%d-%m-%Y %H:%M:%S")
-            masterList.append([messageType,message,timestamp])
 
 
 
 
-
-#DetectorBattery
-    for instanceDetector in detectorList:
-        detectorBatteryUnique.append(instanceDetector)
-    # there are many rows of data, this code will filter by each unique sensor, arrange from newest to oldest data
-    # and get the first one, aka the latest data
-
-
-    for detectorObject in detectorBatteryUnique: #take all sensors
-        if detectorBatteryList.filter(detector_name__exact=detectorObject,updated__gte=startOfYtd).exists():
-            detectorBattery.append(detectorBatteryList.filter(detector_name__exact=detectorObject,updated__gte=startOfYtd).order_by('updated').first())
-    #take only sensorBattery objects, filter by sensor name to prevent repeats, filer by condition, order by datetime,take latest
-
-
-    for instance in detectorBattery:
-
-        messageType=""
-        message=""
-        timestamp=None
-
-        if(instance.battery)<= 30:
-            messageType="Sensor"
-            message=str(instance.detector_name.name) + " in Center 1 is below 30% Battery, Recharge Required!"
-
-            if(str(instance.updated.date()) == str(datetime.today().date())):
-                timestamp = "Today " + str(instance.updated)[11:19]
-            else:
-                timestamp=datetime.strptime(str(instance.updated)[:19],'%Y-%m-%d %H:%M:%S').strftime("%d-%m-%Y %H:%M:%S")
-
-            masterList.append([messageType,message,timestamp])
+# #DetectorBattery    REMOVED FOR DEPLOYMENT
+#     for instanceDetector in detectorList:
+#         detectorBatteryUnique.append(instanceDetector)
+#     # there are many rows of data, this code will filter by each unique sensor, arrange from newest to oldest data
+#     # and get the first one, aka the latest data
+#
+#
+#     for detectorObject in detectorBatteryUnique: #take all sensors
+#         if detectorBatteryList.filter(detector_name__exact=detectorObject,updated__gte=startOfYtd).exists():
+#             detectorBattery.append(detectorBatteryList.filter(detector_name__exact=detectorObject,updated__gte=startOfYtd).order_by('updated').first())
+#     #take only sensorBattery objects, filter by sensor name to prevent repeats, filer by condition, order by datetime,take latest
+#
+#
+#     for instance in detectorBattery:
+#
+#         messageType=""
+#         message=""
+#         timestamp=None
+#
+#         if(instance.battery)<= 30:
+#             messageType="Sensor"
+#             message=str(instance.detector_name.name) + " in Center 1 is below 30% Battery, Recharge Required!"
+#
+#             if(str(instance.updated.date()) == str(datetime.today().date())):
+#                 timestamp = "Today " + str(instance.updated)[11:19]
+#             else:
+#                 timestamp=datetime.strptime(str(instance.updated)[:19],'%Y-%m-%d %H:%M:%S').strftime("%d-%m-%Y %H:%M:%S")
+#
+#             masterList.append([messageType,message,timestamp])
 
 
 
@@ -585,107 +595,118 @@ def dashboard(request):
         wearableUsageUnique.append(instanceWearable)
     # there are many rows of data, this code will filter by each unique wearable, arrange from newest to oldest data
     # and get the first one, aka the latest data
-    tdiff0 = str(datetime.now() - tstart)
+    # tdiff0 = str(datetime.now() - tstart)  #REMOVED FOR DEPLOYMENT
 
-    tstart2 = datetime.now()
-    for wearableObject in wearableUsageUnique:
-        if wearableUsageList.filter(wearable_name__exact=wearableObject,updated__gte=startOfYtd).exists():
-            wearableUsage.append(wearableUsageList.filter(wearable_name__exact=wearableObject,updated__gte=startOfYtd).order_by('updated').first()) # order by time only for ON OFF
-    tdiff2 = str( datetime.now() - tstart2)
+    # tstart2 = datetime.now() #REMOVED FOR DEPLOYMENT
+    # for wearableObject in wearableUsageUnique: REMOVED FOR DEPLOYMENT
+    #     if wearableUsageList.filter(wearable_name__exact=wearableObject,updated__gte=startOfYtd).exists():
+    #         wearableUsage.append(wearableUsageList.filter(wearable_name__exact=wearableObject,updated__gte=startOfYtd).order_by('updated').first()) # order by time only for ON OFF
+    #
+    for wearableObject in wearableUsageUnique:  #FOR DEPLOYMENT
+        if wearableUsageList.filter(wearable_name__exact=wearableObject,updated__range=(startOfToday,endOfToday)).exists():
+            wearableUsage.append(wearableUsageList.filter(wearable_name__exact=wearableObject, updated__range=(startOfToday,endOfToday)).order_by('-updated').first())  # order by time only for ON OFF
 
-    #call for all assignment objects
-    allAssignment = Assignment.objects.all()
-
-    tdiff = ''
-
+    aList=[]
     for instance in wearableUsage:
-        t1 = datetime.now()
-        messageType=""
-        message=""
-        time=None
-        caregiver = "" #to store assigned caregiver name
+        aList.append([instance.used,instance.updated])
+        if instance.used==True:
+            wearableCounter +=1
 
-        if instance.used == True:
-            messageType="Wearable"
+    # tdiff2 = str( datetime.now() - tstart2)      REMOVED FOR DEPLOYMENT
+    #
+    # #call for all assignment objects
+    # allAssignment = Assignment.objects.all()
+    #
+    # tdiff = ''
 
-            #get assignment for the wearable instance
-            if allAssignment.filter(wearable_name__exact=instance.wearable_name, update__gte=startOfYtd).exists():
-                caregiver = allAssignment.filter(wearable_name__exact=instance.wearable_name, update__gte=startOfYtd).order_by('update').first().name
-                message = str(instance.wearable_name.name) + " in Center 1 has been Switched ON by " + str(caregiver)
-            else:
-                message = str(
-                    instance.wearable_name.name) + " in Center 1 has been Switched ON, no Caregiver assigned yet"
-
-            if(str(instance.updated.date()) == str(datetime.today().date())):
-                timestamp = "Today " + str(instance.updated)[11:19]
-            else:
-                # timestamp=datetime.strptime(str(instance.updated)[:19],'%Y-%m-%d %H:%M:%S').strftime("%d-%m-%Y %H:%M:%S")
-                timestamp = '01:00:00'
-            wearableCounter += 1
-
-            t2 = datetime.now()
-            tdiff = str(t2-t1)
-
-            masterList.append([messageType + tdiff0 ,message + tdiff ,timestamp + tdiff2])
-
-
-        if instance.used == False:
-            messageType="Wearable"
-
-            # compare lists to see if a Caregiver has been assigned to the wearable,change message accordingly
-            if allAssignment.filter(wearable_name__exact=instance.wearable_name, update__gte=startOfYtd).exists():
-                caregiver = allAssignment.filter(wearable_name__exact=instance.wearable_name, update__gte=startOfYtd).order_by('update').first().name
-                message = str(instance.wearable_name.name) + " in Center 1 has been Switched OFF by " + str(caregiver)
-            else:
-                message = str(
-                    instance.wearable_name.name) + " in Center 1 has been Switched OFF, no Caregiver assigned yet"
-
-            if(str(instance.updated.date()) == str(datetime.today().date())):
-                timestamp = "Today " + str(instance.updated)[11:19]
-            else:
-                timestamp=datetime.strptime(str(instance.updated)[:19],'%Y-%m-%d %H:%M:%S').strftime("%d-%m-%Y %H:%M:%S")
-
-            masterList.append([messageType,message,timestamp])
-
-
-
-#WearableBattery
-    for instanceWearable in wearableList:
-        wearableBatteryUnique.append(instanceWearable)
-    # there are many rows of data, this code will filter by each unique sensor, arrange from newest to oldest data
-    # and get the first one, aka the latest data
-
-
-    for wearableObject in wearableBatteryUnique: #take all sensors
-        if wearableBatteryList.filter(wearable_name__exact=wearableObject,updated__gte=startOfYtd).exists():
-            wearableBattery.append(wearableBatteryList.filter(wearable_name__exact=wearableObject,updated__gte=startOfYtd).order_by('updated').first())
-    #take only sensorBattery objects, filter by sensor name to prevent repeats, filer by condition, order by datetime, take latest
-
-    # if all(None for item in wearableBattery) and len(detectorUsage)== 4:
-
-    for instance in wearableBattery:
-
-        messageType=""
-        message=""
-        timestamp=None
-        caregiver = ""
-
-        if(instance.battery)<= 30:
-            messageType="Wearable"
-
-            if allAssignment.filter(wearable_name__exact=instance.wearable_name, update__gte=startOfYtd).exists():
-                caregiver = allAssignment.filter(wearable_name__exact=instance.wearable_name,update__gte=startOfYtd).order_by('update').first().name
-                message = (str(instance.wearable_name.name)) + " in Center 1 is below 30% Battery, Recharge Required!, Assigned to " + caregiver
-            else:
-                message= (str(instance.wearable_name.name)) + " in Center 1 is below 30% Battery, Recharge Required! No Caregiver Assigned yet"
+    # for instance in wearableUsage:
+    #     t1 = datetime.now()
+    #     messageType=""
+    #     message=""
+    #     time=None
+    #     caregiver = "" #to store assigned caregiver name
+    #
+    #     if instance.used == True:
+    #         messageType="Wearable"
+    #
+    #         #get assignment for the wearable instance
+    #         if allAssignment.filter(wearable_name__exact=instance.wearable_name, update__gte=startOfYtd).exists():
+    #             caregiver = allAssignment.filter(wearable_name__exact=instance.wearable_name, update__gte=startOfYtd).order_by('update').first().name
+    #             message = str(instance.wearable_name.name) + " in Center 1 has been Switched ON by " + str(caregiver)
+    #         else:
+    #             message = str(
+    #                 instance.wearable_name.name) + " in Center 1 has been Switched ON, no Caregiver assigned yet"
+    #
+    #         if(str(instance.updated.date()) == str(datetime.today().date())):
+    #             timestamp = "Today " + str(instance.updated)[11:19]
+    #         else:
+    #             # timestamp=datetime.strptime(str(instance.updated)[:19],'%Y-%m-%d %H:%M:%S').strftime("%d-%m-%Y %H:%M:%S")
+    #             timestamp = '01:00:00'
+    #         wearableCounter += 1
+    #
+    #         t2 = datetime.now()
+    #         tdiff = str(t2-t1)
+    #
+    #         masterList.append([messageType + tdiff0 ,message + tdiff ,timestamp + tdiff2])
+    #
+    #
+    #     if instance.used == False:
+    #         messageType="Wearable"
+    #
+    #         # compare lists to see if a Caregiver has been assigned to the wearable,change message accordingly
+    #         if allAssignment.filter(wearable_name__exact=instance.wearable_name, update__gte=startOfYtd).exists():
+    #             caregiver = allAssignment.filter(wearable_name__exact=instance.wearable_name, update__gte=startOfYtd).order_by('update').first().name
+    #             message = str(instance.wearable_name.name) + " in Center 1 has been Switched OFF by " + str(caregiver)
+    #         else:
+    #             message = str(
+    #                 instance.wearable_name.name) + " in Center 1 has been Switched OFF, no Caregiver assigned yet"
+    #
+    #         if(str(instance.updated.date()) == str(datetime.today().date())):
+    #             timestamp = "Today " + str(instance.updated)[11:19]
+    #         else:
+    #             timestamp=datetime.strptime(str(instance.updated)[:19],'%Y-%m-%d %H:%M:%S').strftime("%d-%m-%Y %H:%M:%S")
+    #
+    #         masterList.append([messageType,message,timestamp])
 
 
-            if(str(instance.updated.date()) == str(datetime.today().date())):
-                timestamp = "Today " + str(instance.updated)[11:19]
-            else:
-                timestamp=datetime.strptime(str(instance.updated)[:19],'%Y-%m-%d %H:%M:%S').strftime("%d-%m-%Y %H:%M:%S")
 
-            masterList.append([messageType,message,timestamp])
+# #WearableBattery    REMOVED FOR DEPLOYMENT
+#     for instanceWearable in wearableList:
+#         wearableBatteryUnique.append(instanceWearable)
+#     # there are many rows of data, this code will filter by each unique sensor, arrange from newest to oldest data
+#     # and get the first one, aka the latest data
+#
+#
+#     for wearableObject in wearableBatteryUnique: #take all sensors
+#         if wearableBatteryList.filter(wearable_name__exact=wearableObject,updated__gte=startOfYtd).exists():
+#             wearableBattery.append(wearableBatteryList.filter(wearable_name__exact=wearableObject,updated__gte=startOfYtd).order_by('updated').first())
+#     #take only sensorBattery objects, filter by sensor name to prevent repeats, filer by condition, order by datetime, take latest
+#
+#     # if all(None for item in wearableBattery) and len(detectorUsage)== 4:
+#
+#     for instance in wearableBattery:
+#
+#         messageType=""
+#         message=""
+#         timestamp=None
+#         caregiver = ""
+#
+#         if(instance.battery)<= 30:
+#             messageType="Wearable"
+#
+#             if allAssignment.filter(wearable_name__exact=instance.wearable_name, update__gte=startOfYtd).exists():
+#                 caregiver = allAssignment.filter(wearable_name__exact=instance.wearable_name,update__gte=startOfYtd).order_by('update').first().name
+#                 message = (str(instance.wearable_name.name)) + " in Center 1 is below 30% Battery, Recharge Required!, Assigned to " + caregiver
+#             else:
+#                 message= (str(instance.wearable_name.name)) + " in Center 1 is below 30% Battery, Recharge Required! No Caregiver Assigned yet"
+#
+#
+#             if(str(instance.updated.date()) == str(datetime.today().date())):
+#                 timestamp = "Today " + str(instance.updated)[11:19]
+#             else:
+#                 timestamp=datetime.strptime(str(instance.updated)[:19],'%Y-%m-%d %H:%M:%S').strftime("%d-%m-%Y %H:%M:%S")
+#
+#             masterList.append([messageType,message,timestamp])
 
 
 # AlertActivated
@@ -701,31 +722,36 @@ def dashboard(request):
     # and get the first one, aka the latest data
 
 
-    for alertObject in alertUnique: #take all sensors
-        if allAlertList.filter(detector__exact=alertObject.detector,datetime__gte=startOfYtd).exists():
-            alertList.append(allAlertList.filter(detector__exact=alertObject.detector,datetime__gte=startOfYtd).order_by('datetime').first())
-    # take only sensorBattery objects, filter by sensor name to prevent repeats, filer by condition, order by datetime,take latest
+    # for alertObject in alertUnique: #take all sensors REMOVED FOR DEPLOYMENT
+    #     if allAlertList.filter(detector__exact=alertObject.detector,datetime__gte=startOfYtd).exists():
+    #         alertList.append(allAlertList.filter(detector__exact=alertObject.detector,datetime__gte=startOfYtd).order_by('datetime').first())
+    # # take only sensorBattery objects, filter by sensor name to prevent repeats, filer by condition, order by datetime,take latest
 
-    # if all(None for item in alertList) and len(detectorUsage)== 4:
-    for instance in alertList:
 
-        messageType=""
-        message=""
-        timestamp = None
+    for alertObject in alertUnique: #take all sensors    FOR DEPLOYMENT
+        if allAlertList.filter(detector__exact=alertObject.detector,datetime__gte=startOfYtd,seen__exact=False).exists():
+            alertCounter += 1
 
-        if(instance.seen==False):
-            messageType="Alert"
-            message="Alert Activated in Center 1 for "+ str(instance.detector.name)
 
-            if(str(instance.datetime.date()) == str(datetime.today().date())):
-                timestamp = "Today " + str(instance.datetime)[11:19]
-
-                alertCounter += 1
-
-            else:
-                timestamp=datetime.strptime(str(instance.datetime)[:19],'%Y-%m-%d %H:%M:%S').strftime("%d-%m-%Y %H:%M:%S")
-
-            masterList.append([messageType,message,timestamp])
+    # for instance in alertList:   REMOVED FOR DEPLOYMENT
+    #
+    #     messageType=""
+    #     message=""
+    #     timestamp = None
+    #
+    #     if(instance.seen==False):
+    #         messageType="Alert"
+    #         message="Alert Activated in Center 1 for "+ str(instance.detector.name)
+    #
+    #         if(str(instance.datetime.date()) == str(datetime.today().date())):
+    #             timestamp = "Today " + str(instance.datetime)[11:19]
+    #
+    #             alertCounter += 1
+    #
+    #         else:
+    #             timestamp=datetime.strptime(str(instance.datetime)[:19],'%Y-%m-%d %H:%M:%S').strftime("%d-%m-%Y %H:%M:%S")
+    #
+    #         masterList.append([messageType,message,timestamp])
 
         # if(instance.seen==True):
         #     messageType="Alert"
@@ -742,22 +768,20 @@ def dashboard(request):
     for alertObject in alertUnique:  # take all alerts for this week
         if (alertObject.datetime >= startOfWeek):
             if allAlertList.filter(detector__exact=alertObject.detector, datetime__range=(startOfWeek, endOfWeek)).exists():
-                alertWeekList.append(allAlertList.filter(detector__exact=alertObject.detector, datetime__range=(startOfWeek, endOfWeek)).order_by('datetime').first())
-                weeklyCounter += 1
+                weeklyCounter +=1
 
     for alertObject in alertUnique:  # take all alerts for this Month
         if(alertObject.datetime >= thisMonthStart):
             if allAlertList.filter(detector__exact=alertObject.detector, datetime__range=(thisMonthStart,thisMonthEnd)).exists():
-                alertMonthList.append(allAlertList.filter(detector__exact=alertObject.detector, datetime__range=(thisMonthStart,thisMonthEnd)).order_by('datetime').first())
                 monthlyCounter += 1
 
-    #sort by time
-    if len(masterList) > 0:
-        newsFeedList = sorted(masterList, key=itemgetter(2))
-    else:
-        newsFeedList = []
+    #sort by time REMOVED FOR DEPLOYMENT, RETURN STATEMENT AS WELL
+    # if len(masterList) > 0:
+    #     newsFeedList = sorted(masterList, key=itemgetter(2))
+    # else:
+    #     newsFeedList = []
 
-    return render(request, "dashboard.html",{'dataSet': newsFeedList, 'alertCounter': alertCounter,'weeklyCounter': weeklyCounter,'monthlyCounter': monthlyCounter, 'detectorCounter':detectorCounter,'wearableCounter': wearableCounter})
+    return render(request, "dashboard.html",{'wearableUsageList':wearableUsageList,'aList':aList,'wearableUsage':wearableUsage,'alertCounter': alertCounter,'weeklyCounter': weeklyCounter,'monthlyCounter': monthlyCounter, 'detectorCounter':detectorCounter,'wearableCounter': wearableCounter})
 
 
 @login_required(login_url='')
@@ -1290,11 +1314,15 @@ def view_incident_reports(request):
     c = {}
     c.update(csrf(request))
 
+    runAlready = False
+
     start = request.POST.get('datetimepicker1', 'nothing')  # startDate
 
     end = request.POST.get('datetimepicker2', 'nothing')  # endDate
 
     if start != 'nothing':
+        runAlready = True
+
         incidentList = IncidentReport.objects.all()
 
         wantedReports = []
@@ -1333,7 +1361,7 @@ def view_incident_reports(request):
             title = 'No Data to Display'
 
 
-        return render(request, "view_incident_reports.html", {'wantedReports':wantedReports,'dataSet': listToReturn, 'title': title})
+        return render(request, "view_incident_reports.html", {'dataSet': listToReturn, 'title': title,'runAlready':runAlready})
 
     else:
-        return render(request,"view_incident_reports.html")
+        return render(request,"view_incident_reports.html",{'runAlready':runAlready})
