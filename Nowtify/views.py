@@ -1140,7 +1140,8 @@ def data_analysis_query(request):
 
 
         for eachStartOFWeek in listOfWeeks:  # each day, count the number of objects occur on that day
-            eachEndOfWeek = eachStartOFWeek.replace(day=(eachStartOFWeek.day + (4) ) )
+            # eachEndOfWeek = eachStartOFWeek.replace(day=(eachStartOFWeek.day + (4) ) )
+            eachEndOfWeek = eachStartOFWeek + timedelta(days=4)
             countForWeek = (  selectedQuery.filter(datetime__range=(eachStartOFWeek,eachEndOfWeek)  )  ).count()
             dataList.append(countForWeek)
 
