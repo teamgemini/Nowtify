@@ -1,5 +1,6 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment-with-locales.js"></script>
+
 {#<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>#}
 <script src="http://cdn.rawgit.com/Eonasdan/bootstrap-datetimepicker/a549aa8780dbda16f6cff545aeabc3d71073911e/src/js/bootstrap-datetimepicker.js"></script>
 {#<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet"/>#}
@@ -51,17 +52,18 @@ Dashboard
                     <div class="panel-heading"><svg class="glyph stroked email"><use xlink:href="#stroked-email"></use></svg>Report An Incident</div>
                     <div class="panel-body">
 
-                        <form action="/incident_reporting_process/" method="post">{% csrf_token %}
+                        <form action="/incident_reporting_process/" method="post" id="form">{% csrf_token %}
 							<fieldset>
                                  <br>
                                  <br>
+
 								<!-- Name input-->
 								<div class="form-group">
 
 									<label class="col-md-3 control-label" for="name">Name of Client</label>
 									<div class="col-md-9">
-									<input id="clientName" name="clientName" type="text" placeholder="" class="form-control">
-									</div>
+									<input id="clientName" name="clientName" type="text" placeholder="" class="form-control" required="required">
+                                    </div>
 								</div>
                                 <br>
                                  <br>
@@ -69,7 +71,7 @@ Dashboard
 								<div class="form-group">
 									<label class="col-md-3 control-label" for="email">Name of Caregiver</label>
 									<div class="col-md-9">
-										<input id="caregiverName" name="caregiverName" type="text" placeholder="" class="form-control">
+										<input id="caregiverName" name="caregiverName" type="text" placeholder="" class="form-control" required="required">
 									</div>
 								</div>
                                  <br>
@@ -77,28 +79,21 @@ Dashboard
                                 <div class="form-group">
 									<label class="col-md-3 control-label" for="email">Reported By</label>
 									<div class="col-md-9">
-										<input id="authorName" name="authorName" type="text" placeholder="" class="form-control">
+										<input id="authorName" name="authorName" type="text" placeholder="" class="form-control" required="required">
 									</div>
 								</div>
                                  <br>
                                  <br>
                                 <div class="form-group">
 									<label class="col-md-3 control-label" for="email">Date and Time </label>
-{#									<div class="col-md-9">#}
-{#										<input id="datetimepicker4" name="datetime" type="text" placeholder="" class="form-control">#}
-{#                                            <script type="text/javascript">#}
-{#                                                $(function () {#}
-{#                                                    $('#datetimepicker4').datetimepicker();#}
-{#                                                });#}
-{#                                            </script>#}
-{#									</div>#}
 
+{##}
                                     <div class="container">
                                         <div class="row">
                                             <div class='col-sm-6'>
                                                 <div class="form-group">
                                                     <div class='input-group date' id='datetimepicker1'>
-                                                        <input type='text' id="datetime" name="datetime" class="form-control" />
+                                                        <input type='text' id="datetime" name="datetime" class="form-control" required="required"/>
                                                         <span class="input-group-addon">
                                                             <span class="glyphicon glyphicon-calendar"></span>
                                                         </span>
@@ -125,7 +120,7 @@ Dashboard
 								<div class="form-group">
 									<label class="col-md-3 control-label" for="message">What has happened?</label>
 									<div class="col-md-9">
-										<textarea class="form-control" id="comments" name="comments" placeholder="Please enter your message here..." rows="5"></textarea>
+										<textarea class="form-control" id="comments" name="comments" placeholder="Please enter your message here..." rows="5" required="required"></textarea>
 									</div>
 								</div>
 
@@ -166,6 +161,7 @@ Dashboard
                 $('b', this).toggleClass("caret caret-up");
             });
     });
+
 
 
 </script>
