@@ -1,8 +1,8 @@
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.3/moment.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment-with-locales.js"></script>
 <script src="http://cdn.rawgit.com/Eonasdan/bootstrap-datetimepicker/a549aa8780dbda16f6cff545aeabc3d71073911e/src/js/bootstrap-datetimepicker.js"></script>
-<link href="http://cdn.rawgit.com/Eonasdan/bootstrap-datetimepicker/a549aa8780dbda16f6cff545aeabc3d71073911e/build/css/bootstrap-datetimepicker.css" rel="stylesheet"/>
+{#<link href="http://cdn.rawgit.com/Eonasdan/bootstrap-datetimepicker/a549aa8780dbda16f6cff545aeabc3d71073911e/build/css/bootstrap-datetimepicker.css" rel="stylesheet"/>#}
 
 {% extends "web/base.html" %}
 {% load staticfiles %}
@@ -24,10 +24,12 @@ Data Analysis
 {% block content %}
 <script src="{% static 'js/chart.min.js' %}"></script>
 <script src="{% static 'js/chart-data.js' %}"></script>
+<link href="{% static 'css/bootstrap-datetimepicker.css' %}" rel="stylesheet">
 
 <br>
 <br>
     <div class="row">
+
         <div class="col-lg-12">
             <div class="panel panel-default">
                 <div class="panel-heading">Data Analysis</div>
@@ -38,7 +40,7 @@ Data Analysis
                           <div class="form-group col-lg-12">
                               <label class="col-sm-2">Show Data For</label>
                                     <div class="col-sm-4">
-                                        <select class="form-control" name="data_title"  id="data_title" type="text" required="required">
+                                        <select class="form-control" name="data_title"  id="data_title" type="text" >
 
         {#                                    <script>#}
         {#                                        wearableNamesArrayLength = {{wearableNames|safe}}.length#}
@@ -88,7 +90,7 @@ Data Analysis
                                     <div class="col-md-4">
 {#                                        <input name="end_date" type="date" placeholder="" class="form-control">#}
                                         <div class='input-group date' id='datetimepicker2'>
-                                            <input type='text' class="form-control"  name='datetimepicker2' required="required"/>
+                                            <input type='text' class="form-control"  name='datetimepicker2' />
                                             <span class="input-group-addon">
                                                 <span class="glyphicon glyphicon-calendar"></span>
                                             </span>
@@ -103,7 +105,7 @@ Data Analysis
                                     <div class="col-md-4">
 {#                                      <input name="start_date" type="date" placeholder="" class="form-control">#}
                                         <div class='input-group date' id='datetimepicker3'>
-                                            <input type='text' class="form-control"  name='datetimepicker3' required="required"/>
+                                            <input type='text' class="form-control"  name='datetimepicker3'/>
                                             <span class="input-group-addon">
                                                 <span class="glyphicon glyphicon-calendar"></span>
                                             </span>
@@ -114,7 +116,7 @@ Data Analysis
                                     <div class="col-md-4">
 {#                                        <input name="end_date" type="date" placeholder="" class="form-control">#}
                                         <div class='input-group date' id='datetimepicker4'>
-                                            <input type='text' class="form-control"  name='datetimepicker4' required="required"/>
+                                            <input type='text' class="form-control"  name='datetimepicker4' />
                                             <span class="input-group-addon">
                                                 <span class="glyphicon glyphicon-calendar"></span>
                                             </span>
@@ -129,7 +131,7 @@ Data Analysis
                                     <div class="col-md-4">
 {#                                      <input name="start_date" type="date" placeholder="" class="form-control">#}
                                         <div class='input-group date' id='datetimepicker5'>
-                                            <input type='text' class="form-control" name='datetimepicker5' required="required"/>
+                                            <input type='text' class="form-control" name='datetimepicker5' />
                                             <span class="input-group-addon">
                                                 <span class="glyphicon glyphicon-calendar"></span>
                                             </span>
@@ -140,7 +142,7 @@ Data Analysis
                                     <div class="col-md-4">
 {#                                        <input name="end_date" type="date" placeholder="" class="form-control">#}
                                         <div class='input-group date' id='datetimepicker6'>
-                                            <input type='text' class="form-control"  name='datetimepicker6' required="required"/>
+                                            <input type='text' class="form-control"  name='datetimepicker6'/>
                                             <span class="input-group-addon">
                                                 <span class="glyphicon glyphicon-calendar"></span>
                                             </span>
@@ -154,7 +156,7 @@ Data Analysis
                                     <div class="col-md-4">
 {#                                      <input name="start_date" type="date" placeholder="" class="form-control">#}
                                         <div class='input-group date' id='datetimepicker7'>
-                                            <input type='text' class="form-control" name='datetimepicker7' required="required"/>
+                                            <input type='text' class="form-control" name='datetimepicker7' />
                                             <span class="input-group-addon">
                                                 <span class="glyphicon glyphicon-calendar"></span>
                                             </span>
@@ -165,7 +167,7 @@ Data Analysis
                                     <div class="col-md-4">
 {#                                        <input name="end_date" type="date" placeholder="" class="form-control">#}
                                         <div class='input-group date' id='datetimepicker8'>
-                                            <input type='text' class="form-control"  name='datetimepicker8' required="required"/>
+                                            <input type='text' class="form-control"  name='datetimepicker8' />
                                             <span class="input-group-addon">
                                                 <span class="glyphicon glyphicon-calendar"></span>
                                             </span>
@@ -178,7 +180,7 @@ Data Analysis
                                 <div class="col-md-4">
 {#                                    <input name="start_time" type="date" placeholder="start time" class="form-control">#}
                                         <div class='input-group date' id='datetimepicker9'>
-                                            <input name="start_time" type='text' class="form-control" required="required"/>
+                                            <input name="start_time" type='text' class="form-control"/>
                                             <span class="input-group-addon">
                                                 <span class="glyphicon glyphicon-time"></span>
                                             </span>
@@ -199,9 +201,8 @@ Data Analysis
 
                             <label class="col-md-1" for="end_date">End Time</label>
                                 <div class="col-md-4">
-{#                                    <input name="end_time" type="date" placeholder="end time" class="form-control">#}
                                         <div class='input-group date' id='datetimepicker10'>
-                                            <input name="end_time" type='text' class="form-control" required="required"/>
+                                            <input name="end_time" type='text' class="form-control"/>
                                             <span class="input-group-addon">
                                                 <span class="glyphicon glyphicon-time"></span>
                                             </span>
@@ -215,11 +216,8 @@ Data Analysis
                                                 });
                                             });
                                         </script>
-
                                 </div>
                         </div>
-
-
 
 
                           <input type="submit" class="btn btn-primary btn-md pull-right" value="Filter"/>
@@ -232,7 +230,7 @@ Data Analysis
         </div>
     </div>
 
-  {% if dataTitle %}
+{% if dataTitle %}
     <div class="row">
 			<div class="col-lg-12">
 				<div class="panel panel-default">
@@ -291,7 +289,7 @@ Data Analysis
 				</div>
 			</div>
 		</div><!--/.row-->
-    {% endif %}
+{% endif %}
     </div>
 
     <script>
