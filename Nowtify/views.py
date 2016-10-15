@@ -119,7 +119,7 @@ def dashboard(request):
     # # # DO NOT DELETE YET, Gathering Data over time
     # #
     # # #insert fake data
-    # datestr = "2016-10-15 14:45:00"
+    # datestr = "2016-10-14 14:45:00"
     # dateobj = datetime.strptime(datestr, '%Y-%m-%d %H:%M:%S')
 
     # wearable1 = Wearable.objects.create(name="Wearable 1",remarks="superrr1")
@@ -150,8 +150,8 @@ def dashboard(request):
     # assignment4 = Assignment.objects.create(name="Momo", wearable_name=wearable4,update = dateobj2)
     #
     # wearable5 = Wearable.objects.create(name="Wearable 5",remarks="i want the name")
-    # wearable5Use= WearableUsage.objects.create(wearable_name=wearable5,used=True,updated = dateobj2)
-    # wearable5Battery = WearableBattery.objects.create(wearable_name=wearable5,battery=70,updated = dateobj2) #ON  LOW BATT
+    # wearable5Use= WearableUsage.objects.create(wearable_name=wearable5,used=True,updated = dateobj)
+    # wearable5Battery = WearableBattery.objects.create(wearable_name=wearable5,battery=70,updated = dateobj) #ON  LOW BATT
     # #
     # assignment5 = Assignment.objects.create(name="Donald Duck",wearable_name=wearable5,update = dateobj2)
     # #
@@ -181,8 +181,8 @@ def dashboard(request):
     # detector4Battery = DetectorBattery.objects.create(detector_name=detector4,battery=60,updated = dateobj2) #OFF ,low batt
     #
     # detector5 = Detector.objects.create(name="Sensor 5",remarks="ultraaaa5")
-    # detector5Use= DetectorUsage.objects.create(detector_name=detector5,used=True,updated = dateobj2)
-    # detector5Battery = DetectorBattery.objects.create(detector_name=detector5,battery=66,updated = dateobj2) #OFF ,low batt
+    # detector5Use= DetectorUsage.objects.create(detector_name=detector5,used=True,updated = dateobj)
+    # detector5Battery = DetectorBattery.objects.create(detector_name=detector5,battery=66,updated = dateobj) #OFF ,low batt
     #
     # detector6 = Detector.objects.create(name="Sensor 6",remarks="ultraaaa6")
     # detector6Use= DetectorUsage.objects.create(detector_name=detector6,used=True,updated = dateobj2)
@@ -236,7 +236,7 @@ def dashboard(request):
     # report10= IncidentReport.objects.create(client_name='Tan',caregiver_name='Shawn',author_name='Shawn',datetime=datetime.strptime('2016-08-12 14:30:30', '%Y-%m-%d %H:%M:%S'),comments='TESTING')
     #
     #
-    # alert11 = Alert.objects.create(detector=detector5,wearable=wearable5,seen=False,datetime=datetime.strptime('2016-08-15 14:30:30', '%Y-%m-%d %H:%M:%S'))#15
+    # alert11 = Alert.objects.create(detector=detector5,wearable=wearable5,seen=False,datetime=datetime.strptime('2016-10-14 14:30:30', '%Y-%m-%d %H:%M:%S'))#15
     # alert11a = Alert.objects.create(detector=detector5,wearable=wearable5,seen=False,datetime=datetime.strptime('2016-08-15 15:00:30', '%Y-%m-%d %H:%M:%S'))
     # alert11b = Alert.objects.create(detector=detector5,wearable=wearable5,seen=False,datetime=datetime.strptime('2016-08-15 15:30:30', '%Y-%m-%d %H:%M:%S'))
     # alert11c = Alert.objects.create(detector=detector5,wearable=wearable5,seen=False,datetime=datetime.strptime('2016-08-15 16:00:30', '%Y-%m-%d %H:%M:%S'))
@@ -606,9 +606,8 @@ def dashboard(request):
         if wearableUsageList.filter(wearable_name__exact=wearableObject,updated__range=(startOfToday,endOfToday)).exists():
             wearableUsage.append(wearableUsageList.filter(wearable_name__exact=wearableObject, updated__range=(startOfToday,endOfToday)).order_by('-updated').first())  # order by time only for ON OFF
 
-    aList=[]
     for instance in wearableUsage:
-        aList.append([instance.used,instance.updated])
+
         if instance.used==True:
             wearableCounter +=1
 
@@ -729,7 +728,7 @@ def dashboard(request):
 
 
     for alertObject in alertUnique: #take all sensors    FOR DEPLOYMENT
-        if allAlertList.filter(detector__exact=alertObject.detector,datetime__gte=startOfYtd,seen__exact=False).exists():
+        if allAlertList.filter(detector__exact=alertObject.detector,datetime__range=(startOfToday,endOfToday),seen__exact=False).exists():
             alertCounter += 1
 
 
@@ -781,7 +780,7 @@ def dashboard(request):
     # else:
     #     newsFeedList = []
 
-    return render(request, "dashboard.html",{'wearableUsageList':wearableUsageList,'aList':aList,'wearableUsage':wearableUsage,'alertCounter': alertCounter,'weeklyCounter': weeklyCounter,'monthlyCounter': monthlyCounter, 'detectorCounter':detectorCounter,'wearableCounter': wearableCounter})
+    return render(request, "dashboard.html",{'wearableUsageList':wearableUsageList,'wearableUsage':wearableUsage,'alertCounter': alertCounter,'weeklyCounter': weeklyCounter,'monthlyCounter': monthlyCounter, 'detectorCounter':detectorCounter,'wearableCounter': wearableCounter})
 
 
 @login_required(login_url='')
