@@ -37,6 +37,8 @@ Data Analysis
 <br>
     <div class="row">
 
+     {{ dataSet | safe }}
+
         {% if runAlready and dataSet|length < 1 %}
             <div class="col-xs-10 col-xs-offset-1 col-sm-8 col-sm-offset-2 col-md-4 col-md-offset-4">
                 <div class="alert alert-warning" role="alertdialog">
@@ -117,7 +119,8 @@ Data Analysis
 {% endif %}
       <script>
 
-     var data = {{ dataSet | safe }}
+     var data =
+{#             {{ dataSet | safe }}#}
 
           $('#data-table').DataTable( {
             data: data,
