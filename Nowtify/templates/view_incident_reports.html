@@ -117,8 +117,7 @@ Data Analysis
 {% endif %}
       <script>
 
-     var data = [["josie","josie","josie","josie","josie"],["josie","josie","josie","josie","josie"],["josie","josie","josie","josie","josie"]]
-{#             {{ dataSet | safe }}#}
+     var data = {{ dataSet | safe }}
 
           $('#data-table').DataTable( {
             data: data,
