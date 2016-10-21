@@ -22,14 +22,14 @@ from datetime import datetime,timedelta,date
 
 def custom_login(request):
     if request.user.is_authenticated():
-        return HttpResponseRedirect("dashboard")
+        return HttpResponseRedirect("detectors") #CHANGED FOR DEPLOYMENT
     else:
         return login(request)
 
 
 def login(request):
     if request.user.is_authenticated():
-        return HttpResponseRedirect("dashboard")
+        return HttpResponseRedirect("detectors") #CHANGED FOR DEPLOYMENT
 
     return render(request, "login.html", {})
 
@@ -57,7 +57,7 @@ def authentication(request):
             auth_login(request, user)
             c = {}
             c.update(csrf(request))
-            return redirect('dashboard')
+            return redirect('detectors') #CHANGED FOR DEPLOYMENT
         else:
             c = {}
             c.update(csrf(request))
@@ -83,7 +83,7 @@ def change_password(request):
     user = authenticate(username=current_user_id, password=current_user_pw)
 
     if user is not None and new_password == confirm_password:
-        # change pw successfully, redirect back to dashboard
+        # change pw successfully, redirect back to Login
         u = User.objects.get(username=current_user_id)
         u.set_password(new_password)
         u.save()
