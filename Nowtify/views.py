@@ -22,14 +22,14 @@ from datetime import datetime,timedelta,date
 
 def custom_login(request):
     if request.user.is_authenticated():
-        return HttpResponseRedirect("dashboard")
+        return HttpResponseRedirect("detectors") #CHANGED FOR DEPLOYMENT
     else:
         return login(request)
 
 
 def login(request):
     if request.user.is_authenticated():
-        return HttpResponseRedirect("dashboard")
+        return HttpResponseRedirect("detectors") #CHANGED FOR DEPLOYMENT
 
     return render(request, "login.html", {})
 
@@ -57,7 +57,7 @@ def authentication(request):
             auth_login(request, user)
             c = {}
             c.update(csrf(request))
-            return redirect('dashboard')
+            return redirect('detectors') #CHANGED FOR DEPLOYMENT
         else:
             c = {}
             c.update(csrf(request))
@@ -83,7 +83,7 @@ def change_password(request):
     user = authenticate(username=current_user_id, password=current_user_pw)
 
     if user is not None and new_password == confirm_password:
-        # change pw successfully, redirect back to dashboard
+        # change pw successfully, redirect back to Login
         u = User.objects.get(username=current_user_id)
         u.set_password(new_password)
         u.save()
@@ -801,14 +801,14 @@ def detector(request):
     # and get the first one, aka the latest data
     for detectorObject in detectorUnique:
         detectorUsage.append(
-            DetectorUsage.objects.all().filter(detector_name__exact=detectorObject).order_by('updated').first().used)
+            DetectorUsage.objects.all().filter(detector_name__exact=detectorObject).order_by('-updated').first().used)
 
 
         detectorBattery.append(
-            DetectorBattery.objects.all().filter(detector_name__exact=detectorObject).order_by('updated').first().battery)
+            DetectorBattery.objects.all().filter(detector_name__exact=detectorObject).order_by('-updated').first().battery)
 
         detectorUpdated.append(DetectorUsage.objects.all().filter(detector_name__exact=detectorObject).order_by(
-            'updated').first().updated)
+            '-updated').first().updated)
 
     # we have yet to put in location feature. This is for future use. For now, I just put Location 1
     for detectorObject in detectorUnique:
@@ -865,14 +865,14 @@ def alert_band(request):
             wearableAssignment.append("Not Assigned")
 
         wearableUsage.append(
-            WearableUsage.objects.all().filter(wearable_name__exact=wearableObject).order_by('updated').first().used)
+            WearableUsage.objects.all().filter(wearable_name__exact=wearableObject).order_by('-updated').first().used)
 
         wearableBattery.append(
             WearableBattery.objects.all().filter(wearable_name__exact=wearableObject).order_by(
-                'updated').first().battery)
+                '-updated').first().battery)
 
         wearableUpdated.append(WearableUsage.objects.all().filter(wearable_name__exact=wearableObject).order_by(
-            'updated').first().updated)
+            '-updated').first().updated)
 
     for wearableObject in wearableUnique:
         wearableLocation.append(1)
