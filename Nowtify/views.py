@@ -1357,11 +1357,18 @@ def view_incident_reports(request):
                 listToReturn.append(
                     [clientName, caregiverName, authorName, dateTime, comments])  # already sorted by datetime
 
+            return render(request, "incident_reports_table.html", {'dataSet': listToReturn, 'title': title, 'runAlready': runAlready})
+
+
         else:
             title = 'No Data to Display'
 
-
-        return render(request, "view_incident_reports.html", {'dataSet': listToReturn, 'title': title,'runAlready':runAlready})
+            return render(request, "view_incident_reports.html", {'dataSet': listToReturn, 'title': title,'runAlready':runAlready})
 
     else:
         return render(request,"view_incident_reports.html",{'runAlready':runAlready})
+
+
+@login_required(login_url='')
+def incident_reports_table(request):
+    return render(request, "incident_reports_table.html")
