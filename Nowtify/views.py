@@ -837,7 +837,7 @@ def detector(request):
              action, (str(detectorUpdated[count]))[:19]])
         count += 1
 
-    return render(request, "incident_reports_table.html", {'dataSet': detectorData})
+    return render(request, "detectors.html", {'dataSet': detectorData})
 
 
 @login_required(login_url='')
@@ -1363,7 +1363,7 @@ def view_incident_reports(request):
         else:
             title = 'No Data to Display'
 
-            return render(request, "view_incident_reports.html", {'dataSet': listToReturn, 'title': title,'runAlready':runAlready})
+            return render(request, "view_incident_table.html", {'dataSet': listToReturn, 'title': title,'runAlready':runAlready})
 
     else:
         return render(request,"view_incident_reports.html",{'runAlready':runAlready})
