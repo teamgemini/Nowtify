@@ -1,16 +1,122 @@
+{#<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/jqc-1.12.3/dt-1.10.12/datatables.min.css"/>#}
+{#<script type="text/javascript" src="https://cdn.datatables.net/v/dt/jqc-1.12.3/dt-1.10.12/datatables.min.js"></script>#}
+{##}
+{#{% extends "web/base.html" %}#}
+{#{% load staticfiles %}#}
+{#{% load url from future %}#}
+{##}
+{#{% block title %}#}
+{#Data Analysis#}
+{#{% endblock %}#}
+{##}
+{##}
+{#{% block display_title %} View Incident Reports {% endblock %}#}
+{#{% block current_page %}{% endblock %}#}
+{#{% block page1 %}{% endblock %}#}
+{#{% block page2 %}{% endblock %}#}
+{#{% block page3 %}{% endblock %}#}
+{#{% block page4 %}{% endblock %}#}
+{#{% block page5 %}active{% endblock %}#}
+{##}
+{#{% block content %}#}
+{#<script src="{% static 'js/chart.min.js' %}"></script>#}
+{#<script src="{% static 'js/chart-data.js' %}"></script>#}
+{#<link href="{% static 'css/bootstrap-datetimepicker.css' %}" rel="stylesheet">#}
+{##}
+{#<br>#}
+{#<br>#}
+{#    {% if dataSet%}#}
+{#        <div>#}
+{#            <a href="/view_incident_reports/" class="btn btn-primary" role="button">Back</a>#}
+{##}
+{#        </div>#}
+{#<br>#}
+
+{#         <div class="row">#}
+{##}
+{#			<div class="col-lg-12">#}
+{#				<div class="panel panel-default">#}
+{##}
+{#                    <div class="panel-heading">{{ title }}</div>#}
+{#					<div class="panel-body">#}
+{##}
+{#						<table id="data-table" class="table" data-toggle="table" data-show-refresh="false" data-sort-name="Client Name" data-sort-order="asd">#}
+{#						      <thead>#}
+{#						    <tr>#}
+{#                               <th>Client Name</th>#}
+{#                               <th>Caregiver Name</th>#}
+{#                               <th>Reported By</th>#}
+{#                               <th>Date</th>#}
+{#                               <th>Comments</th>#}
+{#						    </tr>#}
+{#						    </thead>#}
+{#						</table>#}
+{#					</div>#}
+{#				</div>#}
+{#			</div>#}
+{#		</div>#}
+{#{% endif %}#}
+{#      <script>#}
+{##}
+{#     var data = {{ dataSet | safe }}#}
+{##}
+{#          $('#data-table').DataTable( {#}
+{#            data: data,#}
+{#              "searching": false,#}
+{#              paging: false#}
+{#            } );#}
+{##}
+{##}
+{#      $(function () {#}
+{#						        $('#hover, #striped, #condensed').click(function () {#}
+{#						            var classes = 'table';#}
+{##}
+{#						            if ($('#hover').prop('checked')) {#}
+{#						                classes += ' table-hover';#}
+{#						            }#}
+{#						            if ($('#condensed').prop('checked')) {#}
+{#						                classes += ' table-condensed';#}
+{#						            }#}
+{#						            $('#table-style').bootstrapTable('destroy')#}
+{#						                .bootstrapTable({#}
+{#						                    classes: classes,#}
+{#						                    striped: $('#striped').prop('checked')#}
+{#						                });#}
+{#						        });#}
+{#						    });#}
+{##}
+{#						    function rowStyle(row, index) {#}
+{#						        var classes = ['active', 'success', 'info', 'warning', 'danger'];#}
+{##}
+{#						        if (index % 2 === 0 && index / 2 < classes.length) {#}
+{#						            return {#}
+{#						                classes: classes[index / 2]#}
+{#						            };#}
+{#						        }#}
+{#						        return {};#}
+{#						    }#}
+{##}
+{##}
+{#      </script>#}
+{##}
+{##}
+{#     <script src="{% static 'js/jquery-3.1.0.js' %}"></script>#}
+{#    <script src="{% static 'js/bootstrap.min.js' %}"></script>#}
+{##}
+{#{% endblock %}#}
+
+
+
+
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/jqc-1.12.3/dt-1.10.12/datatables.min.css"/>
 <script type="text/javascript" src="https://cdn.datatables.net/v/dt/jqc-1.12.3/dt-1.10.12/datatables.min.js"></script>
 
-{% extends "web/base.html" %}
+
+{% extends 'web/base.html' %}
 {% load staticfiles %}
 {% load url from future %}
 
-{% block title %}
-Data Analysis
-{% endblock %}
 
-
-{% block display_title %} View Incident Reports {% endblock %}
 {% block current_page %}{% endblock %}
 {% block page1 %}{% endblock %}
 {% block page2 %}{% endblock %}
@@ -19,31 +125,28 @@ Data Analysis
 {% block page5 %}active{% endblock %}
 
 {% block content %}
-<script src="{% static 'js/chart.min.js' %}"></script>
-<script src="{% static 'js/chart-data.js' %}"></script>
-<link href="{% static 'css/bootstrap-datetimepicker.css' %}" rel="stylesheet">
-
-<br>
-<br>
-    {% if dataSet%}
-        <div>
+    <link href="{% static 'css/bootstrap-datetimepicker.css' %}" rel="stylesheet">
+    <br>
+    <br>
+        <div class="row">
+            <div class="col-lg-12">
             <a href="/view_incident_reports/" class="btn btn-primary" role="button">Back</a>
-
+            </div>
         </div>
-<br>
+        <br>
 
-         <div class="row">
-
+        <div class="row">
 			<div class="col-lg-12">
 				<div class="panel panel-default">
 
-                    <div class="panel-heading">{{ title }}</div>
+                        <div class="panel-heading">{{ title }}</div>
 					<div class="panel-body">
 
-						<table id="data-table" class="table" data-toggle="table" data-show-refresh="false" data-sort-name="Client Name" data-sort-order="asd">
+						<table id="data-table" class="table" data-toggle="table" data-show-refresh="false" data-sort-name="Sensor ID" data-sort-order="asd">
+                            <br>
 						      <thead>
 						    <tr>
-                               <th>Client Name</th>
+                              <th>Client Name</th>
                                <th>Caregiver Name</th>
                                <th>Reported By</th>
                                <th>Date</th>
@@ -55,10 +158,10 @@ Data Analysis
 				</div>
 			</div>
 		</div>
-{% endif %}
+
       <script>
 
-     var data = {{ dataSet | safe }}
+     var data = {{ dataSet|safe }}
 
           $('#data-table').DataTable( {
             data: data,
@@ -98,9 +201,8 @@ Data Analysis
 
 
       </script>
-
-
-     <script src="{% static 'js/jquery-3.1.0.js' %}"></script>
+    <script src="{% static 'js/jquery-3.1.0.js' %}"></script>
     <script src="{% static 'js/bootstrap.min.js' %}"></script>
 
 {% endblock %}
+
