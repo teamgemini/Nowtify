@@ -1355,7 +1355,7 @@ def view_incident_reports(request):
                 dateTime = str(eachReport.datetime)
                 comments = eachReport.comments
                 listToReturn.append(
-                    [clientName, caregiverName, authorName, dateTime, comments])  # already sorted by datetime
+                    [str(clientName), str(caregiverName), str(authorName), str(dateTime), str(comments)])  # already sorted by datetime
 
             return render(request, "incident_reports_table.html", {'dataSet': listToReturn, 'title': title, 'runAlready': runAlready})
 
