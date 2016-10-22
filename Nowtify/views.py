@@ -837,7 +837,7 @@ def detector(request):
              action, (str(detectorUpdated[count]))[:19]])
         count += 1
 
-    return render(request, "detectors.html", {'dataSet': detectorData})
+    return render(request, "incident_reports_table.html", {'dataSet': detectorData})
 
 
 @login_required(login_url='')
