@@ -837,7 +837,7 @@ def detector(request):
              action, (str(detectorUpdated[count]))[:19]])
         count += 1
 
-    return render(request, "incident_reports_table.html", {'dataSet': detectorData})
+    return render(request, "detectors.html", {'dataSet': detectorData})
 
 
 @login_required(login_url='')
@@ -1357,7 +1357,7 @@ def view_incident_reports(request):
                 listToReturn.append(
                     [clientName, caregiverName, authorName, dateTime, comments])  # already sorted by datetime
 
-            return render(request, "incident_reports_table.html", {'dataSet': listToReturn, 'title': title, 'runAlready': runAlready})
+            return render(request, "detectors.html", {'dataSet2': listToReturn, 'title': title, 'runAlready': runAlready})
 
 
         else:
