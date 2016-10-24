@@ -36,7 +36,8 @@ urlpatterns = patterns('',
                        url(r'^update_assignment/', views.update_assignment, name='update_assignment'),
                        url(r'^data_analysis/', views.data_analysis_query, name='data_analysis'),
                        url(r'^view_incident_reports/', views.view_incident_reports, name='view_incident_reports'),
-                       url(r'^incident_reports_table/', views.incident_reports_table, name='incident_reports_table')
+                       url(r'^incident_reports_table/', views.incident_reports_table, name='incident_reports_table'),
+                       url(r'^download_csv/', views.download_csv, name='download_csv')
 
 
 
