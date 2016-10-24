@@ -1627,7 +1627,7 @@ def download_csv(request):
 
     fileName = (datetime.now()).strftime('%d-%b-%Y %I-%M%p')
 
-    dataFile = open(fileName + '.csv', "w",newline='')
+    dataFile = open(fileName + '.csv', "w")
     writer = csv.writer(dataFile,delimiter=',',quoting=csv.QUOTE_NONE)
 
     combined = [labels,dataList]
