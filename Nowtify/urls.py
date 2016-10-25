@@ -37,7 +37,8 @@ urlpatterns = patterns('',
                        url(r'^data_analysis/', views.data_analysis_query, name='data_analysis'),
                        url(r'^view_incident_reports/', views.view_incident_reports, name='view_incident_reports'),
                        url(r'^incident_reports_table/', views.incident_reports_table, name='incident_reports_table'),
-                       url(r'^download_csv/', views.download_csv, name='download_csv')
+                       url(r'^download_csv/', views.download_csv, name='download_csv'),
+                       url(r'^export/', views.export, name='export')
 
 
 
