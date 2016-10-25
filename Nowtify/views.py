@@ -18,6 +18,7 @@ from Nowtify.models import Detector, DetectorBattery, DetectorUsage
 from Nowtify.models import Alert, Assignment, IncidentReport
 from operator import itemgetter
 from datetime import datetime,timedelta,date
+import csv
 
 
 def custom_login(request):
@@ -1300,7 +1301,7 @@ def data_analysis_query(request):
             dataList, labelList = (list(t) for t in zip(*sorted(zip(dataList, labelList), reverse=True)))
 
         #strings for Title on return
-        start = "From " + dayS + "/" + monthS + "/" + yearS + " To " + dayE + "/" + monthE + "/" + yearE + ","
+        start = "From: " + dayS + "/" + monthS + "/" + yearS + " To: " + dayE + "/" + monthE + "/" + yearE + ","
         end = str(startTimeSlotTime) +" To "+ str(endTimeSlotTime)
 
         return render(request, 'data_analysis.html',{'dataList': dataList, 'labels': labelList, 'dataTitle': dataTitle + ',', 'dataType': dataType,'start':start,'end':end})
@@ -1355,13 +1356,284 @@ def view_incident_reports(request):
                 dateTime = str(eachReport.datetime)
                 comments = eachReport.comments
                 listToReturn.append(
-                    [clientName, caregiverName, authorName, dateTime, comments])  # already sorted by datetime
+                    [str(clientName), str(caregiverName), str(authorName), dateTime, str(comments)])  # already sorted by datetime
+
+            return render(request, "view_incident_reports.html", {'dataSet': listToReturn, 'title': title, 'runAlready': runAlready})
+
 
         else:
             title = 'No Data to Display'
 
-
-        return render(request, "view_incident_reports.html", {'dataSet': listToReturn, 'title': title,'runAlready':runAlready})
+            return render(request, "view_incident_reports.html", {'dataSet': listToReturn, 'title': title,'runAlready':runAlready})
 
     else:
         return render(request,"view_incident_reports.html",{'runAlready':runAlready})
+
+
+@login_required(login_url='')
+def incident_reports_table(request):
+    return render(request, "incident_reports_table.html")
+
+# @login_required(login_url='') #Highest Number of Alert,By Month From: 01/2016 To: 10/2016
+#                               #Total Number of Alert,By Timeslot From: 05/10/2016 To: 24/10/2016, 12:00 PM To 5:00 PM
+# def download_csv(request):
+#     title = str(request.POST['clientName'])
+#     dataTitle = (title.split(","))[0] #Highest Number of Alert
+#     remainder1 = ((title.split(","))[1])
+#
+#     if (title.split(","))[2] != None: # 12:00 PM To 5:00 PM
+#         fromDate =
+#         toDate =
+#
+#
+#     tempList = remainder1.split(":")
+#     dataType = (tempList[0])[:-5] #is By Month From
+#
+#     if dataType =="By Timeslot":
+#
+#
+#     fromDate = (tempList[1])[1:-3] #is <space> 01/2016 to
+#     toDate= (tempList[2])[1:] #is <space> 10/2016
+#
+#     alertQuery = Alert.objects.all()
+#
+#     incidentQuery = IncidentReport.objects.all()
+#
+#     labelList = []  # list of labels to be returned
+#     dataList = []  # FINAL LIST, sorted by criteria
+#     listOfMonths = []
+#     listOfDays = []
+#     listOfWeeks = []
+#     listOfTimeSlotDays = []
+#
+#     # computing filter by WEEK
+#     if (dataType == "By Week"):
+#         dayS = fromDate[:2]
+#         monthS = fromDate[3:5]
+#         yearS = fromDate[6:]
+#
+#         startDate = yearS + "-" + monthS + "-" + dayS
+#         startDateTimeObject = datetime.strptime(startDate, '%Y-%m-%d')
+#
+#         dayE = endDate[:2]
+#         monthE = endDate[3:5]
+#         yearE = endDate[6:]
+#
+#         endDate = yearE + "-" + monthE + "-" + dayE
+#         endDateTimeObject = datetime.strptime(endDate, '%Y-%m-%d')
+#
+#         startWeekNumber = startDateTimeObject.isocalendar()[
+#             1]  # Return a 3-tuple, (ISO year, ISO week number, ISO weekday)
+#         endWeekNumber = endDateTimeObject.isocalendar()[1]
+#         numberOfWeeks = endWeekNumber - startWeekNumber + 1  # inclusive
+#
+#         counter = 0
+#
+#         while (
+#             counter < numberOfWeeks):  # for each count, add 7 days to the startDate and add to the list of weeks,labels to be start date of every week (monday)
+#             # new = startDateTimeObject.replace(day=(startDateTimeObject.day + (counter * 7) ) )
+#             new = startDateTimeObject + timedelta(days=(counter * 7))
+#             listOfWeeks.append(new)
+#             labelList.append(new.strftime("%d %b %Y"))
+#             counter += 1
+#
+#         if (dataTitle == "Total Number of Alert" or dataTitle == "Highest Number of Alert"):  # if alerts
+#             selectedQuery = alertQuery
+#         else:  # (dataTitle == "Highest Number of Incident Reported" or dataTitle == "Total Number of Incident Reported"):  # if incident reports
+#             selectedQuery = incidentQuery
+#
+#         for eachStartOFWeek in listOfWeeks:  # each day, count the number of objects occur on that day
+#             # eachEndOfWeek = eachStartOFWeek.replace(day=(eachStartOFWeek.day + (4) ) )
+#             eachEndOfWeek = eachStartOFWeek + timedelta(days=4)
+#             countForWeek = (selectedQuery.filter(datetime__range=(eachStartOFWeek, eachEndOfWeek))).count()
+#             dataList.append(countForWeek)
+#
+#         if (
+#                 dataTitle == "Highest Number of Alert" or dataTitle == "Highest Number of Incident Reported"):  # if need to sort by Highest Alert or Highest Incident Reports
+#             dataList, labelList = (list(t) for t in zip(*sorted(zip(dataList, labelList), reverse=True)))
+#
+#         return render(request, 'data_analysis.html',
+#                       {'dataList': dataList, 'labels': labelList, 'dataTitle': dataTitle + ',', 'dataType': dataType,
+#                        'start': ' From: ' + startWeek, 'end': ' To: ' + endWeek})
+#
+#     # computing filter by DAY
+#     if (dataType == "By Day"):
+#         dayS = startDay[:2]
+#         monthS = startDay[3:5]
+#         yearS = startDay[6:]
+#
+#         startDate = yearS + "-" + monthS + "-" + dayS
+#         startDateTimeObject = datetime.strptime(startDate, '%Y-%m-%d')
+#
+#         dayE = endDay[:2]
+#         monthE = endDay[3:5]
+#         yearE = endDay[6:]
+#
+#         endDate = yearE + "-" + monthE + "-" + dayE
+#         endDateTimeObject = datetime.strptime(endDate, '%Y-%m-%d')
+#
+#         numberOfDays = abs(
+#             (endDateTimeObject - startDateTimeObject).days) + 1  # timedelta object.days, result should be int,inclusive
+#
+#         counter = 0
+#
+#         while (counter < numberOfDays):  # for each count, add 1 to the month and add to the list of months
+#             new = startDateTimeObject + timedelta(days=counter)
+#             listOfDays.append(new)
+#             labelList.append(new.strftime("%d %b %Y"))
+#             counter += 1
+#
+#         if (dataTitle == "Total Number of Alert" or dataTitle == "Highest Number of Alert"):  # if alerts
+#             selectedQuery = alertQuery
+#         else:  # (dataTitle == "Highest Number of Incident Reported" or dataTitle == "Total Number of Incident Reported"):  # if incident reports
+#             selectedQuery = incidentQuery
+#
+#         for eachDay in listOfDays:  # each day, count the number of objects occur on that day
+#             countForDay = (selectedQuery.filter(datetime__startswith=eachDay.date)).count()
+#             dataList.append(countForDay)
+#
+#         if (
+#                 dataTitle == "Highest Number of Alert" or dataTitle == "Highest Number of Incident Reported"):  # if need to sort by Highest Alert or Highest Incident Reports
+#             dataList, labelList = (list(t) for t in zip(*sorted(zip(dataList, labelList), reverse=True)))
+#
+#         return render(request, 'data_analysis.html',
+#                       {'dataList': dataList, 'labels': labelList, 'dataTitle': dataTitle + ',', 'dataType': dataType,
+#                        'start': ' From: ' + startDay, 'end': ' To: ' + endDay})
+#
+#     # computing filter by MONTH
+#     if (dataType == "By Month"):
+#         # 01/2016 is given by the input
+#
+#         monthE = endMonth[:2]  # 01
+#         yearE = endMonth[3:]  # 2016
+#
+#         temp = calendar.monthrange(int(yearE), int(monthE))  # (1,31) returns a tuple
+#         lastDayOfMonth = temp[1]  # 31
+#
+#         endDate = yearE + "-" + monthE + "-" + str(lastDayOfMonth) + " 23:59"  # 2016-01-31 23:59
+#
+#         endDateTimeObject = datetime.strptime(endDate, '%Y-%m-%d %H:%M')
+#
+#         # 01/2016
+#         monthS = startMonth[:2]  # 01
+#         yearS = startMonth[3:]  # 2016
+#
+#         startDate = yearS + "-" + monthS + "-01" + " 00:00"  # 2016-01-01 00:00
+#
+#         startDateTimeObject = datetime.strptime(startDate, '%Y-%m-%d %H:%M')
+#
+#         numberOfMonths = int(monthE) - int(monthS) + 1  # inclusive
+#         numberOfYears = 0  # container
+#         if (numberOfMonths < 0):
+#             numberOfYears = int(yearE) - int(yearS) - 1  # if 2016/01 to 2015/12? monthE - monthS = -11 months
+#             numberOfMonths = 12 + numberOfMonths  # 2 months
+#         else:
+#             numberOfYears = int(yearE) - int(yearS)
+#         totalNumberOfMonths = numberOfYears * 12 + numberOfMonths  # get number of months to determine the list of months
+#
+#         firstDayOfStartDateTime = startDateTimeObject.replace(day=1)  # all become 1st of the month
+#
+#         counter = 0
+#
+#         while (counter < totalNumberOfMonths):  # for each count, add 1 to the month and add to the list of months
+#             # new = firstDayOfStartDateTime.replace(month=(firstDayOfStartDateTime.month + counter))
+#             new = firstDayOfStartDateTime + timedelta(days=(
+#             counter * 31))  # by pass limitation, timedelta only allows days, adding 31 ensures date is in the next month
+#             listOfMonths.append(new)
+#             labelList.append(new.strftime("%b %Y"))
+#             counter += 1
+#
+#         if (dataTitle == "Total Number of Alert" or dataTitle == "Highest Number of Alert"):  # if alerts
+#             selectedQuery = alertQuery
+#         else:  # (dataTitle == "Highest Number of Incident Reported" or dataTitle == "Total Number of Incident Reported"):  # if incident reports
+#             selectedQuery = incidentQuery
+#
+#         for eachMonth in listOfMonths:  # each month, count the number of objects that is the same as the month
+#             countForMonth = (selectedQuery.filter(datetime__month=eachMonth.month)).count()
+#             dataList.append(countForMonth)
+#
+#         if (
+#                 dataTitle == "Highest Number of Alert" or dataTitle == "Highest Number of Incident Reported"):  # if need to sort by Highest Alert or Highest Incident Reports
+#             dataList, labelList = (list(t) for t in zip(*sorted(zip(dataList, labelList), reverse=True)))
+#
+#         return render(request, 'data_analysis.html',
+#                       {'dataList': dataList, 'labels': labelList, 'dataTitle': dataTitle + ',', 'dataType': dataType,
+#                        'start': ' From: ' + startMonth, 'end': ' To: ' + endMonth})
+#
+#     # filter by TimeSlot
+#     if (dataType == "By Timeslot"):
+#         dayS = startTimeSlotDate[:2]
+#         monthS = startTimeSlotDate[3:5]
+#         yearS = startTimeSlotDate[6:]
+#
+#         startDate = yearS + "-" + monthS + "-" + dayS
+#         startDateTimeObject = datetime.strptime(startDate, '%Y-%m-%d')
+#
+#         dayE = endTimeSlotDate[:2]
+#         monthE = endTimeSlotDate[3:5]
+#         yearE = endTimeSlotDate[6:]
+#
+#         endDate = yearE + "-" + monthE + "-" + dayE
+#         endDateTimeObject = datetime.strptime(endDate, '%Y-%m-%d')
+#
+#         numberOfDays = abs(
+#             (endDateTimeObject - startDateTimeObject).days) + 1  # timedelta object.days, result should be int,inclusive
+#
+#         counter = 0
+#
+#         while (counter < numberOfDays):  # for each count, add 1 to the month and add to the list of months
+#             new = startDateTimeObject + timedelta(days=counter)
+#             listOfTimeSlotDays.append(new)
+#             labelList.append(new.strftime("%d %b %Y"))
+#             counter += 1
+#
+#         if (dataTitle == "Total Number of Alert" or dataTitle == "Highest Number of Alert"):  # if alerts
+#             selectedQuery = alertQuery
+#         else:  # (dataTitle == "Highest Number of Incident Reported" or dataTitle == "Total Number of Incident Reported"):  # if incident reports
+#             selectedQuery = incidentQuery
+#
+#         # filter by timeslot
+#
+#         for eachDay in listOfTimeSlotDays:  # each day, count the number of objects occur on that day
+#             currentDate = eachDay.strftime('%Y-%m-%d')  # get string
+#             startRange = datetime.strptime(currentDate + " " + str(startTimeSlotTime),
+#                                            '%Y-%m-%d %I:%M %p')  # for each date, add the start time
+#             endRange = datetime.strptime(currentDate + " " + str(endTimeSlotTime),
+#                                          '%Y-%m-%d %I:%M %p')  # for each date, add the end time
+#             countForEachDayTimeSlot = (selectedQuery.filter(datetime__range=(startRange, endRange))).count()
+#             dataList.append(countForEachDayTimeSlot)
+#
+#         if (
+#                 dataTitle == "Highest Number of Alert" or dataTitle == "Highest Number of Incident Reported"):  # if need to sort by Highest Alert or Highest Incident Reports
+#             dataList, labelList = (list(t) for t in zip(*sorted(zip(dataList, labelList), reverse=True)))
+#
+#         # strings for Title on return
+#         start = "From " + dayS + "/" + monthS + "/" + yearS + " To " + dayE + "/" + monthE + "/" + yearE + ","
+#         end = str(startTimeSlotTime) + " To " + str(endTimeSlotTime)
+#
+#         return render(request, 'data_analysis.html',
+#                       {'dataList': dataList, 'labels': labelList, 'dataTitle': dataTitle + ',', 'dataType': dataType,
+#                        'start': start, 'end': end})
+#
+#     else:
+#         return render(request, 'data_analysis.html')
+
+@login_required(login_url='') #pass the entire DataSet over
+def download_csv(request):
+    allList = str(request.POST['download'])
+    allList = (allList.replace("[","").replace("]","")).split('&')
+    dataList = allList[0].split(',')
+    labels = (allList[1].replace("'","")).split(',')
+
+    fileName = (datetime.now()).strftime('%d-%b-%Y %I-%M%p')
+
+    dataFile = open(fileName + '.csv', "w")
+    writer = csv.writer(dataFile,delimiter=',',quoting=csv.QUOTE_NONE)
+
+    combined = [labels,dataList]
+    writer.writerows(combined)
+
+    dataFile.close()
+
+
+    return render(request, 'data_analysis.html',{'dataRecieved':labels})
