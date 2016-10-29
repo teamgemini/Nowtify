@@ -1,14 +1,14 @@
+{#Load files from static folder#}
 {% extends "web/base.html" %}
 {% load staticfiles %}
 {% load url from future %}
 
-
-{% block title %}
-Sensor Management
-{% endblock %}
+{#Dynamically replacing the page name on base.html using variable name 'title' #}
+{% block title %}Overview{% endblock %}
 
 {% block display_title %} Overview {% endblock %}
 
+{#Navigations variables #}
 {% block current_page %}active{% endblock %}
 {% block page1 %}{% endblock %}
 {% block page2 %}{% endblock %}
@@ -16,11 +16,11 @@ Sensor Management
 {% block page4 %}{% endblock %}
 {% block page5 %}{% endblock %}
 
-
+{#Dynamically showing content of the page using variable name 'content' #}
 {% block content %}
 <br>
 <br>
-    {{ aList}}
+    {{aList}}
 {#    <meta http-equiv="refresh" content="30" /> <!-- refresh every 30seconds -->#}
 
     <div class="row">

@@ -1,9 +1,6 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment-with-locales.js"></script>
-
-{#<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>#}
 <script src="http://cdn.rawgit.com/Eonasdan/bootstrap-datetimepicker/a549aa8780dbda16f6cff545aeabc3d71073911e/src/js/bootstrap-datetimepicker.js"></script>
-{#<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet"/>#}
 <link href="http://cdn.rawgit.com/Eonasdan/bootstrap-datetimepicker/a549aa8780dbda16f6cff545aeabc3d71073911e/build/css/bootstrap-datetimepicker.css" rel="stylesheet"/>
 
 {% extends "web/base.html" %}
@@ -22,13 +19,6 @@ Dashboard
 {% block page3 %}{% endblock %}
 {% block page4 %}active{% endblock %}
 {% block page5 %}{% endblock %}
-
-{#<script src="{% static 'js/moment-with-locales.js' %}"></script>#}
-{#<script src="{% static 'js/bootstrap-datetimepicker.js' %}"></script>#}
-{#<script src="{% static 'js/bootstrap.min.js' %}"></script>#}
-{#<script src="{% static 'js/jquery-3.1.0.js' %}"></script>#}
-{#<link href="{% static 'css/bootstrap-datetimepicker.css' %}" rel="stylesheet">#}
-
 
 {% block content %}
 <br>
@@ -87,7 +77,6 @@ Dashboard
                                 <div class="form-group">
 									<label class="col-md-3 control-label" for="email">Date and Time </label>
 
-{##}
                                     <div class="container">
                                         <div class="row">
                                             <div class='col-sm-6'>
@@ -143,11 +132,10 @@ Dashboard
 
 <script>
 
+{#Javascript to fade alert message after 3 seconds#}
     $('.alert-success').delay(3000).fadeOut();
 
-{#    $('#datetimepicker').datetimepicker({#}
-{#    minDate: moment()#}
-{#    });#}
+{#Javascript to dropdown settings upon hover#}
     $(function(){
     $(".dropdown").hover(
             function() {
