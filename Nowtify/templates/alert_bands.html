@@ -1,16 +1,18 @@
+ {#Importing required css and js files using CDN#}
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/jqc-1.12.3/dt-1.10.12/datatables.min.css"/>
 <script type="text/javascript" src="https://cdn.datatables.net/v/dt/jqc-1.12.3/dt-1.10.12/datatables.min.js"></script>
 
-
+ {#Inheriting base page layout from base.html#}
 {% extends 'web/base.html' %}
+
+{#Load files from static folder#}
 {% load staticfiles %}
 {% load url from future %}
-{#<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>#}
-{#<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>#}
 
+{#Dynamically replacing the page name on base.html using variable name 'title' #}
 {% block title %}Wearables{% endblock %}
 
-
+{#Dynamically showing content of the page using variable name 'content' #}
 {% block content %}
     
     <div class="row" xmlns="http://www.w3.org/1999/html">
@@ -19,9 +21,6 @@
 
 					<div class="panel-heading">Wearable Management</div>
 					<div class="panel-body">
-
-
-{#                        <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#myModal" style="float: right">Assign Wearable</button>#}
 
                         <button type="button" class="btn btn-default" data-toggle="modal" data-target="#assignWearable" style="float: right">Assign Wearable</button>
 
@@ -68,28 +67,6 @@
                           </div>
                         </div>
 
-
-{#                        <!-- #modal 2 -->#}
-{##}
-{#                        <div class="modal fade" id="confirm">#}
-{#                          <div class="modal-dialog" style="width: 30%">#}
-{#                            <div class="modal-content">#}
-{##}
-{##}
-{#                              <div class="modal-body">#}
-{#                                <br><br>#}
-{#                                <p><center>Select <b>Save Changes</b> to assign wearable</center></p><br>#}
-{#                              </div>#}
-{#                              <div class="modal-footer">#}
-{#                                <button type="submit" class="btn btn-primary" data-toggle="modal" data-dismiss="modal">Save Changes</button>#}
-{#                                   <button type="button" a href="#assignWearable" class="btn btn-default" data-toggle="modal" data-dismiss="modal">Back</button>#}
-{#                              </div>#}
-{#                            </div><!-- /.modal-content -->#}
-{#                          </div><!-- /.modal-dialog -->#}
-{#                        </div><!-- /.modal -->#}
-
-
-
                         <br>
                         <br>
 						<table id="data-table" class="table" data-toggle="table" data-show-refresh="false" data-sort-name="Sensor ID" data-sort-order="asd">
@@ -106,14 +83,17 @@
 						    </thead>
 						</table>
 
-                        {% if successMessage %}
-                        <div class="col-xs-10 col-xs-offset-1 col-sm-8 col-sm-offset-2 col-md-4 col-md-offset-4">
 
-                            <div class="alert alert-success" role="alertdialog">
-                                <strong><center> {{ successMessage }} </center></strong>
+                        {#Display message if wearable is assigned successfully#}
+                        {% if successMessage %}
+                            <div class="col-xs-10 col-xs-offset-1 col-sm-8 col-sm-offset-2 col-md-4 col-md-offset-4">
+
+                                <div class="alert alert-success" role="alertdialog">
+                                    <strong><center> {{ successMessage }} </center></strong>
+                                </div>
                             </div>
-                        </div>
                         {% endif %}
+
 					</div>
 				</div>
 			</div>
@@ -121,6 +101,7 @@
 
       <script>
 
+{# --- Populate data into table using javascript --- #}
      var data = {{ dataSet|safe }}
 
           $('#data-table').DataTable( {
@@ -129,8 +110,10 @@
               paging: false
             } );
 
+{#Javascript to fade alert message after 3 seconds#}
           $('.alert-success').delay(3000).fadeOut();
 
+{#Javascript to dropdown settings menu upon hover#}
       $(function () {
 						        $('#hover, #striped, #condensed').click(function () {
 						            var classes = 'table';
@@ -159,11 +142,10 @@
 						        }
 						        return {};
 						    }
-
-
       </script>
-    <script src="{% static 'js/jquery-3.1.0.js' %}"></script>
-    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+
+<script src="{% static 'js/jquery-3.1.0.js' %}"></script>
+<script src="{% static 'js/bootstrap.min.js' %}"></script>
 
 {% endblock %}
 

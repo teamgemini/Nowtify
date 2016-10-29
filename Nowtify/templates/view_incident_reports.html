@@ -2,7 +2,6 @@
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/jqc-1.12.3/dt-1.10.12/datatables.min.css"/>
 <script type="text/javascript" src="https://cdn.datatables.net/v/dt/jqc-1.12.3/dt-1.10.12/datatables.min.js"></script>
 
-{#<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>#}
 <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.3/moment.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment-with-locales.js"></script>
 <script src="http://cdn.rawgit.com/Eonasdan/bootstrap-datetimepicker/a549aa8780dbda16f6cff545aeabc3d71073911e/src/js/bootstrap-datetimepicker.js"></script>
@@ -89,77 +88,6 @@ Data Analysis
 
 {#-----------Show table if data exists-----------#}
 
-{#    {% if dataSet%}#}
-{#         <div class="row">#}
-{#			<div class="col-lg-12">#}
-{#				<div class="panel panel-default">#}
-{##}
-{#                    <div class="panel-heading">{{ title }}</div>#}
-{#					<div class="panel-body">#}
-{##}
-{#						<table id="data-table" class="table" data-toggle="table" data-show-refresh="false" data-sort-name="Client Name" data-sort-order="asd">#}
-{#						      <thead>#}
-{#						    <tr>#}
-{#                               <th>Client Name</th>#}
-{#                               <th>Caregiver Name</th>#}
-{#                               <th>Reported By</th>#}
-{#                               <th>Date</th>#}
-{#                               <th>Comments</th>#}
-{#						    </tr>#}
-{#						    </thead>#}
-{#						</table>#}
-{#					</div>#}
-{#				</div>#}
-{#			</div>#}
-{#		</div>#}
-{#{% endif %}#}
-{#      <script>#}
-{##}
-{#     var data = {{ dataSet | safe }}#}
-{##}
-{#          $('#data-table').DataTable( {#}
-{#            data: data,#}
-{#              "searching": false,#}
-{#              paging: false#}
-{#            } );#}
-{##}
-{##}
-{#      $(function () {#}
-{#						        $('#hover, #striped, #condensed').click(function () {#}
-{#						            var classes = 'table';#}
-{##}
-{#						            if ($('#hover').prop('checked')) {#}
-{#						                classes += ' table-hover';#}
-{#						            }#}
-{#						            if ($('#condensed').prop('checked')) {#}
-{#						                classes += ' table-condensed';#}
-{#						            }#}
-{#						            $('#table-style').bootstrapTable('destroy')#}
-{#						                .bootstrapTable({#}
-{#						                    classes: classes,#}
-{#						                    striped: $('#striped').prop('checked')#}
-{#						                });#}
-{#						        });#}
-{#						    });#}
-{##}
-{#						    function rowStyle(row, index) {#}
-{#						        var classes = ['active', 'success', 'info', 'warning', 'danger'];#}
-{##}
-{#						        if (index % 2 === 0 && index / 2 < classes.length) {#}
-{#						            return {#}
-{#						                classes: classes[index / 2]#}
-{#						            };#}
-{#						        }#}
-{#						        return {};#}
-{#						    }#}
-{##}
-{##}
-{#      </script>#}
-{##}
-
-
-{#    {% endblock %}#}
-
     {% if dataSet%}
         <div class="row">
 			<div class="col-lg-12">
@@ -230,6 +158,7 @@ Data Analysis
 
     {% endif %}
 
+{# --- Javascript to display calendar fields by referring to field id --- #}
 
 <script type="text/javascript">
     $(function () {
@@ -250,6 +179,7 @@ Data Analysis
         });
     });
 
+{#Javascript to dropdown settings upon hover#}
 
 $(function(){
     $(".dropdown").hover(
