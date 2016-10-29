@@ -100,10 +100,6 @@ def change_password(request):
         return render(request, 'settings.html', {'error': 'Passwords do not match. Please re-enter password.'})
 
 
-@login_required(login_url='')
-def index(request):
-    return render(request, "index.html")
-
 
 @login_required(login_url='')
 def dashboard(request):
@@ -1015,25 +1011,6 @@ def incident_reporting(request):
 @login_required(login_url='')
 def settings(request):
     return render(request, "settings.html")
-
-
-@login_required(login_url='')
-def alert(request):
-    i = Alert.objects.all().count()
-
-    if i > 0:
-        # if standing, return with message
-        return render(request, "alert.html", {'message': 'ALERT from Sensor A1.'})
-    else:
-        return render(request, "alert.html")
-
-
-def handler404(request):
-    response = render_to_response('404.html', {},
-                                  context_instance=RequestContext(request))
-    response.status_code = 404
-    return response
-
 
 
 @login_required(login_url='')
