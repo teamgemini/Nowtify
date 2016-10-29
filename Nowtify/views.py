@@ -35,14 +35,29 @@ def login(request):
     return render(request, "login.html", {})
 
 
-def logout(request):
+# def custom_login(request): #user has logged in before and did not log out, next time he access, is directed to dashboard
+#     if request.user.is_authenticated():
+#         return HttpResponseRedirect("dashboard") #Original
+#     else:
+#         return login(request)
+#
+#
+# def login(request): #login check
+#     if request.user.is_authenticated():
+#         return HttpResponseRedirect("dashboard") #Original
+#
+#     return render(request, "login.html", {})
+
+
+
+def logout(request): #direct to login.html upon clicking logout
     auth_logout(request)
     c = {}
-    c.update(csrf(request))
+    c.update(csrf(request)) #session token
     return render(request, "login.html", {})
 
 
-def authentication(request):
+def authentication(request): #CHANGED FOR DEPLOYMENT
     username = request.POST['username']
     password = request.POST['password']
     user = authenticate(username=username, password=password)
@@ -58,7 +73,7 @@ def authentication(request):
             auth_login(request, user)
             c = {}
             c.update(csrf(request))
-            return redirect('detectors') #CHANGED FOR DEPLOYMENT
+            return redirect('detectors')
         else:
             c = {}
             c.update(csrf(request))
@@ -70,6 +85,34 @@ def authentication(request):
         return errorHandle(error)
 
 
+# def authentication(request): #Original  #check if username and password is correct, direct to login if incorrect, if correct, direct to dashbaord
+#     username = request.POST['username'] #get inputs
+#     password = request.POST['password']
+#     user = authenticate(username=username, password=password)
+#
+#     def errorHandle(error):
+#         c = {}
+#         c.update(csrf(request)) #use session token as login verification
+#         return render(request, 'login.html', {'error': error})
+#
+#     if user is not None:  #if the username pw pair exists
+#
+#         if user.is_active:
+#             auth_login(request, user)
+#             c = {}
+#             c.update(csrf(request))
+#             return redirect('dashboard')
+#         else:
+#             c = {}
+#             c.update(csrf(request))
+#             return render(request, "login.html", {})
+#     elif user is None:
+#         c = {}
+#         c.update(csrf(request))
+#         error = 'Invalid username/password'
+#         return errorHandle(error)
+
+
 @login_required(login_url='')
 def change_password(request):
     c = {}
@@ -77,7 +120,7 @@ def change_password(request):
 
     current_user = request.user
     current_user_id = current_user.get_username()
-    current_user_pw = request.POST['current_password']
+    current_user_pw = request.POST['current_password'] #get input
     new_password = request.POST['new_password']
     confirm_password = request.POST['confirm_password']
 
@@ -113,9 +156,9 @@ def dashboard(request):
     # #
     # Alert.objects.all().delete()
     # IncidentReport.objects.all().delete()
-    # # # DO NOT DELETE YET, Gathering Data over time
+    # # # to wipe database
     # #
-    # # #insert fake data
+    # # #insert test data
     # datestr = "2016-10-14 14:45:00"
     # dateobj = datetime.strptime(datestr, '%Y-%m-%d %H:%M:%S')
 
@@ -428,6 +471,8 @@ def dashboard(request):
     # testingTime= (datetime.now() - timedelta(days=1)).replace(hour=2, minute=2, second=2, microsecond=2)
     # alertJJ = Alert.objects.create(detector=detectorJJ,wearable=wearableJJ,seen=False,datetime=testingTime) #activated
 
+    #creating all lists that will be used later on
+
     masterList= []
 
     detectorUsageUnique = []
@@ -465,10 +510,10 @@ def dashboard(request):
         daysAfterStartOfWeek = datetime.now().isoweekday()-1 #if 4, 4-3 = 1 which is monday
     #get start of week (monday) 00:00:00:00
 
-    startOfWeek = (datetime.now() - timedelta(days=daysAfterStartOfWeek)).replace(hour=0, minute=0, second=0, microsecond=0)
+    startOfWeek = (datetime.now() - timedelta(days=daysAfterStartOfWeek)).replace(hour=0, minute=0, second=0, microsecond=0) #datetime for 00:00 startofweek
 
 
-    if(datetime.now().isoweekday() < 7):
+    if(datetime.now().isoweekday() < 7): #determine how many days till end of week
         daysToEndOfWeek = 7 - (datetime.now().isoweekday())
 
     if(datetime.now().isoweekday() == 7):
@@ -478,7 +523,7 @@ def dashboard(request):
     endOfWeek = (datetime.now() + timedelta(days=daysToEndOfWeek)).replace(hour=23, minute=59, second=59, microsecond=59)
 
 
-    startOfMonth = 1
+    startOfMonth = 1            #getting datetime for start/end of day, week, month
     today = datetime.now()
     startOfToday = (datetime.now()).replace(hour=0, minute=0, second=0, microsecond=0)
     endOfToday = (datetime.now()).replace(hour=23, minute=59, second=59, microsecond=59)
@@ -493,16 +538,12 @@ def dashboard(request):
     detectorUsageList = DetectorUsage.objects.all()
     detectorBatteryList = DetectorBattery.objects.all()
 
-#DetectorOnOff
+#DetectorOnOff, newsfeed and counter
     detectorCounter = 0
     for instanceDetector in detectorList:
         detectorUsageUnique.append(instanceDetector)
 
-    # there are many rows of data, this code will filter by each unique sensor, arrange from newest to oldest data
-    # and get the first one, aka the latest data
-
-
-    # for detectorObject in detectorUsageUnique: REMOVED FOR DEPLOYMENT
+    # for detectorObject in detectorUsageUnique: REMOVED FOR DEPLOYMENT #get most recent instance of detectors that are updated as of ytd 00:00
     #     if detectorUsageList.filter(detector_name__exact=detectorObject,updated__gte=startOfYtd).exists():
     #         detectorUsage.append(detectorUsageList.filter(detector_name__exact=detectorObject,updated__gte=startOfYtd).order_by('updated').first()) # order by time only for ON OFF
 
@@ -516,7 +557,7 @@ def dashboard(request):
         if instance.used == True:
             detectorCounter += 1
 
-    # for instance in detectorUsage: REMOVED FOR DEPLOYMENT
+    # for instance in detectorUsage: REMOVED FOR DEPLOYMENT #prepare messageType, message and timestamp for newsfeed and counter to pass to html
     #     messageType=""
     #     message=""
     #     timestamp=None
@@ -550,17 +591,14 @@ def dashboard(request):
 # #DetectorBattery    REMOVED FOR DEPLOYMENT
 #     for instanceDetector in detectorList:
 #         detectorBatteryUnique.append(instanceDetector)
-#     # there are many rows of data, this code will filter by each unique sensor, arrange from newest to oldest data
-#     # and get the first one, aka the latest data
 #
-#
-#     for detectorObject in detectorBatteryUnique: #take all sensors
+#     for detectorObject in detectorBatteryUnique:
 #         if detectorBatteryList.filter(detector_name__exact=detectorObject,updated__gte=startOfYtd).exists():
 #             detectorBattery.append(detectorBatteryList.filter(detector_name__exact=detectorObject,updated__gte=startOfYtd).order_by('updated').first())
-#     #take only sensorBattery objects, filter by sensor name to prevent repeats, filer by condition, order by datetime,take latest
+#     #take only detectorBattery objects, filter by sensor name to prevent repeats, filer by condition, order by datetime,take latest
 #
 #
-#     for instance in detectorBattery:
+#     for instance in detectorBattery: #prepare messageType, message and timestamp of each occurance, display newsfeed and counter in html
 #
 #         messageType=""
 #         message=""
@@ -580,46 +618,32 @@ def dashboard(request):
 
 
 
-#WearableOnOff
-    wearableCounter = 0
-
-    wearableList = Wearable.objects.all()
-    wearableUsageList = WearableUsage.objects.all()
-    wearableBatteryList = WearableBattery.objects.all()
-
-    tstart = datetime.now()
-    for instanceWearable in wearableList:
-        wearableUsageUnique.append(instanceWearable)
+#WearableOnOff #not used as use of Miband is deprecated
+    # wearableCounter = 0
+    #
+    # wearableList = Wearable.objects.all()
+    # wearableUsageList = WearableUsage.objects.all()
+    # wearableBatteryList = WearableBattery.objects.all()
+    #
+    # tstart = datetime.now()
+    # for instanceWearable in wearableList:
+    #     wearableUsageUnique.append(instanceWearable)
     # there are many rows of data, this code will filter by each unique wearable, arrange from newest to oldest data
     # and get the first one, aka the latest data
-    # tdiff0 = str(datetime.now() - tstart)  #REMOVED FOR DEPLOYMENT
 
-    # tstart2 = datetime.now() #REMOVED FOR DEPLOYMENT
-    # for wearableObject in wearableUsageUnique: REMOVED FOR DEPLOYMENT
+    # for wearableObject in wearableUsageUnique:
     #     if wearableUsageList.filter(wearable_name__exact=wearableObject,updated__gte=startOfYtd).exists():
     #         wearableUsage.append(wearableUsageList.filter(wearable_name__exact=wearableObject,updated__gte=startOfYtd).order_by('updated').first()) # order by time only for ON OFF
     #
-    for wearableObject in wearableUsageUnique:  #FOR DEPLOYMENT
-        if wearableUsageList.filter(wearable_name__exact=wearableObject,updated__range=(startOfToday,endOfToday)).exists():
-            wearableUsage.append(wearableUsageList.filter(wearable_name__exact=wearableObject, updated__range=(startOfToday,endOfToday)).order_by('-updated').first())  # order by time only for ON OFF
-
-    for instance in wearableUsage:
-
-        if instance.used==True:
-            wearableCounter +=1
-
-    # tdiff2 = str( datetime.now() - tstart2)      REMOVED FOR DEPLOYMENT
     #
     # #call for all assignment objects
     # allAssignment = Assignment.objects.all()
     #
-    # tdiff = ''
 
-    # for instance in wearableUsage:
-    #     t1 = datetime.now()
+    # for instance in wearableUsage: #prepare data for messageType, message,timestamp and caregiver to pass to newsfeed html
     #     messageType=""
     #     message=""
-    #     time=None
+    #     timestamp=None
     #     caregiver = "" #to store assigned caregiver name
     #
     #     if instance.used == True:
@@ -643,7 +667,7 @@ def dashboard(request):
     #         t2 = datetime.now()
     #         tdiff = str(t2-t1)
     #
-    #         masterList.append([messageType + tdiff0 ,message + tdiff ,timestamp + tdiff2])
+    #         masterList.append([messageType,message,timestamp])
     #
     #
     #     if instance.used == False:
@@ -666,21 +690,18 @@ def dashboard(request):
 
 
 
-# #WearableBattery    REMOVED FOR DEPLOYMENT
+# #WearableBattery    removed as use of Miband is deprecated
 #     for instanceWearable in wearableList:
 #         wearableBatteryUnique.append(instanceWearable)
-#     # there are many rows of data, this code will filter by each unique sensor, arrange from newest to oldest data
-#     # and get the first one, aka the latest data
 #
 #
 #     for wearableObject in wearableBatteryUnique: #take all sensors
 #         if wearableBatteryList.filter(wearable_name__exact=wearableObject,updated__gte=startOfYtd).exists():
 #             wearableBattery.append(wearableBatteryList.filter(wearable_name__exact=wearableObject,updated__gte=startOfYtd).order_by('updated').first())
-#     #take only sensorBattery objects, filter by sensor name to prevent repeats, filer by condition, order by datetime, take latest
+#     #take only wearableBattery objects, filter by wearable name to prevent repeats, filer by condition, order by datetime, take latest
 #
-#     # if all(None for item in wearableBattery) and len(detectorUsage)== 4:
 #
-#     for instance in wearableBattery:
+#     for instance in wearableBattery: #prepare data for messageType, message and timestamp to pass to newsfeed html
 #
 #         messageType=""
 #         message=""
@@ -706,22 +727,19 @@ def dashboard(request):
 
 
 # AlertActivated
-    alertCounter = 0
-    weeklyCounter = 0
-    monthlyCounter = 0
+    alertCounter = 0 #count alerts today
+    weeklyCounter = 0 #count alerts this week
+    monthlyCounter = 0 #count alerts this month
 
     allAlertList = Alert.objects.all()
 
     for instanceAlert in allAlertList:
         alertUnique.append(instanceAlert)
-    # there are many rows of data, this code will filter by each unique alert, arrange from newest to oldest data
-    # and get the first one, aka the latest data
-
 
     # for alertObject in alertUnique: #take all sensors REMOVED FOR DEPLOYMENT
     #     if allAlertList.filter(detector__exact=alertObject.detector,datetime__gte=startOfYtd).exists():
     #         alertList.append(allAlertList.filter(detector__exact=alertObject.detector,datetime__gte=startOfYtd).order_by('datetime').first())
-    # # take only sensorBattery objects, filter by sensor name to prevent repeats, filer by condition, order by datetime,take latest
+    # # take only alert objects, filter by alertObject name to prevent repeats, filer by condition, order by datetime,take latest
 
 
     for alertObject in alertUnique: #take all sensors    FOR DEPLOYMENT
@@ -729,7 +747,7 @@ def dashboard(request):
             alertCounter += 1
 
 
-    # for instance in alertList:   REMOVED FOR DEPLOYMENT
+    # for instance in alertList:   REMOVED FOR DEPLOYMENT #prepare data to pass ot newsfeed in html page
     #
     #     messageType=""
     #     message=""
@@ -837,7 +855,7 @@ def detector(request):
     return render(request, "detectors.html", {'dataSet': detectorData})
 
 
-@login_required(login_url='')
+@login_required(login_url='') #nolonger used, use of Miband deprecated
 def alert_band(request):
     wearableUnique = []
     wearableAssignment = []
@@ -853,7 +871,7 @@ def alert_band(request):
         wearableUnique.append(instance)
 
     for wearableObject in wearableUnique:
-
+        # take only Assignment objects, filter by name to prevent repeats, filer by condition, order by datetime,take latest
         if Assignment.objects.all().filter(wearable_name__exact=wearableObject).exists():
             wearableAssignment.append(
                 Assignment.objects.all().filter(wearable_name__exact=wearableObject).first().name
@@ -905,6 +923,7 @@ def alert_band(request):
         instanceName = str(instance.name)
         if Assignment.objects.all().filter(wearable_name__exact=instance).exists():
             instanceAssignee = str(Assignment.objects.all().filter(wearable_name__exact=instance).first().name)
+            # take only Assignment objects, filter by name to prevent repeats, filer by condition, order by datetime,take latest
         else:
             instanceAssignee = "Not Assigned"
         wearableAssignment.append([instanceName,instanceAssignee])
@@ -913,7 +932,7 @@ def alert_band(request):
 
 
 @login_required(login_url='')
-def update_assignment(request):
+def update_assignment(request): #allows assignment of caregiver name to wearable to be changed #no longer used, use of Miband deprecated
     wearableName = request.POST['wearableName']
     assignee = request.POST['assignee']
 
@@ -937,7 +956,7 @@ def update_assignment(request):
     wearableUpdated = []
     wearableData = []
 
-    # get sensor uniquely
+    # get wearable uniquely
     for instance in Wearable.objects.all():
         wearableUnique.append(instance)
 
@@ -946,6 +965,7 @@ def update_assignment(request):
         if Assignment.objects.all().filter(wearable_name__exact=wearableObject).exists():
             wearableAssignment.append(
                 str(Assignment.objects.all().filter(wearable_name__exact=wearableObject).first().name)
+                # take only Assignment objects, filter by name to prevent repeats, filer by condition, order by datetime,take latest
             )
         else:
             wearableAssignment.append("Not Assigned")
@@ -965,7 +985,7 @@ def update_assignment(request):
         wearableLocation.append(1)
 
     count = 0
-    for wearableObject in wearableUnique:
+    for wearableObject in wearableUnique: #passdata to be printed to alert_band.html, based on on/off and battery levels
 
         if wearableUsage[count]:
             usage = "In Operation"
@@ -1027,14 +1047,14 @@ def incident_reporting_process(request):
     c = {}
     c.update(csrf(request))
 
-    clientNameInput = request.POST['clientName']
+    clientNameInput = request.POST['clientName'] #get all data from html
     caregiverNameInput = request.POST['caregiverName']
     authorNameInput = request.POST['authorName']
     commentsInput = request.POST['comments']
     datetimeInput = datetime.strptime(request.POST['datetime'],'%d/%m/%Y %I:%M %p')
 
     incidentReport = IncidentReport(client_name=clientNameInput, caregiver_name=caregiverNameInput, author_name=authorNameInput, comments=commentsInput, datetime=datetimeInput)
-    incidentReport.save()
+    incidentReport.save() #write to DB
 
     return render(request, 'incident_reporting.html', {'incidentReported': True})
 
@@ -1046,7 +1066,7 @@ def data_analysis_query(request):
     dataTitle = request.POST.get('data_title',"EmptyTitle")
     dataType = request.POST.get('data_type',"EmptyType")
 
-    startMonth = request.POST.get('datetimepicker1',1111) #month
+    startMonth = request.POST.get('datetimepicker1',1111) #month #1111 is value to be returned if null is found
 
     endMonth = request.POST.get('datetimepicker2',2222) #month
     #
@@ -1066,8 +1086,6 @@ def data_analysis_query(request):
 
     getType = None #0 = month  1 = week  2 = day  3 = timeslot
     getTitle = None
-    # 0 =Highest Number of Alert   1 = Total Number of Alert   2= Highest Number of Incident Reported
-    # 3 = Total Number of Incident Reported   #4 = Incident Reports
 
     alertQuery = Alert.objects.all()
 
@@ -1082,20 +1100,20 @@ def data_analysis_query(request):
 
 
     # computing filter by WEEK
-    if (dataType == "By Week"):
+    if (dataType == "By Week"): #dayS is chosen start day.
         dayS = startWeek[:2]
         monthS = startWeek[3:5]
         yearS = startWeek[6:]
 
         startDate =  yearS + "-" + monthS + "-" + dayS
-        startDateTimeObject = datetime.strptime(startDate, '%Y-%m-%d')
+        startDateTimeObject = datetime.strptime(startDate, '%Y-%m-%d')#get start datetime object
 
         dayE = endWeek[:2]
         monthE = endWeek[3:5]
         yearE = endWeek[6:]
 
         endDate = yearE + "-" + monthE + "-" + dayE
-        endDateTimeObject = datetime.strptime(endDate, '%Y-%m-%d')
+        endDateTimeObject = datetime.strptime(endDate, '%Y-%m-%d')#get end datetime object
 
         startWeekNumber = startDateTimeObject.isocalendar()[1] #Return a 3-tuple, (ISO year, ISO week number, ISO weekday)
         endWeekNumber = endDateTimeObject.isocalendar()[1]
@@ -1104,7 +1122,6 @@ def data_analysis_query(request):
         counter = 0
 
         while (counter < numberOfWeeks):  # for each count, add 7 days to the startDate and add to the list of weeks,labels to be start date of every week (monday)
-            # new = startDateTimeObject.replace(day=(startDateTimeObject.day + (counter * 7) ) )
             new = startDateTimeObject + timedelta(days=(counter * 7) )
             listOfWeeks.append(new)
             labelList.append(new.strftime("%d %b %Y"))
@@ -1112,12 +1129,11 @@ def data_analysis_query(request):
 
         if (dataTitle == "Total Number of Alert" or dataTitle == "Highest Number of Alert"):  # if alerts
             selectedQuery = alertQuery
-        else: # (dataTitle == "Highest Number of Incident Reported" or dataTitle == "Total Number of Incident Reported"):  # if incident reports
+        else: # if incident reports
             selectedQuery = incidentQuery
 
 
         for eachStartOFWeek in listOfWeeks:  # each day, count the number of objects occur on that day
-            # eachEndOfWeek = eachStartOFWeek.replace(day=(eachStartOFWeek.day + (4) ) )
             eachEndOfWeek = eachStartOFWeek + timedelta(days=4)
             countForWeek = (  selectedQuery.filter(datetime__range=(eachStartOFWeek,eachEndOfWeek)  )  ).count()
             dataList.append(countForWeek)
@@ -1134,14 +1150,14 @@ def data_analysis_query(request):
         yearS = startDay[6:]
 
         startDate =  yearS + "-" + monthS + "-" + dayS
-        startDateTimeObject = datetime.strptime(startDate, '%Y-%m-%d')
+        startDateTimeObject = datetime.strptime(startDate, '%Y-%m-%d') #get start datetime object
 
         dayE = endDay[:2]
         monthE = endDay[3:5]
         yearE = endDay[6:]
 
         endDate = yearE + "-" + monthE + "-" + dayE
-        endDateTimeObject = datetime.strptime(endDate, '%Y-%m-%d')
+        endDateTimeObject = datetime.strptime(endDate, '%Y-%m-%d') #get end datetime object
 
         numberOfDays = abs( (endDateTimeObject - startDateTimeObject).days) + 1 #timedelta object.days, result should be int,inclusive
 
@@ -1155,7 +1171,7 @@ def data_analysis_query(request):
 
         if (dataTitle == "Total Number of Alert" or dataTitle == "Highest Number of Alert"):  # if alerts
             selectedQuery = alertQuery
-        else: # (dataTitle == "Highest Number of Incident Reported" or dataTitle == "Total Number of Incident Reported"):  # if incident reports
+        else:# if incident reports
             selectedQuery = incidentQuery
 
         for eachDay in listOfDays:  # each day, count the number of objects occur on that day
@@ -1169,7 +1185,7 @@ def data_analysis_query(request):
 
     #computing filter by MONTH
     if (dataType == "By Month" ):
-        #01/2016 is given by the input
+        #for example, 01/2016 is given by the input
 
         monthE = endMonth[:2]  # 01
         yearE = endMonth[3:] #2016
@@ -1209,7 +1225,6 @@ def data_analysis_query(request):
         counter = 0
 
         while(counter < totalNumberOfMonths): #for each count, add 1 to the month and add to the list of months
-            # new = firstDayOfStartDateTime.replace(month=(firstDayOfStartDateTime.month + counter))
             new = firstDayOfStartDateTime + timedelta(days=(counter * 31) ) #by pass limitation, timedelta only allows days, adding 31 ensures date is in the next month
             listOfMonths.append(new)
             labelList.append(new.strftime("%b %Y"))
@@ -1218,7 +1233,7 @@ def data_analysis_query(request):
 
         if (dataTitle == "Total Number of Alert" or dataTitle == "Highest Number of Alert"):  # if alerts
             selectedQuery = alertQuery
-        else: # (dataTitle == "Highest Number of Incident Reported" or dataTitle == "Total Number of Incident Reported"):  # if incident reports
+        else: # if incident reports
             selectedQuery = incidentQuery
 
         for eachMonth in listOfMonths: #each month, count the number of objects that is the same as the month
@@ -1234,7 +1249,7 @@ def data_analysis_query(request):
 
     #filter by TimeSlot
     if (dataType == "By Timeslot"):
-        dayS = startTimeSlotDate[:2]
+        dayS = startTimeSlotDate[:2] #dayS is start day chosen, dayE is end day chosen
         monthS = startTimeSlotDate[3:5]
         yearS = startTimeSlotDate[6:]
 
@@ -1262,7 +1277,7 @@ def data_analysis_query(request):
 
         if (dataTitle == "Total Number of Alert" or dataTitle == "Highest Number of Alert"):  # if alerts
             selectedQuery = alertQuery
-        else: # (dataTitle == "Highest Number of Incident Reported" or dataTitle == "Total Number of Incident Reported"):  # if incident reports
+        else: # if incident reports
             selectedQuery = incidentQuery
 
         #filter by timeslot
@@ -1292,14 +1307,14 @@ def view_incident_reports(request):
     c = {}
     c.update(csrf(request))
 
-    runAlready = False
+    runAlready = False #checker for if the query has been run at least once, needed as page tries to run once without input everytime navigated to page
 
     start = request.POST.get('datetimepicker1', 'nothing')  # startDate
 
     end = request.POST.get('datetimepicker2', 'nothing')  # endDate
 
-    if start != 'nothing':
-        runAlready = True
+    if start != 'nothing': #nothing is returned if input is left blank
+        runAlready = True #change checker to true
 
         incidentList = IncidentReport.objects.all()
 
@@ -1322,11 +1337,11 @@ def view_incident_reports(request):
 
         if incidentList.filter(datetime__range=(startDateTimeObject, endDateTimeObject)).exists():
             wantedReports.append(incidentList.filter(datetime__range=(startDateTimeObject, endDateTimeObject)).order_by('datetime'))
-
+            #filter reports by daterange
 
             title = 'Displaying Incident Reports from ' + dayS + "-" + monthS + "-" + yearS+ ' to ' + dayE + "-" + monthE + "-" + yearE
 
-            for eachReport in wantedReports[0]:
+            for eachReport in wantedReports[0]: #get all fields initially input by the caregiver, return to table
                 clientName = eachReport.client_name
                 caregiverName = eachReport.caregiver_name
                 authorName = eachReport.author_name
