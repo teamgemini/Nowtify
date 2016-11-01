@@ -30,22 +30,12 @@ Data Analysis
 <br>
     <div class="row">
 
-    <form action="/download_csv/" method="post">{% csrf_token %}
-        <fieldset>
-            <div class="form-group">
-                <input type="hidden" value="{{ dataList }}&{{ labels }}" name="download" type="text" >
-            </div>
-            <input type="submit" class="btn btn-primary" value="Download Data" style="display: block; margin-left: auto; margin-right: auto" />
-
-        </fieldset>
-    </form>
-
         <div class="col-lg-12">
             <div class="panel panel-default">
                 <div class="panel-heading">Data Analysis</div>
                 <div class="panel-body">
 
-                    <form action="/data_analysis/" method="post">{% csrf_token %}
+                    <form action="/export/" method="post">{% csrf_token %}
                           <fieldset>
                           <div class="form-group col-lg-12">
                               <label class="col-sm-2">Show Data For</label>
@@ -246,7 +236,20 @@ Data Analysis
 				<div class="panel panel-default">
 					<div class="panel-heading">{{ dataTitle }}{{ dataType }} {{ start }} {{ end }}</div>
 
+
+
                     <div class="panel-body">
+
+                         <form action="/download_csv/" method="post">{% csrf_token %}
+                            <fieldset>
+                                <div class="form-group">
+                                    <input type="hidden" value="{{ dataList }}&{{ labels }}&{{ dataTitle }}{{ dataType }} {{ start }} {{ end }}" name="download" type="text" >
+                                </div>
+                                <div></div>
+                                <input type="submit" class="btn btn-primary btn-md pull-right" value="Download Data"  />
+
+                            </fieldset>
+                        </form>
 
 						<div class="canvas-wrapper">
 							<canvas class="main-chart" id="alerts" height="400" width="800"></canvas>

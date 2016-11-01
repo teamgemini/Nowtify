@@ -19,6 +19,8 @@ from Nowtify.models import Alert, Assignment, IncidentReport
 from operator import itemgetter
 from datetime import datetime,timedelta,date
 import csv
+from django.http import HttpResponse
+
 
 
 def custom_login(request):
@@ -795,7 +797,7 @@ def dashboard(request):
     # else:
     #     newsFeedList = []
 
-    return render(request, "dashboard.html",{'alertCounter': alertCounter,'weeklyCounter': weeklyCounter,'monthlyCounter': monthlyCounter, 'detectorCounter':detectorCounter,'wearableCounter': wearableCounter})
+    return render(request, "dashboard.html",{'alertCounter': alertCounter,'weeklyCounter': weeklyCounter,'monthlyCounter': monthlyCounter, 'detectorCounter':detectorCounter})
 
 
 @login_required(login_url='')
@@ -1616,20 +1618,21 @@ def download_csv(request):
     allList = (allList.replace("[","").replace("]","")).split('&')
     dataList = allList[0].split(',')
     labels = (allList[1].replace("'","")).split(',')
+    title = [allList[2]]
 
     fileName = (datetime.now()).strftime('%d-%b-%Y %I-%M%p')
 
-    dataFile = open(fileName + '.csv', "w")
-    writer = csv.writer(dataFile,delimiter=',',quoting=csv.QUOTE_NONE)
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="' + fileName + '.csv"'
 
-    combined = [labels,dataList]
-    writer.writerows(combined)
+    writerForTitle = csv.writer(response,dialect='excel')
+    writerForTitle.writerow(title)
+    #cos title has no need to be delimited, use a diff writer
+    writer = csv.writer(response,delimiter=',',quoting=csv.QUOTE_NONE)
+    writer.writerow(labels)
+    writer.writerow(dataList)
 
-    dataFile.close()
-
-
-    return render(request, 'export.html',{'dataRecieved':labels})
-
+    return response
 
 # DUMMY EXPORT METHOD
 
