@@ -236,7 +236,11 @@ Data Analysis
 				<div class="panel panel-default">
 					<div class="panel-heading">{{ dataTitle }}{{ dataType }} {{ start }} {{ end }}</div>
 
-                        <form action="/download_csv/" method="post">{% csrf_token %}
+
+
+                    <div class="panel-body">
+
+                         <form action="/download_csv/" method="post">{% csrf_token %}
                             <fieldset>
                                 <div class="form-group">
                                     <input type="hidden" value="{{ dataList }}&{{ labels }}&{{ dataTitle }}{{ dataType }} {{ start }} {{ end }}" name="download" type="text" >
@@ -246,9 +250,6 @@ Data Analysis
 
                             </fieldset>
                         </form>
-
-
-                    <div class="panel-body">
 
 						<div class="canvas-wrapper">
 							<canvas class="main-chart" id="alerts" height="400" width="800"></canvas>

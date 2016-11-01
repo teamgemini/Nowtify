@@ -1,20 +1,18 @@
-{#Importing required css and js files using CDN#}
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.3/moment.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment-with-locales.js"></script>
 <script src="http://cdn.rawgit.com/Eonasdan/bootstrap-datetimepicker/a549aa8780dbda16f6cff545aeabc3d71073911e/src/js/bootstrap-datetimepicker.js"></script>
+{#<link href="http://cdn.rawgit.com/Eonasdan/bootstrap-datetimepicker/a549aa8780dbda16f6cff545aeabc3d71073911e/build/css/bootstrap-datetimepicker.css" rel="stylesheet"/>#}
 
-{#Load files from static folder#}
 {% extends "web/base.html" %}
 {% load staticfiles %}
 {% load url from future %}
 
-{#Page Title#}
 {% block title %}
 Data Analysis
 {% endblock %}
 
-{#Navigations Variablesr#}
+
 {% block display_title %} Data Analysis {% endblock %}
 {% block current_page %}{% endblock %}
 {% block page1 %}{% endblock %}
@@ -23,7 +21,6 @@ Data Analysis
 {% block page4 %}{% endblock %}
 {% block page5 %}{% endblock %}
 
-{#Page content#}
 {% block content %}
 <script src="{% static 'js/chart.min.js' %}"></script>
 <script src="{% static 'js/chart-data.js' %}"></script>
@@ -32,6 +29,7 @@ Data Analysis
 <br>
 <br>
     <div class="row">
+
         <div class="col-lg-12">
             <div class="panel panel-default">
                 <div class="panel-heading">Data Analysis</div>
@@ -39,14 +37,17 @@ Data Analysis
 
                     <form action="/export/" method="post">{% csrf_token %}
                           <fieldset>
-
-                          {# -------------- Divider for first 2 fields --------------#}
                           <div class="form-group col-lg-12">
-
-                              {# ---'Show Data' Dropdown Field ---#}
                               <label class="col-sm-2">Show Data For</label>
                                     <div class="col-sm-4">
                                         <select class="form-control" name="data_title"  id="data_title" type="text" >
+
+        {#                                    <script>#}
+        {#                                        wearableNamesArrayLength = {{wearableNames|safe}}.length#}
+        {#                                        for (i = 0; i < wearableNamesArrayLength; i++) {#}
+        {#                                            document.write("<option>" + {{wearableNames|safe}}[i][0] + "</option>");#}
+        {#                                        }#}
+        {#                                    </script>#}
                                             <option selected="selected">Select data title</option>
                                             <option value="Highest Number of Alert">Highest Number of Alert</option>
                                             <option value="Total Number of Alert">Total Number of Alert</option>
@@ -55,8 +56,8 @@ Data Analysis
                                         </select>
                                     </div>
 
-                              {# --- 'Sort By' Dropdown Field ---#}
-                              <label class="col-sm-1">Sort By</label>
+
+                                    <label class="col-sm-1">Sort By</label>
                                     <div class="col-sm-4">
                                         <select onchange="iftimeslot(this);" placeholder="please select" class="form-control" name="data_type" name="data_type" type="text" >
                                         <option selected="selected">Select a period</option>
@@ -66,15 +67,17 @@ Data Analysis
                                         <option value="By Timeslot">By Timeslot</option>
                                         </select>
                                      </div>
+
                           </div>
 
+{#----------------------#}
 
-                        {# -------------- Display div when 'select by month' is chosen --------------#}
+
                           <div id="select_date1"  name="select_date1" class="form-group col-lg-12" style="display: none;">
 
-                              {# --- Calendar field for 'Starting Month' ---#}
                               <label class="col-sm-2" for="start_date">From</label>
                                     <div class="col-md-4">
+{#                                      <input name="start_date" type="date" placeholder="" class="form-control">#}
                                         <div class='input-group date' id='datetimepicker1'>
                                             <input type='text' class="form-control" name='datetimepicker1' />
                                             <span class="input-group-addon">
@@ -83,9 +86,9 @@ Data Analysis
                                         </div>
                                     </div>
 
-                              {# --- Calendar Field for 'Ending Month' ---#}
                              <label class="col-md-1" for="end_date">To</label>
                                     <div class="col-md-4">
+{#                                        <input name="end_date" type="date" placeholder="" class="form-control">#}
                                         <div class='input-group date' id='datetimepicker2'>
                                             <input type='text' class="form-control"  name='datetimepicker2' />
                                             <span class="input-group-addon">
@@ -93,14 +96,14 @@ Data Analysis
                                             </span>
                                         </div>
                                     </div>
-                          </div>
+                       </div>
+{#----------------------#}
 
-                      {# -------------- Display div when 'select by week' is chosen --------------#}
                       <div id="select_date2" name="select_date2" class="form-group col-lg-12" style="display: none;">
 
-                            {# --- Calendar field for 'Start of Week (Monday)' ---#}
                               <label class="col-sm-2" for="start_date">From</label>
                                     <div class="col-md-4">
+{#                                      <input name="start_date" type="date" placeholder="" class="form-control">#}
                                         <div class='input-group date' id='datetimepicker3'>
                                             <input type='text' class="form-control"  name='datetimepicker3'/>
                                             <span class="input-group-addon">
@@ -109,9 +112,9 @@ Data Analysis
                                         </div>
                                     </div>
 
-                            {# --- Calendar field for 'Start of Week (Friday)' ---#}
                              <label class="col-md-1" for="end_date">To</label>
                                     <div class="col-md-4">
+{#                                        <input name="end_date" type="date" placeholder="" class="form-control">#}
                                         <div class='input-group date' id='datetimepicker4'>
                                             <input type='text' class="form-control"  name='datetimepicker4' />
                                             <span class="input-group-addon">
@@ -121,13 +124,12 @@ Data Analysis
                                     </div>
                        </div>
 
-
-                     {# -------------- Display div when 'select by day' is chosen --------------#}
+{#----------------------#}
                       <div id="select_date3" name="select_date3" class="form-group col-lg-12" style="display: none;">
 
-                              {# --- Calendar field for 'Start Date' --- #}
                               <label class="col-sm-2" for="start_date">From</label>
                                     <div class="col-md-4">
+{#                                      <input name="start_date" type="date" placeholder="" class="form-control">#}
                                         <div class='input-group date' id='datetimepicker5'>
                                             <input type='text' class="form-control" name='datetimepicker5' />
                                             <span class="input-group-addon">
@@ -136,9 +138,9 @@ Data Analysis
                                         </div>
                                     </div>
 
-                             {# --- Calendar field for 'End Date' --- #}
                              <label class="col-md-1" for="end_date">To</label>
                                     <div class="col-md-4">
+{#                                        <input name="end_date" type="date" placeholder="" class="form-control">#}
                                         <div class='input-group date' id='datetimepicker6'>
                                             <input type='text' class="form-control"  name='datetimepicker6'/>
                                             <span class="input-group-addon">
@@ -147,13 +149,12 @@ Data Analysis
                                         </div>
                                     </div>
                        </div>
-
-                      {# -------------- Display div when 'select by timeslot' is chosen --------------#}
+{#----------------------#}
                       <div id="select_date4" name="select_date4" class="form-group col-lg-12" style="display: none;">
 
-                              {# --- Calendar field for 'Start Date' --- #}
                               <label class="col-sm-2" for="start_date">From</label>
                                     <div class="col-md-4">
+{#                                      <input name="start_date" type="date" placeholder="" class="form-control">#}
                                         <div class='input-group date' id='datetimepicker7'>
                                             <input type='text' class="form-control" name='datetimepicker7' />
                                             <span class="input-group-addon">
@@ -162,9 +163,9 @@ Data Analysis
                                         </div>
                                     </div>
 
-                             {# --- Calendar field for 'End Date' --- #}
                              <label class="col-md-1" for="end_date">To</label>
                                     <div class="col-md-4">
+{#                                        <input name="end_date" type="date" placeholder="" class="form-control">#}
                                         <div class='input-group date' id='datetimepicker8'>
                                             <input type='text' class="form-control"  name='datetimepicker8' />
                                             <span class="input-group-addon">
@@ -175,10 +176,9 @@ Data Analysis
                        </div>
 
                         <div id="select_time" name="select_time" class="form-group col-lg-12" style="display: none;">
-
-                            {# --- Calendar field for 'Start Time' --- #}
                             <label class="col-sm-2" for="start_date">Start Time</label>
                                 <div class="col-md-4">
+{#                                    <input name="start_time" type="date" placeholder="start time" class="form-control">#}
                                         <div class='input-group date' id='datetimepicker9'>
                                             <input name="start_time" type='text' class="form-control"/>
                                             <span class="input-group-addon">
@@ -194,9 +194,11 @@ Data Analysis
                                                 });
                                             });
                                         </script>
+
+
+
                                 </div>
 
-                            {# --- Calendar field for 'End Time' --- #}
                             <label class="col-md-1" for="end_date">End Time</label>
                                 <div class="col-md-4">
                                         <div class='input-group date' id='datetimepicker10'>
@@ -217,7 +219,8 @@ Data Analysis
                                 </div>
                         </div>
 
-                              <input type="submit" class="btn btn-primary btn-md pull-right" value="Filter"/>
+
+                          <input type="submit" class="btn btn-primary btn-md pull-right" value="Filter"/>
 
                           </fieldset>
                     </form>
@@ -227,14 +230,26 @@ Data Analysis
         </div>
     </div>
 
-{# --- Display data using bar chart if there is data --- #}
 {% if dataTitle %}
     <div class="row">
 			<div class="col-lg-12">
 				<div class="panel panel-default">
 					<div class="panel-heading">{{ dataTitle }}{{ dataType }} {{ start }} {{ end }}</div>
 
+
+
                     <div class="panel-body">
+
+                         <form action="/download_csv/" method="post">{% csrf_token %}
+                            <fieldset>
+                                <div class="form-group">
+                                    <input type="hidden" value="{{ dataList }}&{{ labels }}&{{ dataTitle }}{{ dataType }} {{ start }} {{ end }}" name="download" type="text" >
+                                </div>
+                                <div></div>
+                                <input type="submit" class="btn btn-primary btn-md pull-right" value="Download Data"  />
+
+                            </fieldset>
+                        </form>
 
 						<div class="canvas-wrapper">
 							<canvas class="main-chart" id="alerts" height="400" width="800"></canvas>
@@ -257,6 +272,28 @@ Data Analysis
                              var alerts = document.getElementById("alerts").getContext("2d");
                              new Chart(alerts).Bar(barData);
 
+{#                                var pieData = [#}
+{#                                    {#}
+{#                                        value: 20,#}
+{#                                        color:"#878BB6"#}
+{#                                    },#}
+{#                                    {#}
+{#                                        value : 40,#}
+{#                                        color : "#4ACAB4"#}
+{#                                    },#}
+{#                                    {#}
+{#                                        value : 10,#}
+{#                                        color : "#FF8153"#}
+{#                                    },#}
+{#                                    {#}
+{#                                        value : 30,#}
+{#                                        color : "#FFEA88"#}
+{#                                    }#}
+{#                                ];#}
+{#                                // Get the context of the canvas element we want to select#}
+{#                                var countries= document.getElementById("countries").getContext("2d");#}
+{#                                new Chart(countries).Pie(pieData);#}
+
 
                             </script>
 
@@ -268,8 +305,10 @@ Data Analysis
 {% endif %}
     </div>
 
+    <script>
 
-{# --- Javascript to display calendar fields when 'sort by' field is specified --- #}
+    </script>
+
      <script>
         function iftimeslot(that) {
 
@@ -408,5 +447,14 @@ Data Analysis
             });
     });
     </script>
+
+{#    <script src="{% static 'js/easypiechart.js' %}"></script>#}
+{#    <script src="{% static 'js/easypiechart-data.js' %}"></script>#}
+{#    <script src="{% static 'js/jquery-1.11.1.min.js' %}"></script>#}
+{#	<script src="{% static 'js/bootstrap.min.js' %}"></script>#}
+{#	<script src="{% static 'js/bootstrap-datepicker.js' %}"></script>#}
+{#    <script src="{% static 'js/bootstrap-table.js' %}"></script>#}
+{#    <script src="{% static 'js/jquery-3.1.0.js' %}"></script>#}
+{#    <script src="{% static 'js/bootstrap.min.js' %}"></script>#}
 
 {% endblock %}
