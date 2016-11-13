@@ -31,7 +31,7 @@ def custom_login(request):
 
 def login(request):
     if request.user.is_authenticated():
-        return HttpResponseRedirect("detectors")
+        return HttpResponseRedirect("dashboard")
 
     return render(request, "login.html", {})
 
