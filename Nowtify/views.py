@@ -210,16 +210,18 @@ def dashboard(request):
     monthlyCounter = Alert.objects.filter(datetime__range=(thisMonthStart,thisMonthEnd)).count()
 
     for instance in alertList:  #prepare data to pass to newsfeed in html page
-        if(instance.seen==False):
-            messageType="Alert"
-            message="Alert Activated in Center 1 for " + str(instance.detector.name)
-            if(str(instance.datetime.date()) == str(datetime.today().date())):
-                timestamp = "Today " + str(instance.datetime)[11:19]
-            else:
-                timestamp=datetime.strptime(str(instance.datetime)[:19],'%Y-%m-%d %H:%M:%S').strftime("%d-%m-%Y %H:%M:%S")
+        try:
+            if(instance.seen==False):
+                messageType="Alert"
+                message="Alert Activated in Center 1 for " + str(instance.detector.name)
+                if(str(instance.datetime.date()) == str(datetime.today().date())):
+                    timestamp = "Today " + str(instance.datetime)[11:19]
+                else:
+                    timestamp=datetime.strptime(str(instance.datetime)[:19],'%Y-%m-%d %H:%M:%S').strftime("%d-%m-%Y %H:%M:%S")
 
-            masterList.append([messageType,message,timestamp])
-
+                masterList.append([messageType,message,timestamp])
+        except:
+            pass
 
     # sort by time
     if len(masterList) > 0:
