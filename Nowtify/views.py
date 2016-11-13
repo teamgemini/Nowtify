@@ -22,44 +22,28 @@ import csv
 from django.http import HttpResponse
 
 
-
 def custom_login(request):
     if request.user.is_authenticated():
-        return HttpResponseRedirect("detectors") #CHANGED FOR DEPLOYMENT
+        return HttpResponseRedirect("dashboard")
     else:
         return login(request)
 
 
 def login(request):
     if request.user.is_authenticated():
-        return HttpResponseRedirect("detectors") #CHANGED FOR DEPLOYMENT
+        return HttpResponseRedirect("detectors")
 
     return render(request, "login.html", {})
 
 
-# def custom_login(request): #user has logged in before and did not log out, next time he access, is directed to dashboard
-#     if request.user.is_authenticated():
-#         return HttpResponseRedirect("dashboard") #Original
-#     else:
-#         return login(request)
-#
-#
-# def login(request): #login check
-#     if request.user.is_authenticated():
-#         return HttpResponseRedirect("dashboard") #Original
-#
-#     return render(request, "login.html", {})
-
-
-
-def logout(request): #direct to login.html upon clicking logout
+def logout(request): # direct to login. html upon clicking logout
     auth_logout(request)
     c = {}
     c.update(csrf(request)) #session token
     return render(request, "login.html", {})
 
 
-def authentication(request): #CHANGED FOR DEPLOYMENT
+def authentication(request):
     username = request.POST['username']
     password = request.POST['password']
     user = authenticate(username=username, password=password)
@@ -85,34 +69,6 @@ def authentication(request): #CHANGED FOR DEPLOYMENT
         c.update(csrf(request))
         error = 'Invalid username/password'
         return errorHandle(error)
-
-
-# def authentication(request): #Original  #check if username and password is correct, direct to login if incorrect, if correct, direct to dashbaord
-#     username = request.POST['username'] #get inputs
-#     password = request.POST['password']
-#     user = authenticate(username=username, password=password)
-#
-#     def errorHandle(error):
-#         c = {}
-#         c.update(csrf(request)) #use session token as login verification
-#         return render(request, 'login.html', {'error': error})
-#
-#     if user is not None:  #if the username pw pair exists
-#
-#         if user.is_active:
-#             auth_login(request, user)
-#             c = {}
-#             c.update(csrf(request))
-#             return redirect('dashboard')
-#         else:
-#             c = {}
-#             c.update(csrf(request))
-#             return render(request, "login.html", {})
-#     elif user is None:
-#         c = {}
-#         c.update(csrf(request))
-#         error = 'Invalid username/password'
-#         return errorHandle(error)
 
 
 @login_required(login_url='')
@@ -145,29 +101,22 @@ def change_password(request):
         return render(request, 'settings.html', {'error': 'Passwords do not match. Please re-enter password.'})
 
 
-
 @login_required(login_url='')
 def dashboard(request):
 
     masterList= []
 
     detectorUsage = []
-
-    detectorBatteryUnique = []
     detectorBattery = []
     detectorCounter = 0
 
-    alertUnique= []
     alertList= []
 
-    alertWeekList= []
-    alertMonthList= []
-
-    startOfYtd = (datetime.now()- timedelta(days=1)).replace(hour=0, minute=0, second=0, microsecond=0) #yesterday's 00:00:00
+    startOfYtd = (datetime.now() - timedelta(days=1)).replace(hour=0, minute=0, second=0, microsecond=0) #yesterday's 00:00:00
 
     startOfWeekNum = 1
     daysAfterStartOfWeek = 0
-    endOfWeekNum = 7 #not used. for reference
+    endOfWeekNum = 7 # not used, for reference
 
     if datetime.now().isoweekday == 1:
         daysAfterStartOfWeek = 0
@@ -187,7 +136,7 @@ def dashboard(request):
     #get end of week (sunday) 23:59:59:59
     endOfWeek = (datetime.now() + timedelta(days=daysToEndOfWeek)).replace(hour=23, minute=59, second=59, microsecond=59)
 
-    startOfMonth = 1            #getting datetime for start/end of day, week, month
+    startOfMonth = 1 #getting datetime for start/end of day, week, month
     today = datetime.now()
     startOfToday = (datetime.now()).replace(hour=0, minute=0, second=0, microsecond=0)
     endOfToday = (datetime.now()).replace(hour=23, minute=59, second=59, microsecond=59)
@@ -199,12 +148,6 @@ def dashboard(request):
     thisMonthEnd = datetime.strptime(thisMonthEndNum + "/" + str(thisMonthNum) + "/" + str(thisYearNum) + " 23:59:59", "%d/%m/%Y %H:%M:%S")
 
 
-    #detectorList = Detector.objects.all()
-    #detectorUsageList = DetectorUsage.objects.all()
-    #detectorBatteryList = DetectorBattery.objects.all()
-
-
- #For DEPLOYMENT
     for detectorObject in Detector.objects.all():
         try:
             detectorUsage.append(DetectorUsage.objects.filter(detector_name__exact=detectorObject,updated__range=(startOfToday,endOfToday)).order_by('-updated').first()) # order by time only for ON OFF
@@ -221,7 +164,7 @@ def dashboard(request):
         if instance.used == True:
             detectorCounter += 1
 
-        if instance.used == True:
+        if instance.used:
             messageType = "Sensor"
             message=str(instance.detector_name.name) + " in Center 1 has been Switched ON"
 
@@ -229,11 +172,9 @@ def dashboard(request):
                 timestamp = "Today " + str(instance.updated)[11:19]
             else:
                 timestamp=datetime.strptime(str(instance.updated)[:19],'%Y-%m-%d %H:%M:%S').strftime("%d-%m-%Y %H:%M:%S")
-            detectorCounter += 1
 
             masterList.append([messageType,message,timestamp])
-
-        if instance.used == False:
+        else:
             messageType = "Sensor"
             message = str(instance.detector_name.name) + " in Center 1 has been Switched OFF"
 
@@ -261,43 +202,23 @@ def dashboard(request):
             pass
 
 
-# AlertActivated
-    alertCounter = 0 # count alerts today
-    weeklyCounter = 0 # count alerts this week
-    monthlyCounter = 0 # count alerts this month
-
-    #allAlertList = Alert.objects.all()
-
-    #for alertObject in Alert.objects.all(): #take all sensors    FOR DEPLOYMENT
     alertCounter = Alert.objects.filter(datetime__range=(startOfToday,endOfToday),seen__exact=False).count()
-            #alertCounter += 1
+    weeklyCounter = Alert.objects.filter(datetime__range=(startOfWeek, endOfWeek)).count()
+    monthlyCounter = Alert.objects.filter(datetime__range=(thisMonthStart,thisMonthEnd)).count()
 
-    for instance in alertList:  #prepare data to pass ot newsfeed in html page
-
+    for instance in alertList:  #prepare data to pass to newsfeed in html page
         if(instance.seen==False):
             messageType="Alert"
             message="Alert Activated in Center 1 for " + str(instance.detector.name)
-
             if(str(instance.datetime.date()) == str(datetime.today().date())):
                 timestamp = "Today " + str(instance.datetime)[11:19]
-
-                alertCounter += 1
-
             else:
                 timestamp=datetime.strptime(str(instance.datetime)[:19],'%Y-%m-%d %H:%M:%S').strftime("%d-%m-%Y %H:%M:%S")
 
             masterList.append([messageType,message,timestamp])
 
-            # get by alerts this week
-    #for alertObject in Alert.objects.all():  # take all alerts for this week
-     #   if (alertObject.datetime >= startOfWeek):
-    weeklyCounter = Alert.objects.filter(datetime__range=(startOfWeek, endOfWeek)).count()
-            #weeklyCounter +=1
-        #if(alertObject.datetime >= thisMonthStart):
-    monthlyCounter = Alert.objects.filter(datetime__range=(thisMonthStart,thisMonthEnd)).count()
-            #monthlyCounter += 1
 
-    #sort by time REMOVED FOR DEPLOYMENT, RETURN STATEMENT AS WELL
+    # sort by time
     if len(masterList) > 0:
         newsFeedList = sorted(masterList, key=itemgetter(2))
     else:
@@ -1389,7 +1310,3 @@ def export(request):
 
     else:
         return render (request,'export.html')
-
-
-
-
