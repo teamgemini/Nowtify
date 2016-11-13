@@ -161,28 +161,31 @@ def dashboard(request):
 
     # order by time only for ON OFF
     for instance in detectorUsage:
-        if instance.used == True:
-            detectorCounter += 1
+        try:
+            if instance.used == True:
+                detectorCounter += 1
 
-        if instance.used:
-            messageType = "Sensor"
-            message=str(instance.detector_name.name) + " in Center 1 has been Switched ON"
+            if instance.used:
+                messageType = "Sensor"
+                message=str(instance.detector_name.name) + " in Center 1 has been Switched ON"
 
-            if(str(instance.updated.date()) == str(datetime.today().date())):
-                timestamp = "Today " + str(instance.updated)[11:19]
+                if(str(instance.updated.date()) == str(datetime.today().date())):
+                    timestamp = "Today " + str(instance.updated)[11:19]
+                else:
+                    timestamp=datetime.strptime(str(instance.updated)[:19],'%Y-%m-%d %H:%M:%S').strftime("%d-%m-%Y %H:%M:%S")
+
+                masterList.append([messageType,message,timestamp])
             else:
-                timestamp=datetime.strptime(str(instance.updated)[:19],'%Y-%m-%d %H:%M:%S').strftime("%d-%m-%Y %H:%M:%S")
+                messageType = "Sensor"
+                message = str(instance.detector_name.name) + " in Center 1 has been Switched OFF"
 
-            masterList.append([messageType,message,timestamp])
-        else:
-            messageType = "Sensor"
-            message = str(instance.detector_name.name) + " in Center 1 has been Switched OFF"
-
-            if(str(instance.updated.date()) == str(datetime.today().date())):
-                timestamp = "Today " + str(instance.updated)[11:19]
-            else:
-                timestamp = datetime.strptime(str(instance.updated)[:19],'%Y-%m-%d %H:%M:%S').strftime("%d-%m-%Y %H:%M:%S")
-            masterList.append([messageType,message,timestamp])
+                if(str(instance.updated.date()) == str(datetime.today().date())):
+                    timestamp = "Today " + str(instance.updated)[11:19]
+                else:
+                    timestamp = datetime.strptime(str(instance.updated)[:19],'%Y-%m-%d %H:%M:%S').strftime("%d-%m-%Y %H:%M:%S")
+                masterList.append([messageType,message,timestamp])
+        except:
+            pass
 
 
     for instance in detectorBattery: #prepare messageType, message and timestamp of each occurance, display newsfeed and counter in html
