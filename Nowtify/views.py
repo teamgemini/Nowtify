@@ -167,7 +167,7 @@ def dashboard(request):
 
             if instance.used:
                 messageType = "Sensor"
-                message=str(instance.detector_name.name) + " in Center 1 has been Switched ON"
+                message=str(instance.detector_name.name) + " in Center 1 is in operation."
 
                 if(str(instance.updated.date()) == str(datetime.today().date())):
                     timestamp = "Today " + str(instance.updated)[11:19]
@@ -177,7 +177,7 @@ def dashboard(request):
                 masterList.append([messageType,message,timestamp])
             else:
                 messageType = "Sensor"
-                message = str(instance.detector_name.name) + " in Center 1 has been Switched OFF"
+                message = str(instance.detector_name.name) + " in Center 1 is not in operation."
 
                 if(str(instance.updated.date()) == str(datetime.today().date())):
                     timestamp = "Today " + str(instance.updated)[11:19]
@@ -191,9 +191,9 @@ def dashboard(request):
     for instance in detectorBattery: #prepare messageType, message and timestamp of each occurance, display newsfeed and counter in html
 
         try:
-            if(instance.battery)<= 30:
+            if(instance.battery)<= 40:
                 messageType="Sensor"
-                message=str(instance.detector_name.name) + " in Center 1 is below 30% Battery, Recharge Required!"
+                message=str(instance.detector_name.name) + " in Center 1 is below 40% Battery, Recharge Required!"
 
                 if(str(instance.updated.date()) == str(datetime.today().date())):
                     timestamp = "Today " + str(instance.updated)[11:19]
@@ -209,23 +209,22 @@ def dashboard(request):
     weeklyCounter = Alert.objects.filter(datetime__range=(startOfWeek, endOfWeek)).count()
     monthlyCounter = Alert.objects.filter(datetime__range=(thisMonthStart,thisMonthEnd)).count()
 
-    for instance in alertList:  #prepare data to pass to newsfeed in html page
+    for instance in Alert.objects.filter(datetime__range=(startOfToday,endOfToday)).order_by('-datetime')[:5]:  #prepare data to pass to newsfeed in html page
         try:
-            if(instance.seen==False):
-                messageType="Alert"
-                message="Alert Activated in Center 1 for " + str(instance.detector.name)
-                if(str(instance.datetime.date()) == str(datetime.today().date())):
-                    timestamp = "Today " + str(instance.datetime)[11:19]
-                else:
-                    timestamp=datetime.strptime(str(instance.datetime)[:19],'%Y-%m-%d %H:%M:%S').strftime("%d-%m-%Y %H:%M:%S")
+            messageType="Alert"
+            message="Alert Activated in Center 1 for " + str(instance.detector.name) + "."
+            if(str(instance.datetime.date()) == str(datetime.today().date())):
+                timestamp = "Today " + str(instance.datetime)[11:19]
+            else:
+                timestamp=datetime.strptime(str(instance.datetime)[:19],'%Y-%m-%d %H:%M:%S').strftime("%d-%m-%Y %H:%M:%S")
 
-                masterList.append([messageType,message,timestamp])
+            masterList.append([messageType,message,timestamp])
         except:
             pass
 
     # sort by time
     if len(masterList) > 0:
-        newsFeedList = sorted(masterList, key=itemgetter(2))
+        newsFeedList = sorted(masterList, key=itemgetter(2))[::-1]
     else:
         newsFeedList = []
 
