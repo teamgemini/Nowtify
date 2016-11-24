@@ -153,7 +153,6 @@ def dashboard(request):
             detectorUsage.append(DetectorUsage.objects.filter(detector_name__exact=detectorObject,updated__range=(startOfToday,endOfToday)).order_by('-updated').first()) # order by time only for ON OFF
         except:
             pass
-
         try:
             detectorBattery.append(DetectorBattery.objects.filter(detector_name__exact=detectorObject,updated__gte=startOfYtd).order_by('-updated').first())
         except:
