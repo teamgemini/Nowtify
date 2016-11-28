@@ -59,7 +59,7 @@ def authentication(request):
             auth_login(request, user)
             c = {}
             c.update(csrf(request))
-            return redirect('detectors')
+            return redirect('dashboard')
         else:
             c = {}
             c.update(csrf(request))
