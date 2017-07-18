@@ -6,8 +6,12 @@
           <option name="url" value="https://github.com/teamgeminiSG/Nowtify.git" />
           <option name="userName" value="" />
         </UrlAndUserName>
+        <UrlAndUserName>
+          <option name="url" value="https://github.com/shawnlwh/Intelicopter.git" />
+          <option name="userName" value="" />
+        </UrlAndUserName>
       </list>
     </option>
-    <option name="cloneParentDir" value="C:\Users\HeraX\PycharmProjects\22nd Sept" />
+    <option name="cloneParentDir" value="C:\Users\HeraX\PycharmProjects\18th July 17" />
   </component>
 </application>
